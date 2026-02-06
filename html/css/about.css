@@ -1,0 +1,204 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  margin: 0;
+  background: 
+      linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
+      url('https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg') no-repeat center center fixed;
+  background-size: cover;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+header {
+  background: rgba(28, 28, 28, 0.85);
+  backdrop-filter: blur(6px);
+  padding: 15px 40px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #ffb300;
+}
+
+.logo img {
+  width: 50px;
+  height: auto;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
+
+nav ul li a {
+  color: #ddd;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  color: #ffb300;
+}
+
+
+.about-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+}
+
+.about-container {
+  max-width: 800px;
+  background: rgba(28, 28, 28, 0.85);
+  backdrop-filter: blur(6px);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.about-container h2 {
+  font-size: 28px;
+  color: #ffb300;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.about-container p {
+  margin-bottom: 15px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #ddd;
+}
+
+.highlight {
+  color: #ffb300;
+  font-weight: bold;
+}
+
+
+.login-box, 
+.signup-container {
+  background: rgba(28, 28, 28, 0.85);
+  backdrop-filter: blur(6px);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+  width: 360px;
+  text-align: center;
+  margin: auto;
+  animation: fadeIn 0.8s ease-in-out;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-box:hover,
+.signup-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.7);
+}
+
+.login-box h2,
+.signup-container h2 {
+  color: #ffb300;
+  margin-bottom: 20px;
+}
+
+.login-box input,
+.signup-container input {
+  width: 100%;
+  padding: 12px;
+  margin: 12px 0;
+  border: none;
+  border-radius: 6px;
+  background: #2a2a2a;
+  color: #fff;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.login-box input:focus,
+.signup-container input:focus {
+  background: #333;
+  outline: none;
+}
+
+.login-box button,
+.signup-container button {
+  width: 100%;
+  padding: 12px;
+  background: #ffb300;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.login-box button:hover,
+.signup-container button:hover {
+  background: #e6a100;
+  transform: scale(1.03);
+}
+
+.login-box p,
+.signup-container p {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #ddd;
+}
+
+.login-box a,
+.signup-container a {
+  color: #ffb300;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.login-box a:hover,
+.signup-container a:hover {
+  text-decoration: underline;
+}
+
+
+footer {
+  background: rgba(28, 28, 28, 0.9);
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  color: #ccc;
+  margin-top: auto;
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.6);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

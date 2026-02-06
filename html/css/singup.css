@@ -1,0 +1,119 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+ 
+    background: 
+        linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), 
+        url("https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+.logo {
+    position: absolute;   
+    top: 20px;           
+    left: 20px;          
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #ffb300;
+    z-index: 1000;       
+}
+
+.logo-img {
+    width: 80px; 
+    height: auto;
+}
+
+
+.signup-container {
+    background: rgba(28, 28, 28, 0.85); 
+    backdrop-filter: blur(6px); 
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+    width: 380px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.signup-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.7);
+}
+
+
+.signup-container h2 {
+    margin-bottom: 25px;
+    font-size: 26px;
+    font-weight: bold;
+    color: #ffb300;
+}
+
+.signup-container input {
+    width: 100%;
+    padding: 12px;
+    margin: 12px 0;
+    border: none;
+    border-radius: 6px;
+    background: #2a2a2a;
+    color: #fff;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+
+.signup-container input::placeholder {
+    color: #bbb;
+}
+
+.signup-container input:focus {
+    background: #333;
+    outline: none;
+}
+
+
+.signup-container button {
+    width: 100%;
+    padding: 12px;
+    background: #ffb300;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.signup-container button:hover {
+    background: #e6a100;
+    transform: scale(1.03);
+}
+
+
+.signup-container p {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #ddd;
+}
+
+.signup-container a {
+    color: #ffb300;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.signup-container a:hover {
+    text-decoration: underline;
+}
+
