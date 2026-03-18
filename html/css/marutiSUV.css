@@ -1,5 +1,5 @@
-/* ===== Global & Background ===== */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+/* ===== Global ===== */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 * {
   margin: 0;
@@ -9,12 +9,8 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
   color: #e0e0e0;
-
-  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+  background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
               url('https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg')
               no-repeat center center fixed;
   background-size: cover;
@@ -24,115 +20,174 @@ body {
 header {
   text-align: center;
   padding: 20px;
-  background: rgba(30,30,30,0.85);
-  backdrop-filter: blur(6px);
+  background: rgba(20,20,20,0.9);
   color: #ffb300;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  font-size: 26px;
+  font-weight: bold;
+  position: relative;
+  z-index: 2;
 }
 
 /* ===== Main Section ===== */
 main {
-  flex: 1;
   padding: 40px 20px;
   text-align: center;
 }
 
+/* ===== Section Text ===== */
 .section-title {
-  font-size: 36px;
-  font-weight: bold;
+  font-size: 34px;
   color: #ffb300;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 2;
 }
 
-main p {
-  font-size: 20px;
-  color: #ddd;
-  max-width: 800px;
-  margin: 0 auto 40px;
+.section-subtitle {
+  font-size: 16px;
+  margin-bottom: 25px;
+  position: relative;
+  z-index: 2;
 }
 
-/* ===== Car Container ===== */
+/* ===== Grid ===== */
 #car-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
 }
 
-/* ===== Car Cards ===== */
+/* ===== Card ===== */
 .car-card {
-  background: rgba(28,28,28,0.85);
-  border-radius: 12px;
+  background: rgba(25,25,25,0.75);
+  border-radius: 15px;
   overflow: hidden;
-  width: 300px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.6);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+  transition: 0.3s;
+  position: relative;
+  z-index: 1;
+
+  backdrop-filter: blur(10px); /* glass effect */
 }
 
 .car-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+  transform: translateY(-5px);
 }
 
-/* ===== SINGLE IMAGE SUPPORT (IMPORTANT FIX) ===== */
-.car-card > img {
+/* ===== Slider ===== */
+.slider-container {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
-  display: block;
-  background: rgba(20,20,20,0.7);
-}
-
-/* ===== Image Gallery (for future sliders) ===== */
-.image-gallery {
-  display: flex;
-  overflow-x: auto;
-  gap: 6px;
-  padding: 10px;
-  background: rgba(20,20,20,0.7);
-}
-
-.image-gallery img {
   height: 180px;
-  min-width: 260px;
-  border-radius: 8px;
-  object-fit: cover;
-  transition: transform 0.3s ease;
+  overflow: hidden;
+  position: relative;
 }
 
-.image-gallery img:hover {
-  transform: scale(1.05);
+.slider {
+  display: flex;
+  height: 100%;
+  transition: transform 0.4s ease-in-out;
 }
 
-/* ===== Car Info ===== */
+.slider img {
+  width: 100%;
+  min-width: 100%;
+  height: 180px;
+  object-fit: contain;
+  background: #111;
+  padding: 10px;
+}
+
+/* ===== Slider Buttons ===== */
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border: none;
+  font-size: 20px;
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 3;
+  transition: 0.3s;
+}
+
+.nav-btn:hover {
+  background: #ffb300;
+  color: #000;
+}
+
+.nav-btn.left {
+  left: 10px;
+}
+
+.nav-btn.right {
+  right: 10px;
+}
+
+/* Hide buttons until hover */
+.slider-container .nav-btn {
+  opacity: 0;
+}
+
+.slider-container:hover .nav-btn {
+  opacity: 1;
+}
+
+/* ===== Info ===== */
 .car-info {
   padding: 15px;
   text-align: left;
 }
 
-.car-info h2,
-.car-card h3 {
-  font-size: 1.2rem;
+.car-info h2 {
   color: #ffb300;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+  font-size: 18px;
 }
 
+/* ===== Details ===== */
 .details {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.details span,
-.car-card p {
-  flex: 1 1 50%;
-  font-size: 0.9rem;
+.details span {
+  font-size: 14px;
   color: #ddd;
+}
+
+.details strong {
+  color: #fff;
 }
 
 /* ===== Footer ===== */
 footer {
   text-align: center;
-  padding: 20px;
-  font-size: 14px
+  padding: 15px;
+  background: rgba(20,20,20,0.9);
+  margin-top: 30px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 26px;
+  }
+
+  .slider-container {
+    height: 150px;
+  }
+
+  .slider img {
+    height: 150px;
+  }
+
+  .nav-btn {
+    font-size: 16px;
+    padding: 4px 8px;
+  }
 }

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { model } from 'mongoose';
 import dotenv from 'dotenv';
 import Car from './models/car.js';
 
@@ -17,11 +17,11 @@ const carsToUpdate = [
       "fronx/fronx-exterior-2.jpg",
       "fronx/fronx-exterior-3.jpg",
       "fronx/fronx-exterior-4.jpg",
-      "fronx/fronx-exterior-5.jpg"
+      "fronx/fronx-exterior-5.jpg",
+      "fronx/fronx-exterior-6.jpg",
+      "fronx/fronx-exterior-7.jpg"      
     ]
   }
-
-  // Add more cars here as needed
 ];
 
 async function updateImages() {
@@ -29,7 +29,7 @@ async function updateImages() {
     for (const car of carsToUpdate) {
       const result = await Car.updateOne(
         { model: car.model },
-        { $set: { images: car.images } }
+        { $push: { images: { $each: car.images } } }
       );
 
       if (result.modifiedCount > 0) {

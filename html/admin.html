@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - AutoVerse</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
+              url('https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg')
+              no-repeat center center fixed;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    form {
+      width: 420px;
+      background: #1c1c1c;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    h2 {
+      text-align: center;
+      color: orange;
+      margin-bottom: 10px;
+    }
+
+    label {
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    input, textarea, button {
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+    }
+
+    input, textarea {
+      background: #2a2a2a;
+      color: #fff;
+    }
+
+    textarea {
+      resize: none;
+      height: 80px;
+    }
+
+    button {
+      background: orange;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #ff9800;
+    }
+
+    .divider {
+      text-align: center;
+      margin: 10px 0;
+      font-size: 13px;
+      color: #888;
+    }
+  </style>
+</head>
+
+<body>
+
+<form id="carForm">
+
+  <h2>🚗 Admin Dashboard</h2>
+
+  <!-- 🔥 UPDATE EXISTING CAR -->
+  <label>Update Existing Car (Add Images)</label>
+  <input type="text" id="updateModel" placeholder="Enter Model (e.g., Fronx)">
+
+  <label>New Images (comma separated)</label>
+  <textarea id="images" placeholder="fronx/img4.jpg, fronx/img5.jpg"></textarea>
+
+  <div class="divider">OR ADD NEW CAR</div>
+
+  <!-- ➕ ADD NEW CAR -->
+  <label>Brand</label>
+  <input type="text" id="brand" placeholder="Maruti Suzuki">
+
+  <label>Model</label>
+  <input type="text" id="model" placeholder="Brezza">
+
+  <label>Type</label>
+  <input type="text" id="type" placeholder="SUV">
+
+  <label>Price Range</label>
+  <input type="text" id="price" placeholder="₹8 - ₹14 Lakh">
+
+  <label>Engine Options</label>
+  <input type="text" id="engine" placeholder="1.5L Petrol, 1.5L CNG">
+
+  <label>Mileage</label>
+  <input type="text" id="mileage" placeholder="17 - 25 kmpl">
+
+  <label>Fuel Type</label>
+  <input type="text" id="fuel" placeholder="Petrol, CNG">
+
+  <label>Transmission</label>
+  <input type="text" id="transmission" placeholder="Manual, Automatic">
+
+  <label>Seating Capacity</label>
+  <input type="text" id="seats" placeholder="5 Seater">
+
+  <button type="submit">Submit</button>
+
+</form>
+
+<script src="admin.js"></script>
+
+</body>
+</html>

@@ -3,43 +3,112 @@ import Car from '../models/car.js';
 
 const router = express.Router();
 
-console.log('✅ carRoutes loaded');
 
-// GET cars (with optional filters)
+// 🔍 GET ALL / FILTER CARS
 router.get('/', async (req, res) => {
   try {
-    const query = {};
+    console.log("👉 Query:", req.query);
 
-    if (req.query.brand) {
-      query.brand = { $regex: `^${req.query.brand}$`, $options: 'i' };
-    }
+    let filter = {};
 
-    if (req.query.type) {
-      query.type = { $regex: `^${req.query.type}$`, $options: 'i' };
-    }
+    if (req.query.brand) filter.brand = req.query.brand;
+    if (req.query.type) filter.type = req.query.type;
 
-    const cars = await Car.find(query);
+    const cars = await Car.find(filter);
+
+    console.log("✅ Cars Found:", cars.length);
+
     res.json(cars);
+
   } catch (error) {
-    console.error('🔥 FETCH ERROR:', error);
+    console.error("🔥 REAL ERROR:", error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+// ➕ ADD NEW CAR (ADMIN)
+router.post('/', async (req, res) => {
+  try {
+    console.log("📦 Incoming Data:", req.body);
+
+    const newCar = new Car({
+      brand: req.body.brand,
+      model: req.body.model,
+      type: req.body.type,
+      priceRange: req.body.priceRange,
+      engineOptions: req.body.engineOptions || [],
+      mileage: req.body.mileage,
+      fuelType: req.body.fuelType || [],
+      transmission: req.body.transmission || [],
+      seatingCapacity: req.body.seatingCapacity,
+      images: req.body.images || []
+    });
+
+    await newCar.save();
+
+    console.log("✅ Car Saved:", newCar.model);
+
+    res.status(201).json({
+      message: "Car added successfully",
+      car: newCar
+    });
+
+  } catch (error) {
+    console.error("🔥 ADD ERROR:", error.message);
+
     res.status(500).json({
-      message: 'Error fetching cars',
+      message: "Error adding car",
       error: error.message
     });
   }
 });
 
-// ✅ TEST ROUTE
-router.get('/test-db', async (req, res) => {
+
+// 🖼️ ADD IMAGES TO EXISTING CAR (IMPORTANT)
+router.put('/add-images/:model', async (req, res) => {
   try {
-    const count = await Car.countDocuments();
-    res.json({ success: true, count });
+    const { images } = req.body;
+
+    console.log("📸 Adding images to:", req.params.model);
+
+    const updatedCar = await Car.findOneAndUpdate(
+      { model: req.params.model },
+      { $push: { images: { $each: images } } },
+      { new: true }
+    );
+
+    if (!updatedCar) {
+      return res.status(404).json({ message: "Car not found" });
+    }
+
+    console.log("✅ Images Added");
+
+    res.json({
+      message: "Images added successfully",
+      car: updatedCar
+    });
+
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("🔥 IMAGE ADD ERROR:", error.message);
+    res.status(500).json({ message: error.message });
   }
 });
 
-// 🔥 THIS LINE IS MANDATORY
+
+// ❌ DELETE CAR
+router.delete('/:id', async (req, res) => {
+  try {
+    await Car.findByIdAndDelete(req.params.id);
+
+    console.log("🗑️ Car Deleted:", req.params.id);
+
+    res.json({ message: "Car deleted successfully" });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
 export default router;
-
-

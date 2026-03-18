@@ -3,32 +3,36 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import carRoutes from './routes/carRoutes.js';
 
 dotenv.config();
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 
-// ✅ Serve images
-app.use('/images', express.static(path.join(process.cwd(), 'images')));
+// Fix dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// ✅ API routes
+// Serve images
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
+// Routes
 app.use('/api/cars', carRoutes);
 
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI;
 
-mongoose.connect(MONGO_URI)
-  .then(() => console.log('✅ MongoDB connected'))
-  .catch(err => console.error(err));
+// ✅ CONNECT FIRST, THEN START SERVER
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("✅ MongoDB CONNECTED");
 
-app.get('/', (req, res) => {
-  res.send('🚗 Car API running');
-});
-
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error("❌ MongoDB ERROR:", err);
+  });

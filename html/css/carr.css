@@ -1,0 +1,104 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  text-align: center;
+  padding: 20px;
+  background: #000;
+  color: orange;
+}
+
+/* ===== Car Description ===== */
+.car-description {
+  margin: 20px auto;
+  max-width: 900px;
+  padding: 25px;
+  background: rgba(25,25,25,0.9);
+  border-radius: 12px;
+  line-height: 1.8;
+}
+
+.car-description h2 {
+  color: orange;
+  margin-bottom: 15px;
+}
+
+.car-description h3 {
+  color: #ffb300;
+  margin-bottom: 12px;
+}
+
+.car-description p {
+  color: #ddd;
+  margin-bottom: 10px;
+}
+
+/* ===== Car Specs ===== */
+.car-specs {
+  margin: 20px auto;
+  max-width: 900px;
+  padding: 20px;
+  background: rgba(20,20,20,0.85);
+  border-radius: 12px;
+}
+
+.car-specs h3 {
+  color: orange;
+  margin-bottom: 12px;
+}
+
+.car-specs p {
+  margin-bottom: 8px;
+}
+
+/* ===== Image Slider ===== */
+.image-slider-container {
+  position: relative;
+  max-width: 900px;
+  margin: 30px auto;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.image-slider {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.image-slider img {
+  width: 100%;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  border: none;
+  color: #fff;
+  font-size: 28px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.nav-btn.left {
+  left: 10px;
+}
+
+.nav-btn.right {
+  right: 10px;
+}
+
+.nav-btn:hover {
+  background: rgba(255,165,0,0.9);
+}
