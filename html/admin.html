@@ -1,129 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Dashboard - AutoVerse</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      font-family: Arial;
-      background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
-              url('https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg')
-              no-repeat center center fixed;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      padding: 40px;
-    }
+<title>AutoVerse Admin Pro</title>
 
-    form {
-      width: 420px;
-      background: #1c1c1c;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+<style>
+/* 🔥 GLOBAL */
+body {
+  background: #0f172a;
+  color: white;
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  padding: 20px;
+}
 
-    h2 {
-      text-align: center;
-      color: orange;
-      margin-bottom: 10px;
-    }
+/* 🔥 HEADER */
+h1 {
+  text-align: center;
+  color: orange;
+  margin-bottom: 20px;
+}
 
-    label {
-      font-size: 14px;
-      color: #ccc;
-    }
+/* 🔥 FORM CONTAINER */
+form {
+  max-width: 800px;
+  margin: auto;
+  background: #1e293b;
+  padding: 25px;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
 
-    input, textarea, button {
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      font-size: 14px;
-    }
+/* 🔥 FULL WIDTH ITEMS */
+.full {
+  grid-column: span 2;
+}
 
-    input, textarea {
-      background: #2a2a2a;
-      color: #fff;
-    }
+/* 🔥 INPUTS */
+input, select {
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  outline: none;
+  background: #334155;
+  color: white;
+  font-size: 14px;
+}
 
-    textarea {
-      resize: none;
-      height: 80px;
-    }
+input::placeholder {
+  color: #cbd5f5;
+}
 
-    button {
-      background: orange;
-      cursor: pointer;
-      font-weight: bold;
-      margin-top: 10px;
-      transition: 0.3s;
-    }
+/* 🔥 BUTTON */
+button {
+  grid-column: span 2;
+  background: orange;
+  color: black;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: 0.3s;
+}
 
-    button:hover {
-      background: #ff9800;
-    }
+button:hover {
+  background: #ffb84d;
+}
 
-    .divider {
-      text-align: center;
-      margin: 10px 0;
-      font-size: 13px;
-      color: #888;
-    }
-  </style>
+/* 🔥 DRAG AREA */
+#dropArea {
+  grid-column: span 2;
+  border: 2px dashed orange;
+  padding: 30px;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  background: #020617;
+}
+
+#dropArea:hover {
+  background: #1e293b;
+}
+
+/* 🔥 PREVIEW */
+.preview {
+  grid-column: span 2;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.preview img {
+  width: 90px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 2px solid #334155;
+  transition: 0.3s;
+}
+
+.preview img:hover {
+  transform: scale(1.1);
+  border-color: orange;
+}
+
+/* 🔥 RESPONSIVE */
+@media (max-width: 600px) {
+  form {
+    grid-template-columns: 1fr;
+  }
+
+  .full {
+    grid-column: span 1;
+  }
+
+  button {
+    grid-column: span 1;
+  }
+}
+</style>
 </head>
 
 <body>
 
+<h1>🚗 AutoVerse Admin Pro</h1>
+
 <form id="carForm">
 
-  <h2>🚗 Admin Dashboard</h2>
+  <input name="brand" placeholder="Brand" required>
+  <input name="model" placeholder="Model" required>
 
-  <!-- 🔥 UPDATE EXISTING CAR -->
-  <label>Update Existing Car (Add Images)</label>
-  <input type="text" id="updateModel" placeholder="Enter Model (e.g., Fronx)">
+  <select name="type">
+    <option>SUV</option>
+    <option>Sedan</option>
+    <option>Hatchback</option>
+    <option>MUV</option>
+  </select>
 
-  <label>New Images (comma separated)</label>
-  <textarea id="images" placeholder="fronx/img4.jpg, fronx/img5.jpg"></textarea>
+  <input name="priceRange" placeholder="Price Range">
+  <input name="engineOptions" placeholder="Engine (comma separated)">
+  <input name="mileage" placeholder="Mileage">
 
-  <div class="divider">OR ADD NEW CAR</div>
+  <input name="fuelType" placeholder="Fuel Type (comma separated)">
+  <input name="transmission" placeholder="Transmission (comma separated)">
 
-  <!-- ➕ ADD NEW CAR -->
-  <label>Brand</label>
-  <input type="text" id="brand" placeholder="Maruti Suzuki">
+  <input name="seatingCapacity" placeholder="Seating Capacity" class="full">
 
-  <label>Model</label>
-  <input type="text" id="model" placeholder="Brezza">
+  <!-- 🔥 DRAG & DROP -->
+  <div id="dropArea" class="full">
+    📂 Drag & Drop Images Here <br> or Click to Upload
+    <input type="file" id="imageInput" multiple hidden>
+  </div>
 
-  <label>Type</label>
-  <input type="text" id="type" placeholder="SUV">
+  <!-- 🔥 IMAGE PREVIEW -->
+  <div class="preview" id="preview"></div>
 
-  <label>Price Range</label>
-  <input type="text" id="price" placeholder="₹8 - ₹14 Lakh">
-
-  <label>Engine Options</label>
-  <input type="text" id="engine" placeholder="1.5L Petrol, 1.5L CNG">
-
-  <label>Mileage</label>
-  <input type="text" id="mileage" placeholder="17 - 25 kmpl">
-
-  <label>Fuel Type</label>
-  <input type="text" id="fuel" placeholder="Petrol, CNG">
-
-  <label>Transmission</label>
-  <input type="text" id="transmission" placeholder="Manual, Automatic">
-
-  <label>Seating Capacity</label>
-  <input type="text" id="seats" placeholder="5 Seater">
-
-  <button type="submit">Submit</button>
+  <button type="submit">🚀 Add Car</button>
 
 </form>
 
-<script src="admin.js"></script>
+<script src="backend/admin.js"></script>
 
 </body>
 </html>

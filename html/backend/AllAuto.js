@@ -1,12 +1,49 @@
 document.addEventListener("DOMContentLoaded", async () => {
+
   const container = document.getElementById("car-container");
 
+  // 🔥 AUTO DETECT FROM H1
+  const title = document.querySelector("h1").innerText.toLowerCase();
+
+  console.log("Page Title:", title);
+
+  // 🔥 EXTRACT BRAND + TYPE
+  let brand = "";
+  let type = "";
+
+  // TYPE DETECTION
+  if (title.includes("suv")) type = "SUV";
+  else if (title.includes("sedan")) type = "Sedan";
+  else if (title.includes("hatchback")) type = "Hatchback";
+
+  // BRAND DETECTION
+  if (title.includes("maruti")) brand = "Maruti";
+  else if (title.includes("tata")) brand = "Tata";
+  else if (title.includes("hyundai")) brand = "Hyundai";
+  else if (title.includes("mahindra")) brand = "Mahindra";
+  else if (title.includes("kia")) brand = "Kia";
+  else if (title.includes("toyota")) brand = "Toyota";
+  else if (title.includes("ford")) brand = "Ford";
+  else if (title.includes("jeep")) brand = "Jeep";
+  else if (title.includes("honda")) brand = "Honda";
+  else if (title.includes("audi")) brand = "Audi";
+  else if (title.includes("bmw")) brand = "BMW";
+  else if (title.includes("mercedes")) brand = "Mercedes";
+
+  console.log("Detected Brand:", brand);
+  console.log("Detected Type:", type);
+
   try {
-    const res = await fetch("http://localhost:5000/api/cars?brand=Maruti%20Suzuki&type=SUV");
+    const res = await fetch(
+      `http://localhost:5000/api/cars?brand=${encodeURIComponent(brand)}&type=${encodeURIComponent(type)}`
+    );
+
     const cars = await res.json();
 
+    console.log("Cars:", cars);
+
     if (!cars.length) {
-      container.innerHTML = "<p>No cars found</p>";
+      container.innerHTML = "<h2>No cars found</h2>";
       return;
     }
 
@@ -36,19 +73,19 @@ document.addEventListener("DOMContentLoaded", async () => {
           <h2>${car.brand} ${car.model}</h2>
 
           <div class="details">
-            <span><strong>Price:</strong> ${car.priceRange || "N/A"}</span>
+            <span><strong>Price:</strong> ${car.priceRange}</span>
             <span><strong>Engine:</strong> ${formatValue(car.engineOptions)}</span>
-            <span><strong>Mileage:</strong> ${car.mileage || "N/A"}</span>
+            <span><strong>Mileage:</strong> ${car.mileage}</span>
             <span><strong>Fuel:</strong> ${formatValue(car.fuelType)}</span>
             <span><strong>Transmission:</strong> ${formatValue(car.transmission)}</span>
-            <span><strong>Seats:</strong> ${car.seatingCapacity || "N/A"}</span>
+            <span><strong>Seats:</strong> ${car.seatingCapacity}</span>
           </div>
         </div>
 
       </div>
     `).join("");
 
-    // CLICK → OPEN DETAIL PAGE
+    // 🔥 CLICK EVENT
     document.querySelectorAll(".car-card").forEach(card => {
       card.addEventListener("click", () => {
         const id = card.getAttribute("data-id");
@@ -56,43 +93,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     });
 
-    // AUTO SLIDER
-    let interval = setInterval(slideAll, 2000);
-
-    function slideAll() {
-      document.querySelectorAll('.slider').forEach(slider => {
-        moveSlide(slider, 1);
-      });
-    }
-
-    function moveSlide(slider, step) {
-      let index = parseInt(slider.dataset.index);
-      const total = slider.children.length;
-
-      index = (index + step + total) % total;
-
-      slider.style.transform = `translateX(-${index * 100}%)`;
-      slider.dataset.index = index;
-    }
-
-    // BUTTON CONTROLS
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-
-        const slider = document.getElementById(`slider-${btn.dataset.index}`);
-        moveSlide(slider, btn.classList.contains('left') ? -1 : 1);
-      });
-    });
-
-    // PAUSE ON HOVER
-    document.querySelectorAll('.slider-container').forEach(container => {
-      container.addEventListener('mouseenter', () => clearInterval(interval));
-      container.addEventListener('mouseleave', () => interval = setInterval(slideAll, 2000));
-    });
-
   } catch (err) {
     console.error(err);
-    container.innerHTML = "<p>⚠️ Failed to load cars</p>";
+    container.innerHTML = "<h2>⚠️ Error loading cars</h2>";
   }
+
 });

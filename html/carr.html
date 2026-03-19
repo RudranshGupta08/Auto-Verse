@@ -2,21 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Car Details</title>
+  <title>AutoVerse | Car Details</title>
   <link rel="stylesheet" href="css/carr.css">
 </head>
 
 <body>
 
-<header>
-  <h1>Car Details</h1>
+<!-- 🔥 NAVBAR -->
+<header class="navbar">
+  <h1>🚗 AutoVerse</h1>
+  <p>Explore Detailed Car Information</p>
 </header>
 
+<!-- 🔥 BACK BUTTON -->
+<div class="top-bar">
+  <button onclick="goBack()">⬅ Back</button>
+</div>
+
+<!-- 🔥 MAIN -->
 <main id="car-details">
-  <p>Loading...</p>
+  <p class="loading">Loading car details...</p>
 </main>
 
+<!-- 🔥 FOOTER -->
+<footer>
+  <p>© 2025 AutoVerse. All Rights Reserved.</p>
+</footer>
+
 <script src="backend/carr.js"></script>
+
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
 
 </body>
 </html>

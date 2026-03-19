@@ -1,105 +1,176 @@
-const params = new URLSearchParams(window.location.search);
-const carId = params.get("id");
+document.addEventListener("DOMContentLoaded", async () => {
 
-const container = document.getElementById("car-details");
+  const container = document.getElementById("car-details");
 
-async function loadCar() {
+  // 🔥 GET ID FROM URL
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  if (!id) {
+    container.innerHTML = "<h2>❌ No Car Selected</h2>";
+    return;
+  }
+
   try {
-    const res = await fetch("http://localhost:5000/api/cars");
-    const cars = await res.json();
+    const res = await fetch(`http://localhost:5000/api/cars/${id}`);
+    const car = await res.json();
 
-    const car = cars.find(c => c._id === carId);
-
-    if (!car) {
-      container.innerHTML = "<p>Car not found</p>";
+    if (!car || car.message) {
+      container.innerHTML = "<h2>❌ Car not found</h2>";
       return;
     }
+
+    // 🔥 DEFAULT DATA (if empty)
+    const features = car.features?.length ? car.features : [
+      "Modern infotainment system",
+      "Comfortable seating",
+      "Advanced safety features"
+    ];
+
+    const pros = car.pros?.length ? car.pros : [
+      "Good performance",
+      "Reliable brand",
+      "Value for money"
+    ];
+
+    const cons = car.cons?.length ? car.cons : [
+      "Could improve mileage",
+      "Limited premium features"
+    ];
+
+    const verdict = car.verdict || 
+      `${car.model} is a well-rounded vehicle offering a balance of performance, comfort, and practicality, making it a solid choice in its segment.`;
 
     const formatValue = val =>
       Array.isArray(val) ? val.join(", ") : (val || "N/A");
 
-    const isFronx = car.model.toLowerCase() === "fronx";
-
+    // 🔥 HTML UI
     container.innerHTML = `
-      <!-- Car Description -->
-      <div class="car-description">
-        <h2>${car.brand} ${car.model}</h2>
-        <h3>Overview</h3>
-        <p>
-          The ${car.brand} ${car.model} is a modern compact SUV that combines style, comfort, and
-          technology in a practical urban package. With its bold stance, sleek LED lighting, and
-          coupe-inspired roofline, it stands out in traffic while maintaining excellent aerodynamics.
-        </p>
-        <p>
-          Designed for both city driving and weekend getaways, the ${car.model} offers multiple
-          engine options with optimized fuel efficiency and smooth acceleration. The cabin is
-          spacious with ergonomic seats, premium materials, and ambient lighting to enhance the
-          driving experience.
-        </p>
-        <p>
-          Technology features include a large infotainment display with Android Auto/Apple CarPlay,
-          wireless connectivity, navigation, and a heads-up display for essential driving information.
-        </p>
-        <p>
-          Safety is top priority: equipped with multiple airbags, ABS with EBD, ESP, hill-hold assist,
-          and a 360-degree camera. The ${car.model} ensures peace of mind for drivers and passengers
-          alike.
-        </p>
-        <p>
-          Overall, the ${car.brand} ${car.model} is a stylish, reliable, and feature-packed SUV ideal
-          for modern urban lifestyles.
-        </p>
+      <div class="car-header">
+        <h1>${car.brand} ${car.model}</h1>
+        <p class="price">${car.priceRange}</p>
       </div>
 
-      <!-- Car Specifications -->
-      <div class="car-specs">
-        <h3>Specifications</h3>
-        <p><strong>Price Range:</strong> ${car.priceRange}</p>
-        <p><strong>Engine Options:</strong> ${formatValue(car.engineOptions)}</p>
+      <!-- 🔥 ACTION BUTTONS -->
+      <div class="actions">
+        <button class="wishlist">❤️ Wishlist</button>
+        <button class="compare">⚖️ Compare</button>
+      </div>
+
+      <!-- 🔥 IMAGE SLIDER -->
+      <div class="image-slider-container">
+        <button class="nav-btn left">❮</button>
+
+        <div class="image-slider" id="slider">
+          ${
+            car.images?.length
+              ? car.images.map(img =>
+                  `<img src="http://localhost:5000/images/${img}">`
+                ).join("")
+              : `<img src="http://localhost:5000/images/placeholder.jpg">`
+          }
+        </div>
+
+        <button class="nav-btn right">❯</button>
+      </div>
+
+      <!-- 🔥 SPECIFICATIONS -->
+      <div class="section specs">
+        <h2>Specifications</h2>
+        <p><strong>Engine:</strong> ${formatValue(car.engineOptions)}</p>
         <p><strong>Mileage:</strong> ${car.mileage}</p>
         <p><strong>Fuel Type:</strong> ${formatValue(car.fuelType)}</p>
         <p><strong>Transmission:</strong> ${formatValue(car.transmission)}</p>
         <p><strong>Seating Capacity:</strong> ${car.seatingCapacity}</p>
       </div>
 
-      <!-- Image Slider -->
-      <div class="image-slider-container">
-        <button class="nav-btn left" data-index="0">❮</button>
-        <div class="image-slider" id="slider">
-          ${
-            car.images?.length
-              ? car.images.map(img => `<img src="http://localhost:5000/images/${img}">`).join("")
-              : `<img src="http://localhost:5000/images/placeholder.jpg">`
-          }
-        </div>
-        <button class="nav-btn right" data-index="0">❯</button>
+      <!-- 🔥 FEATURES -->
+      <div class="section">
+        <h2>Key Features</h2>
+        <ul>
+          ${features.map(f => `<li>${f}</li>`).join("")}
+        </ul>
+      </div>
+
+      <!-- 🔥 PROS -->
+      <div class="section">
+        <h2>Pros</h2>
+        <ul>
+          ${pros.map(p => `<li>${p}</li>`).join("")}
+        </ul>
+      </div>
+
+      <!-- 🔥 CONS -->
+      <div class="section">
+        <h2>Cons</h2>
+        <ul>
+          ${cons.map(c => `<li>${c}</li>`).join("")}
+        </ul>
+      </div>
+
+      <!-- 🔥 VERDICT -->
+      <div class="section verdict">
+        <h2>Final Verdict</h2>
+        <p>${verdict}</p>
       </div>
     `;
 
-    // Slider functionality
+    // =========================
+    // 🔥 IMAGE SLIDER LOGIC
+    // =========================
+
+    let index = 0;
     const slider = document.getElementById("slider");
-    let currentIndex = 0;
+    const total = slider.children.length;
 
-    const totalImages = slider.children.length;
-
-    function showSlide(index) {
+    function showSlide(i) {
+      index = (i + total) % total;
       slider.style.transform = `translateX(-${index * 100}%)`;
     }
 
-    document.querySelector(".nav-btn.left").addEventListener("click", () => {
-      currentIndex = (currentIndex - 1 + totalImages) % totalImages;
-      showSlide(currentIndex);
-    });
+    document.querySelector(".left").onclick = () => showSlide(index - 1);
+    document.querySelector(".right").onclick = () => showSlide(index + 1);
 
-    document.querySelector(".nav-btn.right").addEventListener("click", () => {
-      currentIndex = (currentIndex + 1) % totalImages;
-      showSlide(currentIndex);
-    });
+    // =========================
+    // 🔥 WISHLIST
+    // =========================
+
+    document.querySelector(".wishlist").onclick = () => {
+      let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+      if (!wishlist.includes(car._id)) {
+        wishlist.push(car._id);
+        localStorage.setItem("wishlist", JSON.stringify(wishlist));
+        alert("❤️ Added to Wishlist");
+      } else {
+        alert("⚠️ Already in Wishlist");
+      }
+    };
+
+    // =========================
+    // 🔥 COMPARE
+    // =========================
+
+    document.querySelector(".compare").onclick = () => {
+      let compare = JSON.parse(localStorage.getItem("compare")) || [];
+
+      if (compare.length >= 2) {
+        alert("⚠️ You can compare only 2 cars");
+        return;
+      }
+
+      if (!compare.includes(car._id)) {
+        compare.push(car._id);
+        localStorage.setItem("compare", JSON.stringify(compare));
+        alert("⚖️ Added for Comparison");
+      } else {
+        alert("⚠️ Already added");
+      }
+    };
 
   } catch (err) {
     console.error(err);
-    container.innerHTML = "<p>Error loading car details</p>";
+    container.innerHTML = "<h2>⚠️ Failed to load car details</h2>";
   }
-}
 
-loadCar();
+});

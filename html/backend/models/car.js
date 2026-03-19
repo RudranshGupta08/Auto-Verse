@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const carSchema = new mongoose.Schema({
   brand: String,
@@ -8,11 +8,19 @@ const carSchema = new mongoose.Schema({
   priceRange: String,
   engineOptions: [String],
   mileage: String,
+
   fuelType: [String],
   transmission: [String],
 
-  seatingCapacity: String, // matches your DB
-  images: [String]
-});
+  seatingCapacity: Number, // 🔥 FIXED (should be Number, not String)
+  images: [String],
 
-export default mongoose.model('Car', carSchema);
+  // 🔥 NEW FIELDS FOR REAL CONTENT
+  description: String,
+  features: [String],
+  pros: [String],
+  cons: [String]
+
+}, { timestamps: true }); // optional but recommended
+
+export default mongoose.model("Car", carSchema);
