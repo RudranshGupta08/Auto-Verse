@@ -1,41 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>AutoVerse | Car Details</title>
-  <link rel="stylesheet" href="css/carr.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Car Details</title>
+  <link rel="stylesheet" href="css/carr.css" />
 </head>
 
 <body>
 
-<!-- 🔥 NAVBAR -->
-<header class="navbar">
-  <h1>🚗 AutoVerse</h1>
-  <p>Explore Detailed Car Information</p>
-</header>
+  <!-- 🔥 NAVBAR -->
+  <header class="navbar">
+    <h1>🚗 AutoVerse</h1>
+    <span>Explore Detailed Car Information</span>
+  </header>
 
-<!-- 🔥 BACK BUTTON -->
-<div class="top-bar">
-  <button onclick="goBack()">⬅ Back</button>
-</div>
+  <!-- 🔙 BACK BUTTON -->
+  <div class="top-bar">
+    <button onclick="history.back()">← Back</button>
+  </div>
 
-<!-- 🔥 MAIN -->
-<main id="car-details">
-  <p class="loading">Loading car details...</p>
-</main>
+  <!-- 🔥 MAIN -->
+  <main id="car-details" class="fade-in"></main>
 
-<!-- 🔥 FOOTER -->
-<footer>
-  <p>© 2025 AutoVerse. All Rights Reserved.</p>
-</footer>
+  <!-- 🔻 FOOTER -->
+  <footer>
+    <p>© 2025 AutoVerse. All Rights Reserved.</p>
+  </footer>
 
-<script src="backend/carr.js"></script>
-
-<script>
-function goBack() {
-  window.history.back();
-}
-</script>
-
+  <script src="backend/carr.js"></script>
 </body>
+
 </html>

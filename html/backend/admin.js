@@ -5,36 +5,31 @@ const dropArea = document.getElementById("dropArea");
 
 let filesArray = [];
 
-// 🔥 CLICK TO OPEN FILE
+// CLICK
 dropArea.addEventListener("click", () => input.click());
 
-// 🔥 DRAG OVER
-dropArea.addEventListener("dragover", (e) => {
+// DRAG
+dropArea.addEventListener("dragover", e => {
   e.preventDefault();
-  dropArea.style.background = "#334155";
+  dropArea.style.background = "#333";
 });
 
-// 🔥 DRAG LEAVE
 dropArea.addEventListener("dragleave", () => {
   dropArea.style.background = "transparent";
 });
 
-// 🔥 DROP FILES
-dropArea.addEventListener("drop", (e) => {
+// DROP
+dropArea.addEventListener("drop", e => {
   e.preventDefault();
-  dropArea.style.background = "transparent";
-
-  const files = Array.from(e.dataTransfer.files);
-  handleFiles(files);
+  handleFiles(Array.from(e.dataTransfer.files));
 });
 
-// 🔥 FILE SELECT
+// SELECT
 input.addEventListener("change", () => {
-  const files = Array.from(input.files);
-  handleFiles(files);
+  handleFiles(Array.from(input.files));
 });
 
-// 🔥 HANDLE FILES + PREVIEW
+// PREVIEW
 function handleFiles(files) {
   files.forEach(file => {
     filesArray.push(file);
@@ -46,23 +41,37 @@ function handleFiles(files) {
   });
 }
 
-// 🚀 SUBMIT FORM
+// SUBMIT
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const formData = new FormData();
 
+  // BASIC
   formData.append("brand", form.brand.value);
   formData.append("model", form.model.value);
   formData.append("type", form.type.value);
   formData.append("priceRange", form.priceRange.value);
+
+  // ENGINE
   formData.append("engineOptions", form.engineOptions.value);
   formData.append("mileage", form.mileage.value);
   formData.append("fuelType", form.fuelType.value);
   formData.append("transmission", form.transmission.value);
   formData.append("seatingCapacity", form.seatingCapacity.value);
 
-  // 🔥 ADD IMAGES
+  // NEW FIELDS
+  formData.append("rating", form.rating.value);
+  formData.append("ncap", form.ncap.value);
+  formData.append("bestFor", form.bestFor.value);
+
+  // CONTENT
+  formData.append("features", form.features.value);
+  formData.append("pros", form.pros.value);
+  formData.append("cons", form.cons.value);
+  formData.append("verdict", form.verdict.value);
+
+  // IMAGES
   filesArray.forEach(file => {
     formData.append("images", file);
   });
@@ -77,7 +86,6 @@ form.addEventListener("submit", async (e) => {
 
     alert(data.message || "Car Added!");
 
-    // 🔥 RESET
     form.reset();
     preview.innerHTML = "";
     filesArray = [];

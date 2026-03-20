@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
 
   const container = document.getElementById("car-details");
-
-  // 🔥 GET ID FROM URL
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
 
@@ -20,11 +18,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    // 🔥 DEFAULT DATA (if empty)
+    // =========================
+    // 🔥 DEFAULT FALLBACK DATA
+    // =========================
+
     const features = car.features?.length ? car.features : [
       "Modern infotainment system",
       "Comfortable seating",
-      "Advanced safety features"
+      "Safety features included"
     ];
 
     const pros = car.pros?.length ? car.pros : [
@@ -34,31 +35,45 @@ document.addEventListener("DOMContentLoaded", async () => {
     ];
 
     const cons = car.cons?.length ? car.cons : [
-      "Could improve mileage",
+      "Mileage could be better",
       "Limited premium features"
     ];
 
     const verdict = car.verdict || 
-      `${car.model} is a well-rounded vehicle offering a balance of performance, comfort, and practicality, making it a solid choice in its segment.`;
+      `${car.model} is a well-balanced car offering great practicality and comfort.`;
+
+    const bestFor = car.bestFor?.length ? car.bestFor : [
+      "Daily commuting",
+      "Family usage"
+    ];
+
+    const ncap = car.ncapRating || "Not Rated";
+
+    const stars = "★".repeat(car.rating || 3) + "☆".repeat(5 - (car.rating || 3));
 
     const formatValue = val =>
       Array.isArray(val) ? val.join(", ") : (val || "N/A");
 
-    // 🔥 HTML UI
+    // =========================
+    // 🔥 UI RENDER
+    // =========================
+
     container.innerHTML = `
-      <div class="car-header">
+      <!-- HEADER -->
+      <div class="car-header slide-up">
         <h1>${car.brand} ${car.model}</h1>
         <p class="price">${car.priceRange}</p>
+        <div class="rating">${stars} ${car.rating || 3}/5</div>
       </div>
 
-      <!-- 🔥 ACTION BUTTONS -->
-      <div class="actions">
-        <button class="wishlist">❤️ Wishlist</button>
+      <!-- ACTION BUTTONS -->
+      <div class="actions slide-up">
+        <button class="wishlist">❤️ Add to Wishlist</button>
         <button class="compare">⚖️ Compare</button>
       </div>
 
-      <!-- 🔥 IMAGE SLIDER -->
-      <div class="image-slider-container">
+      <!-- IMAGE SLIDER -->
+      <div class="image-slider-container slide-up">
         <button class="nav-btn left">❮</button>
 
         <div class="image-slider" id="slider">
@@ -74,49 +89,58 @@ document.addEventListener("DOMContentLoaded", async () => {
         <button class="nav-btn right">❯</button>
       </div>
 
-      <!-- 🔥 SPECIFICATIONS -->
-      <div class="section specs">
+      <!-- SPECIFICATIONS -->
+      <div class="section slide-up">
         <h2>Specifications</h2>
         <p><strong>Engine:</strong> ${formatValue(car.engineOptions)}</p>
         <p><strong>Mileage:</strong> ${car.mileage}</p>
         <p><strong>Fuel Type:</strong> ${formatValue(car.fuelType)}</p>
         <p><strong>Transmission:</strong> ${formatValue(car.transmission)}</p>
         <p><strong>Seating Capacity:</strong> ${car.seatingCapacity}</p>
+        <p><strong>NCAP Safety Rating:</strong> ⭐ ${ncap}</p>
       </div>
 
-      <!-- 🔥 FEATURES -->
-      <div class="section">
+      <!-- FEATURES -->
+      <div class="section slide-up">
         <h2>Key Features</h2>
         <ul>
           ${features.map(f => `<li>${f}</li>`).join("")}
         </ul>
       </div>
 
-      <!-- 🔥 PROS -->
-      <div class="section">
-        <h2>Pros</h2>
+      <!-- PROS -->
+      <div class="section slide-up">
+        <h2>Pros 👍</h2>
         <ul>
           ${pros.map(p => `<li>${p}</li>`).join("")}
         </ul>
       </div>
 
-      <!-- 🔥 CONS -->
-      <div class="section">
-        <h2>Cons</h2>
+      <!-- CONS -->
+      <div class="section slide-up">
+        <h2>Cons 👎</h2>
         <ul>
           ${cons.map(c => `<li>${c}</li>`).join("")}
         </ul>
       </div>
 
-      <!-- 🔥 VERDICT -->
-      <div class="section verdict">
+      <!-- BEST FOR -->
+      <div class="section slide-up">
+        <h2>Best For</h2>
+        <ul>
+          ${bestFor.map(b => `<li>${b}</li>`).join("")}
+        </ul>
+      </div>
+
+      <!-- VERDICT -->
+      <div class="section verdict slide-up">
         <h2>Final Verdict</h2>
         <p>${verdict}</p>
       </div>
     `;
 
     // =========================
-    // 🔥 IMAGE SLIDER LOGIC
+    // 🔥 IMAGE SLIDER
     // =========================
 
     let index = 0;
@@ -132,15 +156,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelector(".right").onclick = () => showSlide(index + 1);
 
     // =========================
-    // 🔥 WISHLIST
+    // ❤️ WISHLIST
     // =========================
 
     document.querySelector(".wishlist").onclick = () => {
-      let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      let list = JSON.parse(localStorage.getItem("wishlist")) || [];
 
-      if (!wishlist.includes(car._id)) {
-        wishlist.push(car._id);
-        localStorage.setItem("wishlist", JSON.stringify(wishlist));
+      if (!list.includes(id)) {
+        list.push(id);
+        localStorage.setItem("wishlist", JSON.stringify(list));
         alert("❤️ Added to Wishlist");
       } else {
         alert("⚠️ Already in Wishlist");
@@ -148,7 +172,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
 
     // =========================
-    // 🔥 COMPARE
+    // ⚖️ COMPARE
     // =========================
 
     document.querySelector(".compare").onclick = () => {
@@ -159,10 +183,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
-      if (!compare.includes(car._id)) {
-        compare.push(car._id);
+      if (!compare.includes(id)) {
+        compare.push(id);
         localStorage.setItem("compare", JSON.stringify(compare));
         alert("⚖️ Added for Comparison");
+        window.location.href = "compare.html";
       } else {
         alert("⚠️ Already added");
       }

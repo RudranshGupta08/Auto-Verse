@@ -1,0 +1,82 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: white;
+}
+
+/* 🔥 NAVBAR */
+.navbar {
+  text-align: center;
+  padding: 20px;
+  background: #020617;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.navbar h1 {
+  color: orange;
+  margin: 0;
+}
+
+.navbar p {
+  color: #aaa;
+}
+
+/* 🔥 CONTAINER */
+.compare-container {
+  padding: 30px;
+  overflow-x: auto;
+}
+
+/* 🔥 TABLE */
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #1e293b;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.compare-table th,
+.compare-table td {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.compare-table th {
+  background: #020617;
+  color: orange;
+}
+
+/* 🔥 CAR IMAGE */
+.car-img {
+  width: 220px;
+  border-radius: 10px;
+}
+
+/* 🔥 TITLE */
+.car-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: orange;
+}
+
+/* 🔥 REMOVE BUTTON */
+.remove-btn {
+  background: #e11d48;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.remove-btn:hover {
+  background: #ff4d6d;
+}
+
+/* 🔥 EMPTY */
+.loading {
+  text-align: center;
+}

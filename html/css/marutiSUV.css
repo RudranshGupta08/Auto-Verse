@@ -43,11 +43,10 @@ main {
   z-index: 2;
 }
 
-.section-subtitle {
+.section-desc {
   font-size: 16px;
   margin-bottom: 25px;
-  position: relative;
-  z-index: 2;
+  color: #ccc;
 }
 
 /* ===== Grid ===== */
@@ -67,8 +66,7 @@ main {
   transition: 0.3s;
   position: relative;
   z-index: 1;
-
-  backdrop-filter: blur(10px); /* glass effect */
+  backdrop-filter: blur(10px);
 }
 
 .car-card:hover {
@@ -119,15 +117,9 @@ main {
   color: #000;
 }
 
-.nav-btn.left {
-  left: 10px;
-}
+.nav-btn.left { left: 10px; }
+.nav-btn.right { right: 10px; }
 
-.nav-btn.right {
-  right: 10px;
-}
-
-/* Hide buttons until hover */
 .slider-container .nav-btn {
   opacity: 0;
 }
@@ -144,8 +136,15 @@ main {
 
 .car-info h2 {
   color: #ffb300;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   font-size: 18px;
+}
+
+/* ===== ⭐ RATING ===== */
+.rating {
+  color: #ffb300;
+  font-size: 14px;
+  margin-bottom: 10px;
 }
 
 /* ===== Details ===== */
@@ -162,6 +161,71 @@ main {
 
 .details strong {
   color: #fff;
+}
+
+/* ===== 🔥 ACTION BUTTONS ===== */
+.actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+}
+
+.actions button {
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+/* ❤️ Wishlist */
+.wishlist {
+  background: rgba(225, 29, 72, 0.15);
+  color: #e11d48;
+}
+
+.wishlist:hover {
+  background: #e11d48;
+  color: white;
+  transform: scale(1.1);
+}
+
+/* ⚖️ Compare */
+.compare {
+  background: rgba(37, 99, 235, 0.15);
+  color: #2563eb;
+}
+
+.compare:hover {
+  background: #2563eb;
+  color: white;
+  transform: scale(1.1);
+}
+
+/* ===== 🔥 FLOATING COMPARE BUTTON ===== */
+.compare-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+
+  background: #ffb300;
+  color: black;
+
+  padding: 12px 18px;
+  border-radius: 30px;
+
+  font-weight: bold;
+  text-decoration: none;
+
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  transition: 0.3s;
+  z-index: 999;
+}
+
+.compare-float:hover {
+  background: #ffcc33;
+  transform: scale(1.05);
 }
 
 /* ===== Footer ===== */

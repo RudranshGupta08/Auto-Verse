@@ -1,127 +1,174 @@
-/* BODY */
+/* ===== GLOBAL ===== */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
-  background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
-              url('https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg')
-              no-repeat center center fixed;
+  font-family: 'Roboto', sans-serif;
+  color: #fff;
+
+  background:
+    linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
+    url('https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg')
+    no-repeat center center fixed;
+
   background-size: cover;
-  color: white;
 }
 
-/* 🔥 NAVBAR */
+/* ===== NAVBAR ===== */
 .navbar {
-  position: sticky;
-  top: 0;
-  text-align: center;
-  padding: 15px 0;
-  background: #0f172a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  background: rgba(15,23,42,0.95);
+  padding: 15px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
-  z-index: 1000;
 }
 
 .navbar h1 {
+  color: #ffb300;
   margin: 0;
-  color: orange;
 }
 
-.navbar p {
-  margin: 0;
-  font-size: 14px;
+.navbar span {
+  font-size: 13px;
   color: #ccc;
 }
 
-/* 🔥 BACK BUTTON */
+/* ===== BACK BUTTON ===== */
 .top-bar {
-  padding: 10px 20px;
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 0 20px;
 }
 
 .top-bar button {
-  background: orange;
-  border: none;
-  padding: 10px 15px;
+  background: rgba(255,179,0,0.15);
+  border: 1px solid #ffb300;
+  color: #ffb300;
+
+  padding: 8px 16px;
+  border-radius: 25px;
   cursor: pointer;
-  border-radius: 5px;
-  font-weight: bold;
+
+  transition: 0.3s;
 }
 
-/* MAIN */
+.top-bar button:hover {
+  background: #ffb300;
+  color: #000;
+}
+
+/* ===== MAIN ===== */
 #car-details {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: auto;
   padding: 20px;
 }
 
-/* LOADING */
-.loading {
-  text-align: center;
+/* ===== ANIMATIONS ===== */
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out;
 }
 
-/* HEADER */
+.slide-up {
+  animation: slideUp 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== HEADER ===== */
 .car-header {
   text-align: center;
+  margin-bottom: 15px;
 }
 
 .car-header h1 {
-  color: orange;
+  color: #ffb300;
+  font-size: 36px;
 }
 
 .price {
   font-size: 20px;
-  margin-bottom: 15px;
+  color: #ccc;
 }
 
-/* 🔥 ACTION BUTTONS */
+/* ===== RATING ===== */
+.rating {
+  margin: 10px 0;
+  color: gold;
+  font-size: 18px;
+}
+
+/* ===== ACTION BUTTONS ===== */
 .actions {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 15px;
+  gap: 20px;
+  margin: 20px 0;
 }
 
 .actions button {
-  padding: 10px 15px;
+  padding: 12px 22px;
+  border-radius: 30px;
   border: none;
-  cursor: pointer;
-  border-radius: 5px;
   font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .wishlist {
-  background: #e11d48;
-  color: white;
+  background: linear-gradient(135deg, #e11d48, #fb7185);
 }
 
 .compare {
-  background: #2563eb;
-  color: white;
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
 }
 
-/* SLIDER */
+.actions button:hover {
+  transform: translateY(-3px) scale(1.05);
+}
+
+/* ===== SLIDER ===== */
 .image-slider-container {
   position: relative;
   overflow: hidden;
-  border-radius: 10px;
-  margin-bottom: 20px;
+  border-radius: 12px;
+  margin: 20px 0;
 }
 
 .image-slider {
   display: flex;
-  transition: 0.5s;
+  transition: transform 0.5s ease;
 }
 
 .image-slider img {
   width: 100%;
   height: 400px;
-  object-fit: cover;
+  object-fit: contain;
+  background: #111;
 }
 
-/* BUTTONS */
 .nav-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.6);
   border: none;
   color: white;
   padding: 10px;
@@ -131,37 +178,21 @@ body {
 .left { left: 10px; }
 .right { right: 10px; }
 
-/* SECTION */
+/* ===== SECTION ===== */
 .section {
-  background: #1e293b;
+  background: rgba(30,41,59,0.85);
   padding: 20px;
   margin-bottom: 15px;
   border-radius: 10px;
 }
 
 .section h2 {
-  color: orange;
+  color: #ffb300;
 }
 
-/* LIST */
-ul {
-  padding-left: 20px;
-}
-
-li {
-  margin-bottom: 8px;
-}
-
-/* VERDICT */
-.verdict {
-  border-left: 5px solid orange;
-  background: #111827;
-}
-
-/* FOOTER */
+/* ===== FOOTER ===== */
 footer {
   text-align: center;
   padding: 15px;
-  border-top: 1px solid rgba(255,255,255,0.1);
   color: #aaa;
 }
