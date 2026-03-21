@@ -1,0 +1,140 @@
+/* ===== GLOBAL SEARCH BAR (WORKS EVERYWHERE) ===== */
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* INPUT */
+.search-box input {
+  width: 220px;
+  padding: 7px 12px;
+
+  border-radius: 20px;
+  border: 1px solid rgba(255,179,0,0.4);
+
+  background: rgba(30,41,0,0.9);
+  color: #fff;
+
+  outline: none;
+}
+
+/* INPUT FOCUS */
+.search-box input:focus {
+  border-color: #ffb300;
+  box-shadow: 0 0 10px rgba(255,179,0,0.5);
+}
+
+/* BUTTON */
+.search-box button {
+  border-radius: 50%;
+  border: none;
+
+  background: #ffb300;
+  color: black;
+
+  padding: 7px 9px;
+  cursor: pointer;
+}
+
+.search-box button:hover {
+  background: #ffcc33;
+  transform: scale(1.05);
+}
+
+/* ===== SEARCH PAGE ONLY ===== */
+body.search-page {
+  font-family: 'Roboto', sans-serif;
+  color: #fff;
+
+  background:
+    linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
+    url('https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg')
+    no-repeat center center fixed;
+
+  background-size: cover;
+}
+
+/* ===== RESULTS CONTAINER ===== */
+#results {
+  max-width: 1100px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* ===== HEADER ===== */
+.car-header {
+  text-align: center;
+}
+
+.car-header h1 {
+  color: #ffb300;
+}
+
+/* ===== SLIDER ===== */
+.image-slider-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+.image-slider {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.image-slider img {
+  width: 100%;
+  height: 400px;
+  object-fit: contain;
+  background: #111;
+}
+
+/* ===== SLIDER BUTTONS ===== */
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  background: rgba(0,0,0,0.6);
+  border: none;
+  color: white;
+
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.left { left: 10px; }
+.right { right: 10px; }
+
+/* ===== SECTION CARDS ===== */
+.section {
+  background: rgba(30,41,59,0.85);
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+}
+
+.section h2 {
+  color: #ffb300;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+
+  .search-box {
+    top: 10px;
+    right: 10px;
+  }
+
+  .search-box input {
+    width: 140px;
+    font-size: 12px;
+  }
+
+  .image-slider img {
+    height: 250px;
+  }
+}

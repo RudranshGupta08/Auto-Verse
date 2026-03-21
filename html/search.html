@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Search Results | AutoVerse</title>
+  <link rel="stylesheet" href="css/search.css">
+</head>
+
+<body class="search-page">
+
+<header class="navbar">
+  <h1>🔍 Search Results</h1>
+</header>
+
+<main id="results"></main>
+
+<footer>
+  <p>© 2025 AutoVerse</p>
+</footer>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const query = params.get("query") || "";
+
+const container = document.getElementById("results");
+
+if (!query) {
+  container.innerHTML = "<h2>⚠️ Invalid search</h2>";
+  throw new Error("No query");
+}
+
+fetch(`http://localhost:5000/api/cars/search/${query}`)
+  .then(res => res.json())
+  .then(data => {
+
+    if (!data.found || !data.cars.length) {
+      container.innerHTML = `
+        <div style="text-align:center; margin-top:60px;">
+          <h2 style="color:#ff4d4d;">
+            🚫 No cars found in AutoVerse database
+          </h2>
+          <p style="color:#ccc;">
+            Try searching another brand or model
+          </p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = data.cars.map((car, index) => {
+
+      const format = val =>
+        Array.isArray(val) ? val.join(", ") : (val || "N/A");
+
+      const stars =
+        "★".repeat(car.rating || 3) +
+        "☆".repeat(5 - (car.rating || 3));
+
+      return `
+        <div class="section">
+
+          <div class="car-header">
+            <h1>${car.brand} ${car.model}</h1>
+            <p class="price">${car.priceRange || "N/A"}</p>
+            <div class="rating">${stars}</div>
+          </div>
+
+          <!-- 🔥 IMAGE SLIDER -->
+          <div class="image-slider-container">
+            <button class="nav-btn left" data-index="${index}">❮</button>
+
+            <div class="image-slider" id="slider-${index}">
+              ${
+                (car.images || []).length
+                  ? car.images.map(img =>
+                      `<img src="http://localhost:5000/images/${img}">`
+                    ).join("")
+                  : `<img src="http://localhost:5000/images/placeholder.jpg">`
+              }
+            </div>
+
+            <button class="nav-btn right" data-index="${index}">❯</button>
+          </div>
+
+          <div class="section">
+            <h2>Description</h2>
+            <p>${car.description || "No description available"}</p>
+          </div>
+
+          <div class="section">
+            <h2>Specifications</h2>
+            <p><strong>Engine:</strong> ${format(car.engineOptions)}</p>
+            <p><strong>Mileage:</strong> ${car.mileage || "N/A"}</p>
+            <p><strong>Fuel:</strong> ${format(car.fuelType)}</p>
+            <p><strong>Transmission:</strong> ${format(car.transmission)}</p>
+            <p><strong>Seats:</strong> ${car.seatingCapacity || "N/A"}</p>
+            <p><strong>NCAP:</strong> ${car.ncapRating || "Not Rated"}</p>
+          </div>
+
+          <div class="section">
+            <h2>Features</h2>
+            <ul>${(car.features || []).map(f => `<li>${f}</li>`).join("")}</ul>
+          </div>
+
+          <div class="section">
+            <h2>Pros 👍</h2>
+            <ul>${(car.pros || []).map(p => `<li>${p}</li>`).join("")}</ul>
+          </div>
+
+          <div class="section">
+            <h2>Cons 👎</h2>
+            <ul>${(car.cons || []).map(c => `<li>${c}</li>`).join("")}</ul>
+          </div>
+
+          <div class="section">
+            <h2>Best For</h2>
+            <ul>${(car.bestFor || []).map(b => `<li>${b}</li>`).join("")}</ul>
+          </div>
+
+          <div class="section">
+            <h2>Verdict</h2>
+            <p>${car.verdict || "No verdict available"}</p>
+          </div>
+
+        </div>
+      `;
+    }).join("");
+
+    // =========================
+    // 🔥 SLIDER LOGIC
+    // =========================
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+
+        const index = btn.dataset.index;
+        const slider = document.getElementById(`slider-${index}`);
+
+        let current = slider.dataset.index ? parseInt(slider.dataset.index) : 0;
+        const total = slider.children.length;
+
+        if (btn.classList.contains("left")) {
+          current = (current - 1 + total) % total;
+        } else {
+          current = (current + 1) % total;
+        }
+
+        slider.style.transform = `translateX(-${current * 100}%)`;
+        slider.dataset.index = current;
+      });
+    });
+
+  })
+  .catch(err => {
+    console.error(err);
+    container.innerHTML = "<h2>⚠️ Error loading search results</h2>";
+  });
+</script>
+
+</body>
+</html>

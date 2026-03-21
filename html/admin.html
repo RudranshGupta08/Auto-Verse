@@ -1,276 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AutoVerse Admin</title>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
 
-<style>
-body {
-  background: #0f172a;
-  color: white;
-  font-family: 'Segoe UI', sans-serif;
-  margin: 0;
-  padding: 20px;
-}
+ <style>
+  body {
+    background: #0f172a;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 20px;
+  }
 
-/* HEADER */
-h1 {
-  text-align: center;
-  color: orange;
-}
+  h1 {
+    text-align: center;
+    color: orange;
+  }
 
-/* FORM */
-form {
-  max-width: 1000px;
-  margin: auto;
-  background: #1e293b;
-  padding: 20px;
-  border-radius: 10px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
+  form {
+    max-width: 1000px;
+    margin: auto;
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
 
-/* INPUTS */
-input, select {
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  background: #334155;
-  color: white;
-}
+  input,
+  textarea {
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background: #334155;
+    color: white;
+  }
 
-/* TEXTAREA BIG FIELDS */
-textarea {
-  grid-column: span 2;
-  height: 120px;
-  padding: 10px;
-  border-radius: 6px;
-  border: none;
-  background: #334155;
-  color: white;
-}
+  textarea {
+    grid-column: span 2;
+    height: 120px;
+  }
 
-/* BUTTON */
-button {
-  grid-column: span 2;
-  padding: 12px;
-  background: orange;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-}
+  button {
+    grid-column: span 2;
+    padding: 12px;
+    background: orange;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
 
-/* LIST */
-#carsList {
-  max-width: 1000px;
-  margin: 40px auto;
-}
+  button:hover {
+    background: #ffb300;
+    transform: scale(1.02);
+  }
 
-.car-item {
-  background: #1e293b;
-  padding: 12px;
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: space-between;
-  border-radius: 8px;
-}
+  #carsList {
+    max-width: 1000px;
+    margin: 40px auto;
+  }
 
-/* ACTION BUTTONS */
-.car-item button {
-  margin-left: 5px;
-  padding: 6px 10px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-}
+  .car-item {
+    background: #1e293b;
+    padding: 14px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    transition: 0.3s;
+  }
 
-.edit-btn {
-  background: #2563eb;
-  color: white;
-}
+  .car-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+  }
 
-.delete-btn {
-  background: #dc2626;
-  color: white;
-}
+  /* 🔥 BUTTON CONTAINER */
+  .car-item div {
+    display: flex;
+    gap: 10px;
+  }
 
+  /* ✏️ EDIT BUTTON */
+  .edit-btn {
+    background: linear-gradient(135deg, #2563eb, #60a5fa);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .edit-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(96,165,250,0.7);
+  }
+
+  .edit-btn:active {
+    transform: scale(0.95);
+  }
+
+  /* ❌ DELETE BUTTON */
+  .delete-btn {
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .delete-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(239,68,68,0.7);
+  }
+
+  .delete-btn:active {
+    transform: scale(0.95);
+  }
+
+  /* 🔥 IMAGE PREVIEW */
+  #preview img {
+    width: 80px;
+    margin: 5px;
+    border-radius: 6px;
+  }
+
+  #dropArea {
+    border: 2px dashed #334155;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    grid-column: span 2;
+    transition: 0.3s;
+  }
+
+  #dropArea:hover {
+    background: #1e293b;
+  }
 </style>
 </head>
 
 <body>
 
-<h1>🚗 AutoVerse Admin Panel</h1>
+<h1>🚗 Admin Panel</h1>
 
 <form id="form">
+  <input name="brand" placeholder="Brand" required>
+  <input name="model" placeholder="Model" required>
+  <input name="type" placeholder="Type">
+  <input name="priceRange" placeholder="Price">
 
-<input name="brand" placeholder="Brand" required>
-<input name="model" placeholder="Model" required>
+  <input name="engineOptions" placeholder="Engine (comma separated)">
+  <input name="fuelType" placeholder="Fuel (comma separated)">
+  <input name="transmission" placeholder="Transmission">
 
-<select name="type">
-  <option>SUV</option>
-  <option>Sedan</option>
-  <option>Hatchback</option>
-</select>
+  <input name="mileage" placeholder="Mileage">
+  <input name="seatingCapacity" placeholder="Seats">
+  <input name="rating" placeholder="Rating">
+  <input name="ncapRating" placeholder="NCAP">
 
-<input name="priceRange" placeholder="Price Range">
-<input name="engineOptions" placeholder="Engine (comma separated)">
-<input name="mileage" placeholder="Mileage">
+  <input name="bestFor" placeholder="Best For (comma separated)">
 
-<input name="fuelType" placeholder="Fuel Type">
-<input name="transmission" placeholder="Transmission">
+  <textarea name="description" placeholder="Description"></textarea>
+  <textarea name="features" placeholder="Features"></textarea>
+  <textarea name="pros" placeholder="Pros"></textarea>
+  <textarea name="cons" placeholder="Cons"></textarea>
+  <textarea name="verdict" placeholder="Verdict"></textarea>
 
-<input name="seatingCapacity" placeholder="Seating Capacity">
-<input name="rating" placeholder="Star Rating (1-5)">
-
-<input name="ncapRating" placeholder="NCAP Rating">
-<input name="bestFor" placeholder="Best For (family, city, etc)">
-
-<textarea name="description" placeholder="Full Description"></textarea>
-<textarea name="features" placeholder="Features (comma separated)"></textarea>
-<textarea name="pros" placeholder="Pros (comma separated)"></textarea>
-<textarea name="cons" placeholder="Cons (comma separated)"></textarea>
-<textarea name="verdict" placeholder="Final Verdict"></textarea>
-
-<input type="file" id="images" multiple>
-
-<button type="submit">💾 Save Car</button>
-
+  <button type="submit">Save</button>
 </form>
 
 <div id="carsList"></div>
 
-<script>
-const form = document.getElementById("form");
-let editId = null;
-
-// =========================
-// 🔥 LOAD ALL CARS
-// =========================
-async function loadCars() {
-  const res = await fetch("http://localhost:5000/api/cars");
-  const cars = await res.json();
-
-  document.getElementById("carsList").innerHTML = cars.map(car => `
-    <div class="car-item">
-      <span>${car.brand} ${car.model}</span>
-      <div>
-        <button class="edit-btn" onclick="editCar('${car._id}')">✏️</button>
-        <button class="delete-btn" onclick="deleteCar('${car._id}')">❌</button>
-      </div>
-    </div>
-  `).join("");
-}
-
-loadCars();
-
-// =========================
-// ✏️ EDIT CAR
-// =========================
-window.editCar = async (id) => {
-  editId = id;
-
-  const res = await fetch(`http://localhost:5000/api/cars/${id}`);
-  const car = await res.json();
-
-  form.brand.value = car.brand || "";
-  form.model.value = car.model || "";
-  form.type.value = car.type || "";
-
-  form.priceRange.value = car.priceRange || "";
-  form.engineOptions.value = car.engineOptions?.join(",") || "";
-  form.mileage.value = car.mileage || "";
-
-  form.fuelType.value = car.fuelType?.join(",") || "";
-  form.transmission.value = car.transmission?.join(",") || "";
-
-  form.seatingCapacity.value = car.seatingCapacity || "";
-  form.rating.value = car.rating || "";
-
-  form.ncapRating.value = car.ncapRating || "";
-  form.bestFor.value = car.bestFor?.join(",") || "";
-
-  form.description.value = car.description || "";
-  form.features.value = car.features?.join(",") || "";
-  form.pros.value = car.pros?.join(",") || "";
-  form.cons.value = car.cons?.join(",") || "";
-  form.verdict.value = car.verdict || "";
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
-};
-
-// =========================
-// ❌ DELETE CAR
-// =========================
-window.deleteCar = async (id) => {
-  if (confirm("Delete this car?")) {
-    await fetch(`http://localhost:5000/api/cars/${id}`, {
-      method: "DELETE"
-    });
-
-    loadCars();
-  }
-};
-
-// =========================
-// 🚀 SUBMIT
-// =========================
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const formData = new FormData();
-
-  formData.append("brand", form.brand.value);
-  formData.append("model", form.model.value);
-  formData.append("type", form.type.value);
-
-  formData.append("priceRange", form.priceRange.value);
-  formData.append("engineOptions", form.engineOptions.value);
-  formData.append("mileage", form.mileage.value);
-
-  formData.append("fuelType", form.fuelType.value);
-  formData.append("transmission", form.transmission.value);
-
-  formData.append("seatingCapacity", form.seatingCapacity.value);
-  formData.append("rating", form.rating.value);
-
-  formData.append("ncapRating", form.ncapRating.value);
-  formData.append("bestFor", form.bestFor.value);
-
-  formData.append("description", form.description.value);
-  formData.append("features", form.features.value);
-  formData.append("pros", form.pros.value);
-  formData.append("cons", form.cons.value);
-  formData.append("verdict", form.verdict.value);
-
-  const files = document.getElementById("images").files;
-  for (let file of files) {
-    formData.append("images", file);
-  }
-
-  const url = editId
-    ? `http://localhost:5000/api/cars/${editId}`
-    : "http://localhost:5000/api/cars";
-
-  const method = editId ? "PUT" : "POST";
-
-  const res = await fetch(url, {
-    method,
-    body: formData
-  });
-
-  const data = await res.json();
-
-  alert(data.message);
-
-  form.reset();
-  editId = null;
-
-  loadCars();
-});
-</script>
+<!-- 🔥 IMPORTANT -->
+<script src="backend/admin.js"></script>
 
 </body>
 </html>

@@ -1,5 +1,5 @@
-/* ===== Reset & Global ===== */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+/* ===== RESET & GLOBAL ===== */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 * {
   margin: 0;
@@ -9,73 +9,90 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  background: 
-      linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
-      url('https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg') no-repeat center center fixed;
+  background:
+    linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+    url('https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg')
+    no-repeat center center fixed;
+
   background-size: cover;
   color: #e0e0e0;
+
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* ===== Header & Navbar ===== */
+/* ===== HEADER ===== */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  padding: 12px 30px;
+
   background: rgba(30,30,30,0.9);
-  backdrop-filter: blur(6px);
-  padding: 15px 40px;
+  backdrop-filter: blur(8px);
+
   box-shadow: 0 4px 12px rgba(0,0,0,0.6);
 }
 
+/* ===== LOGO ===== */
 .logo {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 22px;
+
+  font-size: 20px;
   font-weight: bold;
   color: #ffb300;
 }
 
 .logo-img {
-  width: 70px;
-  height: auto;
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
 }
 
+/* ===== NAVBAR ===== */
+.navbar {
+  display: flex !important;
+  flex-direction: row !important;   /* 🔥 FORCE HORIZONTAL */
+  align-items: center;
+  gap: 20px;
+}
+
+/* LINKS */
 .navbar a {
   color: #e0e0e0;
   text-decoration: none;
-  margin-left: 25px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
-  transition: color 0.3s ease;
+  white-space: nowrap;
+  transition: 0.3s;
 }
 
-.navbar a:hover,
-.navbar a.active {
+.navbar a:hover {
   color: #ffb300;
 }
 
-/* ===== Hero Section ===== */
+/* ===== HERO SECTION ===== */
 main {
-  padding: 80px 40px;
+  padding: 80px 20px;
   text-align: center;
 }
 
 main div {
-  font-size: 36px;
+  font-size: 34px;
   font-weight: bold;
   margin-bottom: 20px;
   color: #ffb300;
 }
 
 main p {
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1.6;
   max-width: 800px;
-  margin: 0 auto;
+  margin: auto;
   color: #ddd;
 }
 
@@ -84,7 +101,7 @@ main p {
   font-weight: bold;
 }
 
-/* ===== Car Types Section ===== */
+/* ===== CAR TYPES ===== */
 .car-types {
   text-align: center;
   padding: 60px 20px;
@@ -101,31 +118,28 @@ main p {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 25px;
+  gap: 20px;
 }
 
 .car-types li a {
-  display: block;
-  padding: 14px 28px;
+  padding: 12px 26px;
   background: rgba(28,28,28,0.85);
   border-radius: 8px;
   text-decoration: none;
   color: #ddd;
-  font-size: 16px;
-  font-weight: 500;
-  transition: all 0.3s ease;
+  font-size: 15px;
+  transition: 0.3s;
 }
 
 .car-types li a:hover {
   background: #ffb300;
   color: #000;
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  transform: translateY(-3px);
 }
 
-/* ===== Car Brands Section ===== */
+/* ===== CAR BRANDS ===== */
 .car-brands {
-  padding: 60px 40px;
+  padding: 60px 20px;
   text-align: center;
 }
 
@@ -140,7 +154,7 @@ main p {
 }
 
 .brand-category h3 {
-  font-size: 22px;
+  font-size: 20px;
   margin-bottom: 20px;
   color: #ffb300;
 }
@@ -150,50 +164,50 @@ main p {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 40px;
+  gap: 30px;
 }
 
 .brand-category li {
   display: flex;
   flex-direction: column;
   align-items: center;
+
   background: rgba(28,28,28,0.85);
-  padding: 20px;
+  padding: 18px;
   border-radius: 12px;
-  transition: all 0.3s ease;
-  width: 150px;
+
+  width: 140px;
+
+  transition: 0.3s;
 }
 
 .brand-category li img {
-  width: 80px;
-  height: auto;
+  width: 70px;
   margin-bottom: 10px;
-  transition: transform 0.3s ease;
+  transition: 0.3s;
 }
 
 .brand-category li span {
-  font-size: 14px;
+  font-size: 13px;
   color: #ddd;
-  font-weight: 500;
 }
 
 .brand-category li:hover {
-  transform: translateY(-6px);
+  transform: translateY(-5px);
   background: #222;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6);
 }
 
 .brand-category li:hover img {
   transform: scale(1.1);
 }
 
-/* ===== Footer ===== */
+/* ===== FOOTER ===== */
 footer {
-  background: rgba(28, 28, 28, 0.9);
+  background: rgba(28,28,28,0.9);
   text-align: center;
-  padding: 20px;
+  padding: 18px;
   font-size: 14px;
   color: #bbb;
   margin-top: auto;
-  box-shadow: 0 -4px 12px rgba(0,0,0,0.6);
 }

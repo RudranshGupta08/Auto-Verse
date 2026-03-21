@@ -31,7 +31,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-
 // =========================
 // ✅ GET ALL CARS
 // =========================
@@ -47,27 +46,60 @@ router.get("/", async (req, res) => {
     const cars = await Car.find(filter).sort({ createdAt: -1 });
 
     res.json(cars);
+
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
+// =========================
+// 🔍 FLEXIBLE SEARCH (FIXED POSITION)
+// =========================
+router.get("/search/:query", async (req, res) => {
+  try {
+    const query = req.params.query.trim();
+
+    const words = query.split(" ").filter(w => w.length);
+
+    const searchConditions = words.map(word => ({
+      $or: [
+        { brand: new RegExp(word, "i") },
+        { model: new RegExp(word, "i") }
+      ]
+    }));
+
+    const cars = await Car.find({
+      $and: searchConditions
+    });
+
+    if (!cars.length) {
+      return res.json({ found: false, cars: [] });
+    }
+
+    res.json({ found: true, cars });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 // =========================
-// ✅ GET SINGLE CAR
+// ✅ GET SINGLE CAR (AFTER SEARCH)
 // =========================
 router.get("/:id", async (req, res) => {
   try {
     const car = await Car.findById(req.params.id);
 
-    if (!car) return res.status(404).json({ message: "Car not found" });
+    if (!car) {
+      return res.status(404).json({ message: "Car not found" });
+    }
 
     res.json(car);
+
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
-
 
 // =========================
 // ✅ ADD CAR
@@ -83,27 +115,28 @@ router.post("/", upload.array("images", 20), async (req, res) => {
     const newCar = new Car({
       brand: req.body.brand.trim(),
       model: req.body.model.trim(),
-      type: req.body.type.trim().toUpperCase(),
+      type: req.body.type.trim().toLowerCase(),
 
       priceRange: req.body.priceRange,
-      engineOptions: req.body.engineOptions?.split(",") || [],
+      engineOptions: req.body.engineOptions?.split(",").map(s => s.trim()) || [],
       mileage: req.body.mileage,
 
-      fuelType: req.body.fuelType?.split(",") || [],
-      transmission: req.body.transmission?.split(",") || [],
+      fuelType: req.body.fuelType?.split(",").map(s => s.trim()) || [],
+      transmission: req.body.transmission?.split(",").map(s => s.trim()) || [],
 
       seatingCapacity: Number(req.body.seatingCapacity),
       images: imagePaths,
 
-      description: req.body.description,
+      description: req.body.description || "",
+      features: req.body.features?.split(",").map(s => s.trim()) || [],
+      pros: req.body.pros?.split(",").map(s => s.trim()) || [],
+      cons: req.body.cons?.split(",").map(s => s.trim()) || [],
 
-      features: req.body.features?.split(",") || [],
-      pros: req.body.pros?.split(",") || [],
-      cons: req.body.cons?.split(",") || [],
-
-      verdict: req.body.verdict,
+      verdict: req.body.verdict?.trim() || "",
       ncapRating: req.body.ncapRating,
-      bestFor: req.body.bestFor?.split(",") || [],
+      bestFor: req.body.bestFor
+        ? req.body.bestFor.split(",").map(s => s.trim())
+        : [],
 
       rating: Number(req.body.rating) || 3
     });
@@ -117,7 +150,6 @@ router.post("/", upload.array("images", 20), async (req, res) => {
   }
 });
 
-
 // =========================
 // ✏️ UPDATE CAR
 // =========================
@@ -125,7 +157,9 @@ router.put("/:id", upload.array("images", 20), async (req, res) => {
   try {
     const car = await Car.findById(req.params.id);
 
-    if (!car) return res.status(404).json({ message: "Car not found" });
+    if (!car) {
+      return res.status(404).json({ message: "Car not found" });
+    }
 
     const updatedData = {
       brand: req.body.brand,
@@ -133,27 +167,28 @@ router.put("/:id", upload.array("images", 20), async (req, res) => {
       type: req.body.type,
 
       priceRange: req.body.priceRange,
-      engineOptions: req.body.engineOptions?.split(",") || [],
+      engineOptions: req.body.engineOptions?.split(",").map(s => s.trim()) || [],
       mileage: req.body.mileage,
 
-      fuelType: req.body.fuelType?.split(",") || [],
-      transmission: req.body.transmission?.split(",") || [],
+      fuelType: req.body.fuelType?.split(",").map(s => s.trim()) || [],
+      transmission: req.body.transmission?.split(",").map(s => s.trim()) || [],
 
       seatingCapacity: Number(req.body.seatingCapacity),
 
-      description: req.body.description,
-      features: req.body.features?.split(",") || [],
-      pros: req.body.pros?.split(",") || [],
-      cons: req.body.cons?.split(",") || [],
+      description: req.body.description || car.description,
+      features: req.body.features?.split(",").map(s => s.trim()) || car.features,
+      pros: req.body.pros?.split(",").map(s => s.trim()) || car.pros,
+      cons: req.body.cons?.split(",").map(s => s.trim()) || car.cons,
 
-      verdict: req.body.verdict,
-      ncapRating: req.body.ncapRating,
-      bestFor: req.body.bestFor?.split(",") || [],
+      verdict: req.body.verdict?.trim() || car.verdict,
+      ncapRating: req.body.ncapRating || car.ncapRating,
+      bestFor: req.body.bestFor
+        ? req.body.bestFor.split(",").map(s => s.trim())
+        : car.bestFor,
 
-      rating: Number(req.body.rating) || 3
+      rating: Number(req.body.rating) || car.rating
     };
 
-    // 🔥 IMAGE HANDLING
     if (req.files.length > 0) {
       updatedData.images = req.files.map(file =>
         `${req.body.model.toLowerCase().replace(/\s+/g, "")}/${file.filename}`
@@ -173,7 +208,6 @@ router.put("/:id", upload.array("images", 20), async (req, res) => {
   }
 });
 
-
 // =========================
 // ❌ DELETE CAR
 // =========================
@@ -181,7 +215,9 @@ router.delete("/:id", async (req, res) => {
   try {
     const car = await Car.findById(req.params.id);
 
-    if (!car) return res.status(404).json({ message: "Car not found" });
+    if (!car) {
+      return res.status(404).json({ message: "Car not found" });
+    }
 
     await Car.findByIdAndDelete(req.params.id);
 
@@ -191,7 +227,6 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
 
 // =========================
 // ❤️ WISHLIST

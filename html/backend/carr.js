@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", async () => {
-
   const container = document.getElementById("car-details");
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
@@ -19,60 +18,48 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // =========================
-    // 🔥 DEFAULT FALLBACK DATA
+    // 🔥 SAFE DATA HANDLING
     // =========================
+    const description = car.description || "No description available.";
 
-    const features = car.features?.length ? car.features : [
-      "Modern infotainment system",
-      "Comfortable seating",
-      "Safety features included"
-    ];
+    const features = Array.isArray(car.features) ? car.features : [];
+    const pros = Array.isArray(car.pros) ? car.pros : [];
+    const cons = Array.isArray(car.cons) ? car.cons : [];
 
-    const pros = car.pros?.length ? car.pros : [
-      "Good performance",
-      "Reliable brand",
-      "Value for money"
-    ];
+    const verdict = car.verdict || "No final verdict available.";
 
-    const cons = car.cons?.length ? car.cons : [
-      "Mileage could be better",
-      "Limited premium features"
-    ];
-
-    const verdict = car.verdict || 
-      `${car.model} is a well-balanced car offering great practicality and comfort.`;
-
-    const bestFor = car.bestFor?.length ? car.bestFor : [
-      "Daily commuting",
-      "Family usage"
-    ];
+    // 🔥 BEST FOR FIX (IMPORTANT)
+    const bestFor = Array.isArray(car.bestFor)
+      ? (car.bestFor.length ? car.bestFor : ["Not Specified"])
+      : typeof car.bestFor === "string" && car.bestFor.trim().length
+        ? car.bestFor.split(",").map(s => s.trim())
+        : ["Not Specified"];
 
     const ncap = car.ncapRating || "Not Rated";
+    const rating = car.rating || 3;
 
-    const stars = "★".repeat(car.rating || 3) + "☆".repeat(5 - (car.rating || 3));
+    const stars = "★".repeat(rating) + "☆".repeat(5 - rating);
 
-    const formatValue = val =>
-      Array.isArray(val) ? val.join(", ") : (val || "N/A");
+    const formatValue = (val) =>
+      Array.isArray(val)
+        ? val.join(", ")
+        : (val || "N/A");
 
     // =========================
-    // 🔥 UI RENDER
+    // 🔥 RENDER UI
     // =========================
-
     container.innerHTML = `
-      <!-- HEADER -->
       <div class="car-header slide-up">
         <h1>${car.brand} ${car.model}</h1>
-        <p class="price">${car.priceRange}</p>
-        <div class="rating">${stars} ${car.rating || 3}/5</div>
+        <p class="price">${car.priceRange || "N/A"}</p>
+        <div class="rating">${stars} ${rating}/5</div>
       </div>
 
-      <!-- ACTION BUTTONS -->
       <div class="actions slide-up">
         <button class="wishlist">❤️ Add to Wishlist</button>
         <button class="compare">⚖️ Compare</button>
       </div>
 
-      <!-- IMAGE SLIDER -->
       <div class="image-slider-container slide-up">
         <button class="nav-btn left">❮</button>
 
@@ -89,50 +76,58 @@ document.addEventListener("DOMContentLoaded", async () => {
         <button class="nav-btn right">❯</button>
       </div>
 
-      <!-- SPECIFICATIONS -->
+      <div class="section slide-up">
+        <h2>Description</h2>
+        <p>${description}</p>
+      </div>
+
       <div class="section slide-up">
         <h2>Specifications</h2>
         <p><strong>Engine:</strong> ${formatValue(car.engineOptions)}</p>
-        <p><strong>Mileage:</strong> ${car.mileage}</p>
+        <p><strong>Mileage:</strong> ${car.mileage || "N/A"}</p>
         <p><strong>Fuel Type:</strong> ${formatValue(car.fuelType)}</p>
         <p><strong>Transmission:</strong> ${formatValue(car.transmission)}</p>
-        <p><strong>Seating Capacity:</strong> ${car.seatingCapacity}</p>
+        <p><strong>Seating Capacity:</strong> ${car.seatingCapacity || "N/A"}</p>
         <p><strong>NCAP Safety Rating:</strong> ⭐ ${ncap}</p>
       </div>
 
-      <!-- FEATURES -->
       <div class="section slide-up">
         <h2>Key Features</h2>
         <ul>
-          ${features.map(f => `<li>${f}</li>`).join("")}
+          ${features.length
+            ? features.map(f => `<li>${f}</li>`).join("")
+            : "<li>N/A</li>"
+          }
         </ul>
       </div>
 
-      <!-- PROS -->
       <div class="section slide-up">
         <h2>Pros 👍</h2>
         <ul>
-          ${pros.map(p => `<li>${p}</li>`).join("")}
+          ${pros.length
+            ? pros.map(p => `<li>${p}</li>`).join("")
+            : "<li>N/A</li>"
+          }
         </ul>
       </div>
 
-      <!-- CONS -->
       <div class="section slide-up">
         <h2>Cons 👎</h2>
         <ul>
-          ${cons.map(c => `<li>${c}</li>`).join("")}
+          ${cons.length
+            ? cons.map(c => `<li>${c}</li>`).join("")
+            : "<li>N/A</li>"
+          }
         </ul>
       </div>
 
-      <!-- BEST FOR -->
       <div class="section slide-up">
         <h2>Best For</h2>
         <ul>
-          ${bestFor.map(b => `<li>${b}</li>`).join("")}
+          ${bestFor.map(b => `<li>${b || "N/A"}</li>`).join("")}
         </ul>
       </div>
 
-      <!-- VERDICT -->
       <div class="section verdict slide-up">
         <h2>Final Verdict</h2>
         <p>${verdict}</p>
@@ -142,7 +137,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     // =========================
     // 🔥 IMAGE SLIDER
     // =========================
-
     let index = 0;
     const slider = document.getElementById("slider");
     const total = slider.children.length;
@@ -158,7 +152,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     // =========================
     // ❤️ WISHLIST
     // =========================
-
     document.querySelector(".wishlist").onclick = () => {
       let list = JSON.parse(localStorage.getItem("wishlist")) || [];
 
@@ -174,7 +167,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     // =========================
     // ⚖️ COMPARE
     // =========================
-
     document.querySelector(".compare").onclick = () => {
       let compare = JSON.parse(localStorage.getItem("compare")) || [];
 
@@ -197,5 +189,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error(err);
     container.innerHTML = "<h2>⚠️ Failed to load car details</h2>";
   }
-
 });

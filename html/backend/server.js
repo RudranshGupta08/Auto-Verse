@@ -9,7 +9,7 @@ import { fileURLToPath } from "url";
 import carRoutes from "./routes/carRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 
-dotenv.config({ path: "./.env" });
+dotenv.config();
 
 const app = express();
 
@@ -22,23 +22,31 @@ const __dirname = path.dirname(__filename);
 // =========================
 // 🔥 MIDDLEWARE
 // =========================
-app.use(cors());
+app.use(cors({
+  origin: "*", // allow all (for dev)
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // =========================
-// 🔥 STATIC FOLDER (IMAGES)
+// 🔥 STATIC FOLDER (VERY IMPORTANT)
 // =========================
 app.use("/images", express.static(path.join(__dirname, "images")));
+
+// 👉 DEBUG ROUTE (to check images folder)
+app.get("/test-images", (req, res) => {
+  res.sendFile(path.join(__dirname, "images"));
+});
 
 // =========================
 // 🔥 ROUTES
 // =========================
-app.use("/api/cars", carRoutes);  // car APIs
-app.use("/", authRoutes);         // login/signup
+app.use("/api/cars", carRoutes);
+app.use("/api/auth", authRoutes); // 🔥 FIXED (better route prefix)
 
 // =========================
-// 🔥 ROOT ROUTE (OPTIONAL)
+// 🔥 ROOT ROUTE
 // =========================
 app.get("/", (req, res) => {
   res.send("🚗 AutoVerse API Running...");
@@ -47,17 +55,20 @@ app.get("/", (req, res) => {
 // =========================
 // 🔥 DATABASE CONNECTION
 // =========================
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("✅ MongoDB Connected");
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => {
+  console.log("✅ MongoDB Connected");
 
-    const PORT = process.env.PORT || 5000;
+  const PORT = process.env.PORT || 5000;
 
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on http://localhost:${PORT}`);
-    });
-
-  })
-  .catch(err => {
-    console.error("❌ MongoDB Error:", err);
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
   });
+
+})
+.catch(err => {
+  console.error("❌ MongoDB Error:", err);
+});

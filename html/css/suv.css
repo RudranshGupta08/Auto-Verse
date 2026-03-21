@@ -19,43 +19,90 @@ body {
   flex-direction: column;
 }
 
-/* ===== Header & Navbar ===== */
+/* ===== COMMON NAVBAR (USE EVERYWHERE) ===== */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  padding: 12px 30px;
+
   background: rgba(30,30,30,0.9);
-  backdrop-filter: blur(6px);
-  padding: 15px 40px;
+  backdrop-filter: blur(8px);
+
   box-shadow: 0 4px 12px rgba(0,0,0,0.6);
 }
 
+/* LOGO */
 .logo {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 22px;
+
+  font-size: 20px;
   font-weight: bold;
   color: #ffb300;
 }
 
+/* LOGO IMAGE */
 .logo-img {
-  width: 70px;
-  height: auto;
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
 }
 
+/* NAVBAR */
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* NAV LINKS */
 .navbar a {
   color: #e0e0e0;
   text-decoration: none;
-  margin-left: 25px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
-  transition: color 0.3s ease;
+  white-space: nowrap;
+  transition: 0.3s;
 }
 
-.navbar a:hover,
-.navbar a.active {
+.navbar a:hover {
   color: #ffb300;
+}
+
+/* SEARCH BAR (COMMON) */
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 10px;
+}
+
+.search-box input {
+  width: 200px;
+  padding: 7px 12px;
+
+  border-radius: 20px;
+  border: 1px solid rgba(255,179,0,0.4);
+
+  background: rgba(30,41,59,0.9);
+  color: #fff;
+
+  outline: none;
+  font-size: 13px;
+}
+
+.search-box button {
+  border: none;
+  border-radius: 50%;
+
+  background: #ffb300;
+  color: black;
+
+  padding: 7px 9px;
+  cursor: pointer;
 }
 
 /* ===== Hero Section ===== */

@@ -1,4 +1,4 @@
-/* ===== Global ===== */
+/* ===== GLOBAL ===== */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 * {
@@ -10,37 +10,81 @@
 body {
   font-family: 'Roboto', sans-serif;
   color: #e0e0e0;
-  background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
-              url('https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg')
-              no-repeat center center fixed;
+
+  background:
+    linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
+    url('https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg')
+    no-repeat center center fixed;
+
   background-size: cover;
 }
 
-/* ===== Header ===== */
+/* ===== HEADER (GRID FIXED CENTER) ===== */
 header {
-  text-align: center;
-  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+
+  padding: 15px 40px;
   background: rgba(20,20,20,0.9);
+  backdrop-filter: blur(6px);
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* LOGO */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffb300;
+}
+
+/* CENTER TITLE */
+header h1 {
+  justify-self: center;
   color: #ffb300;
   font-size: 26px;
   font-weight: bold;
-  position: relative;
-  z-index: 2;
 }
 
-/* ===== Main Section ===== */
+/* NAVBAR RIGHT */
+.navbar {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navbar a {
+  color: #e0e0e0;
+  text-decoration: none;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.navbar a:hover {
+  color: #ffb300;
+}
+
+/* ===== MAIN ===== */
 main {
   padding: 40px 20px;
   text-align: center;
 }
 
-/* ===== Section Text ===== */
+/* TITLES */
 .section-title {
   font-size: 34px;
   color: #ffb300;
   margin-bottom: 10px;
-  position: relative;
-  z-index: 2;
 }
 
 .section-desc {
@@ -49,23 +93,21 @@ main {
   color: #ccc;
 }
 
-/* ===== Grid ===== */
-#car-container {
+/* ===== GRID ===== */
+.car-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 25px;
   margin-top: 30px;
 }
 
-/* ===== Card ===== */
+/* ===== CARD ===== */
 .car-card {
   background: rgba(25,25,25,0.75);
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 8px 25px rgba(0,0,0,0.6);
   transition: 0.3s;
-  position: relative;
-  z-index: 1;
   backdrop-filter: blur(10px);
 }
 
@@ -73,7 +115,7 @@ main {
   transform: translateY(-5px);
 }
 
-/* ===== Slider ===== */
+/* ===== SLIDER ===== */
 .slider-container {
   width: 100%;
   height: 180px;
@@ -96,19 +138,21 @@ main {
   padding: 10px;
 }
 
-/* ===== Slider Buttons ===== */
+/* BUTTONS */
 .nav-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+
   background: rgba(0,0,0,0.6);
   color: #fff;
   border: none;
-  font-size: 20px;
+
+  font-size: 18px;
   padding: 6px 10px;
-  cursor: pointer;
   border-radius: 50%;
-  z-index: 3;
+
+  cursor: pointer;
   transition: 0.3s;
 }
 
@@ -117,8 +161,8 @@ main {
   color: #000;
 }
 
-.nav-btn.left { left: 10px; }
-.nav-btn.right { right: 10px; }
+.left { left: 10px; }
+.right { right: 10px; }
 
 .slider-container .nav-btn {
   opacity: 0;
@@ -128,7 +172,7 @@ main {
   opacity: 1;
 }
 
-/* ===== Info ===== */
+/* ===== INFO ===== */
 .car-info {
   padding: 15px;
   text-align: left;
@@ -137,17 +181,16 @@ main {
 .car-info h2 {
   color: #ffb300;
   margin-bottom: 8px;
-  font-size: 18px;
 }
 
-/* ===== ⭐ RATING ===== */
+/* RATING */
 .rating {
   color: #ffb300;
   font-size: 14px;
   margin-bottom: 10px;
 }
 
-/* ===== Details ===== */
+/* DETAILS */
 .details {
   display: flex;
   flex-direction: column;
@@ -163,7 +206,7 @@ main {
   color: #fff;
 }
 
-/* ===== 🔥 ACTION BUTTONS ===== */
+/* ===== ACTION BUTTONS ===== */
 .actions {
   margin-top: 12px;
   display: flex;
@@ -179,7 +222,7 @@ main {
   transition: 0.3s;
 }
 
-/* ❤️ Wishlist */
+/* WISHLIST */
 .wishlist {
   background: rgba(225, 29, 72, 0.15);
   color: #e11d48;
@@ -191,7 +234,7 @@ main {
   transform: scale(1.1);
 }
 
-/* ⚖️ Compare */
+/* COMPARE */
 .compare {
   background: rgba(37, 99, 235, 0.15);
   color: #2563eb;
@@ -203,7 +246,7 @@ main {
   transform: scale(1.1);
 }
 
-/* ===== 🔥 FLOATING COMPARE BUTTON ===== */
+/* ===== FLOAT BUTTON ===== */
 .compare-float {
   position: fixed;
   bottom: 20px;
@@ -220,7 +263,6 @@ main {
 
   box-shadow: 0 0 15px rgba(0,0,0,0.5);
   transition: 0.3s;
-  z-index: 999;
 }
 
 .compare-float:hover {
@@ -228,7 +270,7 @@ main {
   transform: scale(1.05);
 }
 
-/* ===== Footer ===== */
+/* ===== FOOTER ===== */
 footer {
   text-align: center;
   padding: 15px;
@@ -236,8 +278,22 @@ footer {
   margin-top: 30px;
 }
 
-/* ===== Responsive ===== */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
+  header {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .navbar {
+    justify-content: center;
+  }
+
+  header h1 {
+    font-size: 22px;
+  }
+
   .section-title {
     font-size: 26px;
   }
@@ -248,10 +304,5 @@ footer {
 
   .slider img {
     height: 150px;
-  }
-
-  .nav-btn {
-    font-size: 16px;
-    padding: 4px 8px;
   }
 }

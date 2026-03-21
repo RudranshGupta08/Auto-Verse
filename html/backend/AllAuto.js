@@ -4,10 +4,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (!container) return;
 
   // =========================
-  // 🔥 AUTO DETECT BRAND & TYPE (FROM BODY ATTRIBUTES)
+  // 🔥 GET BRAND FROM URL (FIXED)
   // =========================
-  const brand = document.body.dataset.brand || "";
-  const type = document.body.dataset.type || "";
+  const params = new URLSearchParams(window.location.search);
+  const brand = params.get("brand") || "";
+  const type = "suv"; // fixed for SUV page
 
   console.log("Brand:", brand);
   console.log("Type:", type);
@@ -20,11 +21,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const allCars = await res.json();
 
     // =========================
-    // 🔥 FILTER LOGIC (FIXED)
+    // 🔥 FILTER LOGIC (UPDATED)
     // =========================
     const cars = allCars.filter(car =>
-      car.brand.toLowerCase().includes(brand.toLowerCase()) &&
-      car.type.toLowerCase().includes(type.toLowerCase())
+      car.brand?.toLowerCase().includes(brand.toLowerCase()) &&
+      car.type?.toLowerCase() === type
     );
 
     console.log("Filtered Cars:", cars);
@@ -112,7 +113,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // =========================
-    // 🔥 CARD CLICK → DETAILS PAGE
+    // 🔥 CARD CLICK → DETAILS
     // =========================
     document.querySelectorAll(".car-card").forEach(card => {
       card.addEventListener("click", () => {
@@ -122,7 +123,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // =========================
-    // ❤️ WISHLIST LOGIC
+    // ❤️ WISHLIST
     // =========================
     document.querySelectorAll(".wishlist").forEach(btn => {
       btn.addEventListener("click", (e) => {
@@ -142,7 +143,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // =========================
-    // ⚖️ COMPARE LOGIC
+    // ⚖️ COMPARE
     // =========================
     document.querySelectorAll(".compare").forEach(btn => {
       btn.addEventListener("click", (e) => {
@@ -170,15 +171,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error(err);
     container.innerHTML = "<h2>Error loading cars</h2>";
   }
-
-  // =========================
-  // 🔥 FLOATING COMPARE BUTTON
-  // =========================
-  const compareBtn = document.createElement("a");
-  compareBtn.href = "compare.html";
-  compareBtn.className = "compare-float";
-  compareBtn.innerText = "⚖️ Compare Cars";
-
-  document.body.appendChild(compareBtn);
 
 });

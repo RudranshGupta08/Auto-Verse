@@ -1,4 +1,4 @@
-/* ===== Global ===== */
+/* ===== GLOBAL ===== */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 * {
@@ -10,37 +10,79 @@
 body {
   font-family: 'Roboto', sans-serif;
   color: #e0e0e0;
-  background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
-              url('https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg')
-              no-repeat center center fixed;
+
+  background:
+    linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
+    url('https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg')
+    no-repeat center center fixed;
+
   background-size: cover;
 }
 
-/* ===== Header ===== */
-header {
+/* ===== HEADER ===== */
+.navbar {
   text-align: center;
   padding: 20px;
   background: rgba(20,20,20,0.9);
   color: #ffb300;
   font-size: 26px;
   font-weight: bold;
-  position: relative;
-  z-index: 2;
 }
 
-/* ===== Main Section ===== */
+/* ===== 🔍 SEARCH BAR ===== */
+.search-box {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.search-box input {
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+
+  width: 240px;
+
+  background: rgba(255,255,255,0.1);
+  color: white;
+  font-size: 14px;
+}
+
+.search-box input::placeholder {
+  color: #ccc;
+}
+
+.search-box button {
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: none;
+
+  background: #ffb300;
+  color: black;
+
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.search-box button:hover {
+  background: #ffcc33;
+  transform: scale(1.05);
+}
+
+/* ===== MAIN ===== */
 main {
   padding: 40px 20px;
   text-align: center;
 }
 
-/* ===== Section Text ===== */
+/* ===== SECTION TEXT ===== */
 .section-title {
   font-size: 34px;
   color: #ffb300;
   margin-bottom: 10px;
-  position: relative;
-  z-index: 2;
 }
 
 .section-desc {
@@ -49,7 +91,7 @@ main {
   color: #ccc;
 }
 
-/* ===== Grid ===== */
+/* ===== GRID ===== */
 #car-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -57,23 +99,27 @@ main {
   margin-top: 30px;
 }
 
-/* ===== Card ===== */
+/* ===== CARD ===== */
 .car-card {
   background: rgba(25,25,25,0.75);
   border-radius: 15px;
   overflow: hidden;
+
   box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-  transition: 0.3s;
+
+  transition: all 0.3s ease;
   position: relative;
-  z-index: 1;
+
   backdrop-filter: blur(10px);
 }
 
+/* 🔥 HOVER EFFECT */
 .car-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.8);
 }
 
-/* ===== Slider ===== */
+/* ===== SLIDER ===== */
 .slider-container {
   width: 100%;
   height: 180px;
@@ -96,20 +142,23 @@ main {
   padding: 10px;
 }
 
-/* ===== Slider Buttons ===== */
+/* ===== SLIDER BUTTON ===== */
 .nav-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+
   background: rgba(0,0,0,0.6);
   color: #fff;
+
   border: none;
-  font-size: 20px;
+  font-size: 18px;
   padding: 6px 10px;
   cursor: pointer;
+
   border-radius: 50%;
-  z-index: 3;
   transition: 0.3s;
+  z-index: 3;
 }
 
 .nav-btn:hover {
@@ -117,9 +166,10 @@ main {
   color: #000;
 }
 
-.nav-btn.left { left: 10px; }
-.nav-btn.right { right: 10px; }
+.left { left: 10px; }
+.right { right: 10px; }
 
+/* 🔥 SHOW BUTTON ON HOVER */
 .slider-container .nav-btn {
   opacity: 0;
 }
@@ -128,7 +178,7 @@ main {
   opacity: 1;
 }
 
-/* ===== Info ===== */
+/* ===== INFO ===== */
 .car-info {
   padding: 15px;
   text-align: left;
@@ -147,7 +197,7 @@ main {
   margin-bottom: 10px;
 }
 
-/* ===== Details ===== */
+/* ===== DETAILS ===== */
 .details {
   display: flex;
   flex-direction: column;
@@ -163,7 +213,7 @@ main {
   color: #fff;
 }
 
-/* ===== 🔥 ACTION BUTTONS ===== */
+/* ===== ACTION BUTTONS ===== */
 .actions {
   margin-top: 12px;
   display: flex;
@@ -176,10 +226,11 @@ main {
   padding: 8px 12px;
   border-radius: 8px;
   font-size: 14px;
-  transition: 0.3s;
+
+  transition: all 0.3s ease;
 }
 
-/* ❤️ Wishlist */
+/* ❤️ WISHLIST */
 .wishlist {
   background: rgba(225, 29, 72, 0.15);
   color: #e11d48;
@@ -191,7 +242,7 @@ main {
   transform: scale(1.1);
 }
 
-/* ⚖️ Compare */
+/* ⚖️ COMPARE */
 .compare {
   background: rgba(37, 99, 235, 0.15);
   color: #2563eb;
@@ -203,7 +254,7 @@ main {
   transform: scale(1.1);
 }
 
-/* ===== 🔥 FLOATING COMPARE BUTTON ===== */
+/* ===== FLOATING BUTTON ===== */
 .compare-float {
   position: fixed;
   bottom: 20px;
@@ -219,6 +270,7 @@ main {
   text-decoration: none;
 
   box-shadow: 0 0 15px rgba(0,0,0,0.5);
+
   transition: 0.3s;
   z-index: 999;
 }
@@ -228,7 +280,7 @@ main {
   transform: scale(1.05);
 }
 
-/* ===== Footer ===== */
+/* ===== FOOTER ===== */
 footer {
   text-align: center;
   padding: 15px;
@@ -236,7 +288,7 @@ footer {
   margin-top: 30px;
 }
 
-/* ===== Responsive ===== */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .section-title {
     font-size: 26px;
@@ -253,5 +305,9 @@ footer {
   .nav-btn {
     font-size: 16px;
     padding: 4px 8px;
+  }
+
+  .search-box input {
+    width: 180px;
   }
 }

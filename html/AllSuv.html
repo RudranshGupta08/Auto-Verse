@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoVerse SUVs</title>
+
+  <link rel="stylesheet" href="css/AllSuv.css">
+  <link rel="stylesheet" href="css/search.css">
+</head>
+
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="logo">
+        <span>AutoVerse</span> 
+    </div>
+
+    <h1 id="page-title">SUVs</h1>
+
+    <nav class="navbar">
+      <a href="parts-o-corner.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main>
+
+    <div class="section-title" id="section-title"></div>
+    <p class="section-desc" id="section-desc"></p>
+
+    <section id="car-container" class="car-container"></section>
+
+  </main>
+
+  <!-- ===== FLOAT BUTTON ===== -->
+  <a href="compare.html" class="compare-float" id="compareBtn">
+    ⚖️ Compare (0)
+  </a>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>© 2025 AutoVerse. All Rights Reserved.</p>
+  </footer>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script src="backend/AllAuto.js"></script>
+  <script src="backend/search.js"></script>
+
+  <!-- ===== DYNAMIC TITLE ===== -->
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const brand = params.get("brand") || "All";
+
+    document.getElementById("page-title").innerText =
+      `${brand.toUpperCase()} SUVs`;
+
+    document.getElementById("section-title").innerText =
+      `Explore ${brand} SUVs`;
+
+    document.getElementById("section-desc").innerText =
+      `Discover the best SUVs from ${brand}.`;
+  </script>
+
+</body>
+</html>
