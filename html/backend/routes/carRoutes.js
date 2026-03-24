@@ -53,11 +53,38 @@ router.get("/", async (req, res) => {
 });
 
 // =========================
-// 🔍 FLEXIBLE SEARCH (FIXED POSITION)
+// 🔍 SEARCH (UNCHANGED)
 // =========================
 router.get("/search/:query", async (req, res) => {
   try {
-    const query = req.params.query.trim();
+    const query = req.params.query.toLowerCase().trim();
+
+    const budgetMatch = query.match(/under\s?(\d+)\s?lakh/);
+
+    if (budgetMatch) {
+      const budget = parseInt(budgetMatch[1]) * 100000;
+
+      const allCars = await Car.find();
+
+      const filteredCars = allCars.filter(car => {
+        if (!car.priceRange) return false;
+
+        const numbers = car.priceRange.match(/\d+(\.\d+)?/g);
+        if (!numbers) return false;
+
+        const minPrice = parseFloat(numbers[0]) * 100000;
+
+        return minPrice <= budget;
+      });
+
+      if (!filteredCars.length) {
+        return res.json({ found: false, cars: [] });
+      }
+
+      filteredCars.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+
+      return res.json({ found: true, cars: filteredCars });
+    }
 
     const words = query.split(" ").filter(w => w.length);
 
@@ -68,9 +95,7 @@ router.get("/search/:query", async (req, res) => {
       ]
     }));
 
-    const cars = await Car.find({
-      $and: searchConditions
-    });
+    const cars = await Car.find({ $and: searchConditions });
 
     if (!cars.length) {
       return res.json({ found: false, cars: [] });
@@ -84,7 +109,7 @@ router.get("/search/:query", async (req, res) => {
 });
 
 // =========================
-// ✅ GET SINGLE CAR (AFTER SEARCH)
+// ✅ GET SINGLE CAR
 // =========================
 router.get("/:id", async (req, res) => {
   try {
@@ -151,7 +176,7 @@ router.post("/", upload.array("images", 20), async (req, res) => {
 });
 
 // =========================
-// ✏️ UPDATE CAR
+// ✏️ UPDATE CAR (FIXED IMAGE MERGE)
 // =========================
 router.put("/:id", upload.array("images", 20), async (req, res) => {
   try {
@@ -189,11 +214,30 @@ router.put("/:id", upload.array("images", 20), async (req, res) => {
       rating: Number(req.body.rating) || car.rating
     };
 
-    if (req.files.length > 0) {
-      updatedData.images = req.files.map(file =>
-        `${req.body.model.toLowerCase().replace(/\s+/g, "")}/${file.filename}`
+    // =========================
+    // 🔥 FIXED IMAGE LOGIC
+    // =========================
+    let existingImages = [];
+
+    if (req.body.existingImages) {
+      try {
+        existingImages = JSON.parse(req.body.existingImages);
+      } catch {
+        existingImages = car.images || [];
+      }
+    }
+
+    let newImages = [];
+
+    if (req.files && req.files.length > 0) {
+      const folderName = req.body.model.toLowerCase().replace(/\s+/g, "");
+
+      newImages = req.files.map(file =>
+        `${folderName}/${file.filename}`
       );
     }
+
+    updatedData.images = [...existingImages, ...newImages];
 
     const updatedCar = await Car.findByIdAndUpdate(
       req.params.id,

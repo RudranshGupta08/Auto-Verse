@@ -17,59 +17,81 @@ body {
     no-repeat center center fixed;
 
   background-size: cover;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ===== HEADER ===== */
-.navbar {
-  text-align: center;
-  padding: 20px;
-  background: rgba(20,20,20,0.9);
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 12px 40px;
+  background: rgba(20,20,20,0.95);
+  backdrop-filter: blur(6px);
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
+
+/* LOGO */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   color: #ffb300;
-  font-size: 26px;
+  font-size: 20px;
   font-weight: bold;
 }
 
-/* ===== 🔍 SEARCH BAR ===== */
+.logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* NAV LINKS */
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: #ddd;
+  text-decoration: none;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: #ffb300;
+}
+
+/* SEARCH FIX */
 .search-box {
   display: flex;
-  justify-content: center;
+  align-items: center;
   gap: 8px;
-  margin-top: 12px;
+  margin-left: 15px;
 }
 
-.search-box input {
-  padding: 8px 14px;
-  border-radius: 20px;
-  border: none;
-  outline: none;
-
-  width: 240px;
-
-  background: rgba(255,255,255,0.1);
-  color: white;
-  font-size: 14px;
+/* ===== PAGE HEADING ===== */
+.heading-section {
+  text-align: center;
+  margin-top: 30px;
 }
 
-.search-box input::placeholder {
-  color: #ccc;
-}
-
-.search-box button {
-  padding: 8px 14px;
-  border-radius: 20px;
-  border: none;
-
-  background: #ffb300;
-  color: black;
-
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s ease;
-}
-
-.search-box button:hover {
-  background: #ffcc33;
-  transform: scale(1.05);
+.page-heading {
+  font-size: 32px;
+  color: #ffb300;
 }
 
 /* ===== MAIN ===== */
@@ -78,7 +100,6 @@ main {
   text-align: center;
 }
 
-/* ===== SECTION TEXT ===== */
 .section-title {
   font-size: 34px;
   color: #ffb300;
@@ -92,7 +113,7 @@ main {
 }
 
 /* ===== GRID ===== */
-#car-container {
+.car-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 25px;
@@ -108,15 +129,11 @@ main {
   box-shadow: 0 8px 25px rgba(0,0,0,0.6);
 
   transition: all 0.3s ease;
-  position: relative;
-
   backdrop-filter: blur(10px);
 }
 
-/* 🔥 HOVER EFFECT */
 .car-card:hover {
-  transform: translateY(-6px) scale(1.01);
-  box-shadow: 0 12px 35px rgba(0,0,0,0.8);
+  transform: translateY(-8px) scale(1.02);
 }
 
 /* ===== SLIDER ===== */
@@ -142,7 +159,7 @@ main {
   padding: 10px;
 }
 
-/* ===== SLIDER BUTTON ===== */
+/* ===== SLIDER BUTTONS ===== */
 .nav-btn {
   position: absolute;
   top: 50%;
@@ -150,15 +167,14 @@ main {
 
   background: rgba(0,0,0,0.6);
   color: #fff;
-
   border: none;
+
   font-size: 18px;
   padding: 6px 10px;
-  cursor: pointer;
-
   border-radius: 50%;
+
+  cursor: pointer;
   transition: 0.3s;
-  z-index: 3;
 }
 
 .nav-btn:hover {
@@ -169,7 +185,6 @@ main {
 .left { left: 10px; }
 .right { right: 10px; }
 
-/* 🔥 SHOW BUTTON ON HOVER */
 .slider-container .nav-btn {
   opacity: 0;
 }
@@ -190,14 +205,14 @@ main {
   font-size: 18px;
 }
 
-/* ===== ⭐ RATING ===== */
+/* RATING */
 .rating {
   color: #ffb300;
   font-size: 14px;
   margin-bottom: 10px;
 }
 
-/* ===== DETAILS ===== */
+/* DETAILS */
 .details {
   display: flex;
   flex-direction: column;
@@ -226,11 +241,10 @@ main {
   padding: 8px 12px;
   border-radius: 8px;
   font-size: 14px;
-
-  transition: all 0.3s ease;
+  transition: 0.3s;
 }
 
-/* ❤️ WISHLIST */
+/* ❤️ Wishlist */
 .wishlist {
   background: rgba(225, 29, 72, 0.15);
   color: #e11d48;
@@ -242,7 +256,7 @@ main {
   transform: scale(1.1);
 }
 
-/* ⚖️ COMPARE */
+/* ⚖️ Compare */
 .compare {
   background: rgba(37, 99, 235, 0.15);
   color: #2563eb;
@@ -254,7 +268,7 @@ main {
   transform: scale(1.1);
 }
 
-/* ===== FLOATING BUTTON ===== */
+/* ===== FLOAT BUTTON ===== */
 .compare-float {
   position: fixed;
   bottom: 20px;
@@ -270,9 +284,7 @@ main {
   text-decoration: none;
 
   box-shadow: 0 0 15px rgba(0,0,0,0.5);
-
   transition: 0.3s;
-  z-index: 999;
 }
 
 .compare-float:hover {
@@ -285,11 +297,31 @@ footer {
   text-align: center;
   padding: 15px;
   background: rgba(20,20,20,0.9);
-  margin-top: 30px;
+  margin-top: auto;
 }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
+
+  header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .navbar {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .search-box input {
+    width: 140px;
+  }
+
   .section-title {
     font-size: 26px;
   }
@@ -300,14 +332,5 @@ footer {
 
   .slider img {
     height: 150px;
-  }
-
-  .nav-btn {
-    font-size: 16px;
-    padding: 4px 8px;
-  }
-
-  .search-box input {
-    width: 180px;
   }
 }

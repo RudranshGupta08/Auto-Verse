@@ -7,8 +7,8 @@
   <title>SUV Cars - Auto Verse</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/suv.css">
   <link rel="stylesheet" href="css/search.css">
+  <link rel="stylesheet" href="css/Suv.css">
 </head>
 
 <body>
@@ -47,85 +47,85 @@
     <ul class="brand-list">
 
       <li>
-        <a href="AllSuv.html?brand=maruti">
-          <img src="images/suzuki.png" alt="Maruti Suzuki Logo">
+        <a href="carAll.html?brand=maruti&type=suv">
+          <img src="images/suzuki.png">
           <span>Maruti Suzuki</span>
         </a>
       </li>
 
       <li>
-        <a href="AllSuv.html?brand=tata">
-          <img src="images/tata.png" alt="Tata Motors Logo">
+        <a href="carAll.html?brand=tata&type=suv">
+          <img src="images/tata.png">
           <span>Tata Motors</span>
         </a>
       </li>
 
       <li>
-        <a href="AllSuv.html?brand=hyundai">
-          <img src="images/hyundai.png" alt="Hyundai Logo">
+        <a href="carAll.html?brand=hyundai&type=suv">
+          <img src="images/hyundai.png">
           <span>Hyundai</span>
         </a>
       </li>
 
       <li>
-        <a href="AllSuv.html?brand=mahindra">
-          <img src="images/mahindra.png" alt="Mahindra Logo">
+        <a href="carAll.html?brand=mahindra&type=suv">
+          <img src="images/mahindra.png">
           <span>Mahindra</span>
         </a>
       </li>
 
       <li>
-        <a href="AllSuv.html?brand=honda">
-          <img src="images/honda.png" alt="Honda Logo">
+        <a href="carAll.html?brand=honda&type=suv">
+          <img src="images/honda.png">
           <span>Honda</span>
         </a>
       </li>
 
       <li>
-        <a href="AllSuv.html?brand=kia">
-          <img src="images/kia.png" alt="Kia Logo">
+        <a href="carAll.html?brand=kia&type=suv">
+          <img src="images/kia.png">
           <span>Kia</span>
         </a>
       </li>
 
       <li>
-        <a href="AllSuv.html?brand=toyota">
-          <img src="images/toyota.png" alt="Toyota Logo">
+        <a href="carAll.html?brand=toyota&type=suv">
+          <img src="images/toyota.png">
           <span>Toyota</span>
         </a>
       </li>
 
       <li>
-        <a href="AllSuv.html?brand=ford">
-          <img src="images/ford.png" alt="Ford Logo">
+        <a href="carAll.html?brand=ford&type=suv">
+          <img src="images/ford.png">
           <span>Ford</span>
         </a>
       </li>
 
       <li>
-        <a href="AllSuv.html?brand=jeep">
-          <img src="images/jeep.png" alt="Jeep Logo">
+        <a href="carAll.html?brand=jeep&type=suv">
+          <img src="images/jeep.png">
           <span>Jeep</span>
         </a>
       </li>
 
       <li>
-        <a href="AllSuv.html?brand=audi">
-          <img src="images/audi.png" alt="Audi Logo">
+        <a href="carAll.html?brand=audi&type=suv">
+          <img src="images/audi.png">
           <span>Audi</span>
         </a>
       </li>
 
       <li>
-        <a href="AllSuv.html?brand=bmw">
-          <img src="images/bmw.png" alt="BMW Logo">
+        <a href="carAll.html?brand=bmw&type=suv">
+          <img src="images/bmw.png">
           <span>BMW</span>
         </a>
       </li>
 
       <li>
-        <a href="AllSuv.html?brand=mercedes">
-          <img src="images/mercedes.png" alt="Mercedes-Benz Logo">
+        <a href="carAll.html?brand=mercedes&type=suv">
+          <img src="images/mercedes.png">
           <span>Mercedes-Benz</span>
         </a>
       </li>
@@ -133,8 +133,60 @@
     </ul>
   </section>
 
-  <!-- 🔍 SEARCH -->
+  <!-- ===== 🤖 MINI AI POPUP ===== -->
+<div id="ai-mini">
+
+  <div class="ai-bubble" onclick="openAI()">
+    <strong>Hello! How can I help?</strong><br>
+    <span>AutoVerse Assistance</span>
+  </div>
+
+  <div id="ai-icon" onclick="openAI()">🤖</div>
+
+</div>
+
+<!-- ===== 🤖 AI PANEL ===== -->
+<div id="ai-panel">
+
+  <!-- HEADER -->
+  <div class="ai-header">
+    <span>AutoVerse AI</span>
+
+    <div style="display:flex; gap:10px;">
+      <div class="menu" onclick="toggleMenu()">⋮</div>
+      <div onclick="closeAI()" style="cursor:pointer;">✖</div>
+    </div>
+  </div>
+
+  <!-- MENU -->
+  <div id="ai-menu">
+    <p onclick="window.location.href='about.html'">About AutoVerse</p>
+    <p onclick="window.location.href='contact.html'">Contact</p>
+    <p onclick="restartChat()">Restart Session</p>
+  </div>
+
+  <!-- CHAT -->
+  <div id="chat-box"></div>
+
+  <!-- QUICK ACTIONS -->
+  <div class="quick-actions">
+    <button onclick="quickAsk('Best car under 10 lakh')">Under 10L</button>
+    <button onclick="quickAsk('Best family car')">Family</button>
+    <button onclick="quickAsk('Best mileage cars')">Mileage</button>
+    <button onclick="quickAsk('Best SUV in India')">SUV</button>
+  </div>
+
+  <!-- INPUT -->
+  <div class="ai-input">
+    <input type="text" id="chat-input" placeholder="Ask about cars..." onkeypress="handleKey(event)">
+    <button onclick="sendMessage()">➤</button>
+  </div>
+
+</div>
+
+<!-- 🔍 SEARCH -->
   <script src="backend/search.js"></script>
+  <script src="backend/ai.js"></script>
 
   <!-- ===== FOOTER ===== -->
   <footer>

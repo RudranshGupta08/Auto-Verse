@@ -4,44 +4,49 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (!container) return;
 
   // =========================
-  // 🔥 GET BRAND FROM URL (FIXED)
+  // 🔥 GET BRAND & TYPE
   // =========================
-  const params = new URLSearchParams(window.location.search);
-  const brand = params.get("brand") || "";
-  const type = "suv"; // fixed for SUV page
-
-  console.log("Brand:", brand);
-  console.log("Type:", type);
+  const brand = (document.body.dataset.brand || "").toLowerCase().trim();
+  const type = (document.body.dataset.type || "").toLowerCase().trim();
 
   try {
     // =========================
-    // 🔥 FETCH ALL CARS
+    // 🔥 FETCH DATA
     // =========================
     const res = await fetch("http://localhost:5000/api/cars");
     const allCars = await res.json();
 
-    // =========================
-    // 🔥 FILTER LOGIC (UPDATED)
-    // =========================
-    const cars = allCars.filter(car =>
-      car.brand?.toLowerCase().includes(brand.toLowerCase()) &&
-      car.type?.toLowerCase() === type
-    );
+    console.log("All Cars:", allCars);
 
-    console.log("Filtered Cars:", cars);
+    // =========================
+    // 🔥 FIXED FILTER (CORRECT)
+    // =========================
+    const cars = allCars.filter(car => {
 
+      const carBrand = (car.brand || "").toLowerCase().trim();
+      const carType = (car.type || "").toLowerCase().trim();
+
+      return (
+        carBrand.includes(brand) &&   // flexible brand
+        carType === type              // strict type (FIXED)
+      );
+    });
+
+    // =========================
+    // 🔥 NO FALLBACK (REMOVED)
+    // =========================
     if (!cars.length) {
       container.innerHTML = "<h2>No cars found</h2>";
       return;
     }
 
     // =========================
-    // 🔥 RENDER UI
+    // 🔥 RENDER
     // =========================
     container.innerHTML = cars.map((car, index) => `
+
       <div class="car-card" data-id="${car._id}">
 
-        <!-- 🔥 IMAGE SLIDER -->
         <div class="slider-container">
           <button class="nav-btn left" data-index="${index}">❮</button>
 
@@ -58,17 +63,14 @@ document.addEventListener("DOMContentLoaded", async () => {
           <button class="nav-btn right" data-index="${index}">❯</button>
         </div>
 
-        <!-- 🔥 INFO -->
         <div class="car-info">
           <h2>${car.brand} ${car.model}</h2>
 
-          <!-- ⭐ RATING -->
           <p class="rating">
             ${"★".repeat(car.rating || 3)}
             ${"☆".repeat(5 - (car.rating || 3))}
           </p>
 
-          <!-- DETAILS -->
           <div class="details">
             <span><strong>Price:</strong> ${car.priceRange || "N/A"}</span>
             <span><strong>Engine:</strong> ${car.engineOptions?.join(", ") || "N/A"}</span>
@@ -78,7 +80,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             <span><strong>Seats:</strong> ${car.seatingCapacity || "N/A"}</span>
           </div>
 
-          <!-- 🔥 ACTION BUTTONS -->
           <div class="actions">
             <button class="wishlist" data-id="${car._id}">❤️</button>
             <button class="compare" data-id="${car._id}">⚖️</button>
@@ -86,10 +87,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
 
       </div>
+
     `).join("");
 
     // =========================
-    // 🔥 SLIDER LOGIC
+    // 🔥 SLIDER
     // =========================
     document.querySelectorAll(".nav-btn").forEach(btn => {
       btn.addEventListener("click", (e) => {
@@ -113,57 +115,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // =========================
-    // 🔥 CARD CLICK → DETAILS
+    // 🔥 CARD CLICK
     // =========================
     document.querySelectorAll(".car-card").forEach(card => {
       card.addEventListener("click", () => {
         const id = card.getAttribute("data-id");
         window.location.href = `carr.html?id=${id}`;
-      });
-    });
-
-    // =========================
-    // ❤️ WISHLIST
-    // =========================
-    document.querySelectorAll(".wishlist").forEach(btn => {
-      btn.addEventListener("click", (e) => {
-        e.stopPropagation();
-
-        const id = btn.dataset.id;
-        let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-
-        if (!wishlist.includes(id)) {
-          wishlist.push(id);
-          localStorage.setItem("wishlist", JSON.stringify(wishlist));
-          alert("❤️ Added to Wishlist");
-        } else {
-          alert("⚠️ Already in Wishlist");
-        }
-      });
-    });
-
-    // =========================
-    // ⚖️ COMPARE
-    // =========================
-    document.querySelectorAll(".compare").forEach(btn => {
-      btn.addEventListener("click", (e) => {
-        e.stopPropagation();
-
-        const id = btn.dataset.id;
-        let compare = JSON.parse(localStorage.getItem("compare")) || [];
-
-        if (compare.length >= 2) {
-          alert("⚠️ You can compare only 2 cars");
-          return;
-        }
-
-        if (!compare.includes(id)) {
-          compare.push(id);
-          localStorage.setItem("compare", JSON.stringify(compare));
-          alert("⚖️ Added for Comparison");
-        } else {
-          alert("⚠️ Already added");
-        }
       });
     });
 

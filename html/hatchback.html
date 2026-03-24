@@ -32,7 +32,7 @@
       Explore the Best Hatchbacks in India
     </div>
     <p>
-      Hatchbacks are compact, efficient, and perfect for city driving.  
+      Hatchbacks are compact, efficient, and perfect for city driving.
       Discover the most popular hatchback brands in India and click on any brand to explore its models and features.
     </p>
   </main>
@@ -133,9 +133,64 @@
     </ul>
   </section>
 
+<div id="ai-mini">
+
+  <div class="ai-bubble" onclick="openAI()">
+    <strong>Hello! How can I help?</strong><br>
+    <span>AutoVerse Assistance</span>
+  </div>
+
+  <div id="ai-icon" onclick="openAI()">🤖</div>
+
+</div>
+
+<!-- ===== 🤖 AI PANEL ===== -->
+<div id="ai-panel">
+
+  <!-- HEADER -->
+  <div class="ai-header">
+    <span>AutoVerse AI</span>
+
+    <div style="display:flex; gap:10px;">
+      <div class="menu" onclick="toggleMenu()">⋮</div>
+      <div onclick="closeAI()" style="cursor:pointer;">✖</div>
+    </div>
+  </div>
+
+  <!-- MENU -->
+  <div id="ai-menu">
+    <p onclick="window.location.href='about.html'">About AutoVerse</p>
+    <p onclick="window.location.href='contact.html'">Contact</p>
+    <p onclick="restartChat()">Restart Session</p>
+  </div>
+
+  <!-- CHAT -->
+  <div id="chat-box"></div>
+
+  <!-- QUICK ACTIONS -->
+  <div class="quick-actions">
+    <button onclick="quickAsk('Best car under 10 lakh')">Under 10L</button>
+    <button onclick="quickAsk('Best family car')">Family</button>
+    <button onclick="quickAsk('Best mileage cars')">Mileage</button>
+    <button onclick="quickAsk('Best SUV in India')">SUV</button>
+  </div>
+
+  <!-- INPUT -->
+  <div class="ai-input">
+    <input type="text" id="chat-input" placeholder="Ask about cars..." onkeypress="handleKey(event)">
+    <button onclick="sendMessage()">➤</button>
+  </div>
+
+</div>
+
+
+  <!-- ===== FOOTER ===== -->
   <footer>
     <p>&copy; 2025 Auto Verse. All rights reserved.</p>
   </footer>
-  <script src="backend/search.js"></script>
+
+   <script src="backend/search.js"></script>
+   <script src="backend/ai.js"></script>
+
 </body>
 </html>

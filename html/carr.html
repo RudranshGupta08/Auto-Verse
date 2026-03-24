@@ -5,32 +5,73 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Car Details</title>
+
   <link rel="stylesheet" href="css/carr.css" />
   <link rel="stylesheet" href="css/search.css" />
 </head>
 
 <body>
 
-  <!-- 🔥 NAVBAR -->
-  <header class="navbar">
-    <h1>🚗 AutoVerse</h1>
-    <span>Explore Detailed Car Information</span>
+  <!-- ===== HEADER ===== -->
+  <header>
+
+    <div class="logo">
+      <img src="images/Autoverselogo.png" class="logo-img">
+      <span>Auto Verse</span>
+    </div>
+
+    <nav class="navbar">
+      <a href="parts-o-corner.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html">Login</a>
+
+      <!-- SEARCH -->
+      <form class="search-box" onsubmit="handleSearch(event)">
+        <input type="text" id="searchInput" placeholder="Search cars..." required>
+        <button type="submit">🔍</button>
+      </form>
+    </nav>
+
   </header>
 
-  <!-- 🔙 BACK BUTTON -->
+  <!-- ===== TOP BAR =====
   <div class="top-bar">
     <button onclick="history.back()">← Back</button>
-  </div>
+  </div> -->
 
-  <!-- 🔥 MAIN -->
-  <main id="car-details" class="fade-in"></main>
+  <!-- ===== MAIN ===== -->
+  <main class="fade-in">
 
-  <!-- 🔻 FOOTER -->
+    <!-- 🔥 CAR DETAILS -->
+    <section id="car-details" class="car-details"></section>
+
+    <!-- 🔥 VARIANT RECOMMENDATION (auto injected via JS) -->
+
+    <!-- 🔥 VARIANTS -->
+    <h2 class="variant-heading">Available Variants</h2>
+    <div id="variant-container" class="variant-container"></div>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
   <footer>
     <p>© 2025 AutoVerse. All Rights Reserved.</p>
   </footer>
 
+  <!-- ===== SEARCH SCRIPT ===== -->
+  <script>
+    function handleSearch(e) {
+      e.preventDefault();
+      const query = document.getElementById("searchInput").value.trim();
+      if (!query) return;
+      window.location.href = `search.html?query=${encodeURIComponent(query)}`;
+    }
+  </script>
+
+  <!-- ===== MAIN SCRIPT ===== -->
   <script src="backend/carr.js"></script>
+
 </body>
 
 </html>

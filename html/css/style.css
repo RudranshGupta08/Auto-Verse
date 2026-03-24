@@ -10,9 +10,8 @@
 body {
   font-family: 'Roboto', sans-serif;
   background:
-    linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
-    url('https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg')
-    no-repeat center center fixed;
+    linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url('https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg') no-repeat center center fixed;
 
   background-size: cover;
   color: #e0e0e0;
@@ -30,10 +29,10 @@ header {
 
   padding: 12px 30px;
 
-  background: rgba(30,30,30,0.9);
+  background: rgba(30, 30, 30, 0.9);
   backdrop-filter: blur(8px);
 
-  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
 }
 
 /* ===== LOGO ===== */
@@ -56,7 +55,8 @@ header {
 /* ===== NAVBAR ===== */
 .navbar {
   display: flex !important;
-  flex-direction: row !important;   /* 🔥 FORCE HORIZONTAL */
+  flex-direction: row !important;
+  /* 🔥 FORCE HORIZONTAL */
   align-items: center;
   gap: 20px;
 }
@@ -123,7 +123,7 @@ main p {
 
 .car-types li a {
   padding: 12px 26px;
-  background: rgba(28,28,28,0.85);
+  background: rgba(28, 28, 28, 0.85);
   border-radius: 8px;
   text-decoration: none;
   color: #ddd;
@@ -172,7 +172,7 @@ main p {
   flex-direction: column;
   align-items: center;
 
-  background: rgba(28,28,28,0.85);
+  background: rgba(28, 28, 28, 0.85);
   padding: 18px;
   border-radius: 12px;
 
@@ -195,7 +195,7 @@ main p {
 .brand-category li:hover {
   transform: translateY(-5px);
   background: #222;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
 }
 
 .brand-category li:hover img {
@@ -204,10 +204,249 @@ main p {
 
 /* ===== FOOTER ===== */
 footer {
-  background: rgba(28,28,28,0.9);
+  background: rgba(28, 28, 28, 0.9);
   text-align: center;
   padding: 18px;
   font-size: 14px;
   color: #bbb;
   margin-top: auto;
+}
+
+/* ===== 🤖 AI FLOAT BUTTON ===== */
+#ai-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+
+  width: 55px;
+  height: 55px;
+
+  background: #ffb300;
+  color: black;
+
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 24px;
+  cursor: pointer;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  z-index: 1000;
+}
+
+/* ===== 🤖 AI PANEL ===== */
+#ai-panel {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+
+  width: 300px;
+  height: 420px;
+
+  background: rgba(20, 20, 20, 0.95);
+  border-radius: 12px;
+
+  display: none;
+  flex-direction: column;
+
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(0,0,0,0.7);
+
+  z-index: 1000;
+}
+
+/* HEADER */
+.ai-header {
+  background: rgba(30,30,30,0.95);
+  color: #ffb300;
+
+  padding: 10px 12px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-weight: 500;
+}
+
+/* MENU BUTTON */
+.menu {
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* DROPDOWN MENU */
+#ai-menu {
+  display: none;
+  background: #1a1a1a;
+  border-bottom: 1px solid #333;
+}
+
+#ai-menu p {
+  padding: 10px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #ddd;
+}
+
+#ai-menu p:hover {
+  background: #333;
+  color: #ffb300;
+}
+
+/* CHAT BOX */
+#chat-box {
+  flex: 1;
+  padding: 10px;
+
+  overflow-y: auto;
+  font-size: 13px;
+}
+
+#chat-box p {
+  margin: 6px 0;
+}
+
+/* INPUT AREA */
+.ai-input {
+  display: flex;
+  border-top: 1px solid #333;
+}
+
+.ai-input input {
+  flex: 1;
+  padding: 8px;
+
+  border: none;
+  outline: none;
+
+  background: #111;
+  color: white;
+}
+
+.ai-input button {
+  background: #ffb300;
+  border: none;
+
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.ai-input button:hover {
+  background: #ffcc33;
+}
+
+/* ===== CHAT BUBBLES ===== */
+.chat-msg {
+  max-width: 75%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  margin: 6px 0;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.user-msg {
+  background: #ffb300;
+  color: black;
+  margin-left: auto;
+  text-align: right;
+}
+
+.ai-msg {
+  background: #2a2a2a;
+  color: #ddd;
+  margin-right: auto;
+}
+
+/* ===== TYPING ANIMATION ===== */
+.typing {
+  font-style: italic;
+  color: #aaa;
+  font-size: 12px;
+}
+
+/* ===== QUICK BUTTONS ===== */
+.quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 6px;
+  border-top: 1px solid #333;
+}
+
+.quick-actions button {
+  padding: 5px 10px;
+  font-size: 11px;
+
+  border: none;
+  border-radius: 20px;
+
+  background: #1f2937;
+  color: #ddd;
+
+  cursor: pointer;
+}
+
+.quick-actions button:hover {
+  background: #ffb300;
+  color: black;
+}
+
+/* ===== MINI POPUP ===== */
+#ai-mini {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  z-index: 1000;
+}
+
+/* CHAT BUBBLE */
+.ai-bubble {
+  background: #ffb300;
+  color: black;
+
+  padding: 10px 14px;
+  border-radius: 10px;
+
+  font-size: 13px;
+  line-height: 1.3;
+
+  cursor: pointer;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.ai-bubble span {
+  font-size: 11px;
+  color: #333;
+}
+
+/* ICON */
+#ai-icon {
+  width: 50px;
+  height: 50px;
+
+  background: #ffb300;
+  color: black;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.ai-bubble:hover {
+  background: #ffcc33;
 }

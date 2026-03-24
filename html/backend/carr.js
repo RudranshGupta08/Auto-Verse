@@ -28,7 +28,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const verdict = car.verdict || "No final verdict available.";
 
-    // 🔥 BEST FOR FIX (IMPORTANT)
     const bestFor = Array.isArray(car.bestFor)
       ? (car.bestFor.length ? car.bestFor : ["Not Specified"])
       : typeof car.bestFor === "string" && car.bestFor.trim().length
@@ -133,6 +132,52 @@ document.addEventListener("DOMContentLoaded", async () => {
         <p>${verdict}</p>
       </div>
     `;
+
+    // =========================
+    // 🔥 ADDED: VARIANT RECOMMENDATION
+    // =========================
+    const bestVariant = car.variants?.find(v => v.isBestValue);
+
+    if (bestVariant) {
+      container.insertAdjacentHTML("beforeend", `
+        <div class="variant-recommendation slide-up">
+          <h2>🔥 Recommended Variant: ${bestVariant.name}</h2>
+          <p>
+            Ideal for ${bestFor.join(", ")}.
+            Offers ${bestVariant.transmission} with ${bestVariant.mileage || "good mileage"}.
+          </p>
+        </div>
+      `);
+    }
+
+    // =========================
+    // 🔥 ADDED: VARIANTS LIST
+    // =========================
+    const variantContainer = document.getElementById("variant-container");
+
+    if (variantContainer) {
+      if (!car.variants || car.variants.length === 0) {
+        variantContainer.innerHTML = "<p>No variants available</p>";
+      } else {
+        variantContainer.innerHTML = car.variants.map(v => `
+          <div class="variant-card ${v.isBestValue ? "best" : ""}">
+            <h3>
+              ${v.name}
+              ${v.isBestValue ? "🔥 Best Value" : ""}
+            </h3>
+
+            <p><strong>Price:</strong> ${v.price}</p>
+            <p><strong>Fuel:</strong> ${v.fuelType}</p>
+            <p><strong>Transmission:</strong> ${v.transmission}</p>
+            <p><strong>Mileage:</strong> ${v.mileage || "N/A"}</p>
+
+            <div class="features">
+              ${v.features?.map(f => `<span>✔ ${f}</span>`).join("")}
+            </div>
+          </div>
+        `).join("");
+      }
+    }
 
     // =========================
     // 🔥 IMAGE SLIDER

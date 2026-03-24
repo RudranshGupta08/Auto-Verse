@@ -5,16 +5,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your Digital Car Workshop</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/search.css">
 </head>
 
 <body>
+
   <!-- ===== HEADER ===== -->
   <header>
     <div class="logo">
-      <img src="images/Autoverselogo.png" alt="Auto Verse Logo" class="logo-img" />
+      <img src="images/Autoverselogo.png" class="logo-img">
       <span>Auto Verse</span>
     </div>
 
@@ -25,19 +27,28 @@
     </nav>
   </header>
 
-  <!-- ===== MAIN HERO SECTION ===== -->
+  <!-- ===== HERO ===== -->
   <main>
-    <div>
-      The Smarter Way to Explore Cars
-    </div>
+    <div>The Smarter Way to Explore Cars</div>
+
     <p>
-      Welcome to <span class="highlight">Auto Verse</span> !! <br>
-      From brands to models, get every car detail in one place. Choose, explore, and compare instantly — fast,
-      reliable, and tailored for car enthusiasts.
+      Welcome to <span class="highlight">Auto Verse</span> — your all-in-one platform for exploring cars with clarity
+      and confidence.
     </p>
+
+    <p>
+      <strong>Compare. Analyze. Decide.</strong><br>
+      Get detailed specifications, real-world insights, and smart recommendations — all in one place.
+    </p>
+
+    <p>
+      Whether you're a first-time buyer or an enthusiast, AutoVerse helps you choose the right car with precision.
+    </p>
+    </a>
+    </div>
   </main>
 
-  <!-- ===== CAR TYPES SECTION ===== -->
+  <!-- ===== CAR TYPES ===== -->
   <section class="car-types">
     <h2>Explore Car Types</h2>
     <ul>
@@ -48,92 +59,107 @@
     </ul>
   </section>
 
-  <!-- ===== CAR BRANDS SECTION ===== -->
+  <!-- ===== BRANDS ===== -->
   <section class="car-brands">
     <h2>Car Brands in India</h2>
 
-    <!-- Common -->
     <div class="brand-category">
       <h3>Common</h3>
       <ul>
-        <li>
-          <img src="images/suzuki.png" alt="Maruti Suzuki">
-          <span>Maruti Suzuki</span>
-        </li>
-        <li>
-          <img src="images/tata.png" alt="Tata">
-          <span>Tata</span>
-        </li>
-        <li>
-          <img src="images/hyundai.png" alt="Hyundai">
-          <span>Hyundai</span>
-        </li>
+        <li><img src="images/suzuki.png"><span>Maruti Suzuki</span></li>
+        <li><img src="images/tata.png"><span>Tata</span></li>
+        <li><img src="images/hyundai.png"><span>Hyundai</span></li>
       </ul>
     </div>
 
-    <!-- Comfortable -->
     <div class="brand-category">
       <h3>Comfortable</h3>
       <ul>
-        <li>
-          <img src="images/honda.png" alt="Honda">
-          <span>Honda</span>
-        </li>
-        <li>
-          <img src="images/toyota.png" alt="Toyota">
-          <span>Toyota</span>
-        </li>
-        <li>
-          <img src="images/mahindra.png" alt="Mahindra">
-          <span>Mahindra</span>
-        </li>
+        <li><img src="images/honda.png"><span>Honda</span></li>
+        <li><img src="images/toyota.png"><span>Toyota</span></li>
+        <li><img src="images/mahindra.png"><span>Mahindra</span></li>
       </ul>
     </div>
 
-    <!-- Premium -->
     <div class="brand-category">
       <h3>Premium</h3>
       <ul>
-        <li>
-          <img src="images/kia.png" alt="Kia">
-          <span>Kia</span>
-        </li>
-        <li>
-          <img src="images/skoda.png" alt="Skoda">
-          <span>Skoda</span>
-        </li>
-        <li>
-          <img src="images/volkswagen.png" alt="Volkswagen">
-          <span>Volkswagen</span>
-        </li>
+        <li><img src="images/kia.png"><span>Kia</span></li>
+        <li><img src="images/skoda.png"><span>Skoda</span></li>
+        <li><img src="images/volkswagen.png"><span>Volkswagen</span></li>
       </ul>
     </div>
 
-    <!-- Luxury -->
     <div class="brand-category">
       <h3>Luxury</h3>
       <ul>
-        <li>
-          <img src="images/audi.png" alt="Audi">
-          <span>Audi</span>
-        </li>
-        <li>
-          <img src="images/bmw.png" alt="BMW">
-          <span>BMW</span>
-        </li>
-        <li>
-          <img src="images/mercedes.png" alt="Mercedes-Benz">
-          <span>Mercedes-Benz</span>
-        </li>
+        <li><img src="images/audi.png"><span>Audi</span></li>
+        <li><img src="images/bmw.png"><span>BMW</span></li>
+        <li><img src="images/mercedes.png"><span>Mercedes-Benz</span></li>
       </ul>
     </div>
   </section>
+
+  <!-- ===== 🤖 MINI AI POPUP ===== -->
+<div id="ai-mini">
+
+  <div class="ai-bubble" onclick="openAI()">
+    <strong>Hello! How can I help?</strong><br>
+    <span>AutoVerse Assistance</span>
+  </div>
+
+  <div id="ai-icon" onclick="openAI()">🤖</div>
+
+</div>
+
+<!-- ===== 🤖 AI PANEL ===== -->
+<div id="ai-panel">
+
+  <!-- HEADER -->
+  <div class="ai-header">
+    <span>AutoVerse AI</span>
+
+    <div style="display:flex; gap:10px;">
+      <div class="menu" onclick="toggleMenu()">⋮</div>
+      <div onclick="closeAI()" style="cursor:pointer;">✖</div>
+    </div>
+  </div>
+
+  <!-- MENU -->
+  <div id="ai-menu">
+    <p onclick="window.location.href='about.html'">About AutoVerse</p>
+    <p onclick="window.location.href='contact.html'">Contact</p>
+    <p onclick="restartChat()">Restart Session</p>
+  </div>
+
+  <!-- CHAT -->
+  <div id="chat-box"></div>
+
+  <!-- QUICK ACTIONS -->
+  <div class="quick-actions">
+    <button onclick="quickAsk('Best car under 10 lakh')">Under 10L</button>
+    <button onclick="quickAsk('Best family car')">Family</button>
+    <button onclick="quickAsk('Best mileage cars')">Mileage</button>
+    <button onclick="quickAsk('Best SUV in India')">SUV</button>
+  </div>
+
+  <!-- INPUT -->
+  <div class="ai-input">
+    <input type="text" id="chat-input" placeholder="Ask about cars..." onkeypress="handleKey(event)">
+    <button onclick="sendMessage()">➤</button>
+  </div>
+
+</div>
+
+  <!-- ===== SEARCH ===== -->
   <script src="backend/search.js"></script>
+  <script src="backend/ai.js"></script>
 
   <!-- ===== FOOTER ===== -->
   <footer>
     <p>&copy; 2025 Auto Verse. All rights reserved.</p>
   </footer>
+
 </body>
 
 </html>
