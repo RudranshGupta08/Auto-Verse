@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showTyping();
 
     try {
-      const res = await fetch("https://auto-verse-hcp5.onrender.com//api/ai/chat", {
+      const res = await fetch("https://auto-verse-hcp5.onrender.com/api/ai/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

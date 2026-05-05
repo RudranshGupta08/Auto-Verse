@@ -80,7 +80,7 @@ function handleFiles(files) {
 // LOAD
 // =========================
 async function loadCars() {
-  const res = await fetch("https://auto-verse-hcp5.onrender.com//api/cars");
+  const res = await fetch("https://auto-verse-hcp5.onrender.com/api/cars");
   const cars = await res.json();
 
   carsList.innerHTML = cars.map(car => `
@@ -100,7 +100,7 @@ async function loadCars() {
 window.editCar = async (id) => {
   editId = id;
 
-  const res = await fetch(`https://auto-verse-hcp5.onrender.com//api/cars/${id}`);
+  const res = await fetch(`https://auto-verse-hcp5.onrender.com/api/cars/${id}`);
   const car = await res.json();
 
   Object.keys(car).forEach(key => {
@@ -119,7 +119,7 @@ window.editCar = async (id) => {
     const wrapper = document.createElement("div");
 
     const image = document.createElement("img");
-    image.src = `https://auto-verse-hcp5.onrender.com//images/${img}`;
+    image.src = `https://auto-verse-hcp5.onrender.com/images/${img}`;
 
     const btn = document.createElement("button");
     btn.innerText = "❌";
@@ -145,7 +145,7 @@ window.editCar = async (id) => {
 window.deleteCar = async (id) => {
   if (!confirm("Delete this car?")) return;
 
-  await fetch(`https://auto-verse-hcp5.onrender.com//api/cars/${id}`, {
+  await fetch(`https://auto-verse-hcp5.onrender.com/api/cars/${id}`, {
     method: "DELETE"
   });
 
@@ -188,8 +188,8 @@ form.addEventListener("submit", async (e) => {
   formData.append("variants", JSON.stringify(variants));
 
   const url = editId
-    ? `https://auto-verse-hcp5.onrender.com//api/cars/${editId}`
-    : "https://auto-verse-hcp5.onrender.com//api/cars";
+    ? `https://auto-verse-hcp5.onrender.com/api/cars/${editId}`
+    : "https://auto-verse-hcp5.onrender.com/api/cars";
 
   const method = editId ? "PUT" : "POST";
 

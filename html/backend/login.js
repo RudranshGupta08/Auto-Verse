@@ -7,7 +7,7 @@ form.addEventListener("submit", async (e) => {
   const password = document.getElementById("password").value;
 
   try {
-    const res = await fetch("https://auto-verse-hcp5.onrender.com//login", {
+    const res = await fetch("https://auto-verse-hcp5.onrender.com/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
