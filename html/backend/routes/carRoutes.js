@@ -32,7 +32,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // =========================
-// ❤️ WISHLIST (MOVED UP)
+// ❤️ WISHLIST
 // =========================
 router.post("/wishlist/:id", auth, async (req, res) => {
   const user = await User.findById(req.user.id);
@@ -63,7 +63,7 @@ router.delete("/wishlist/:id", auth, async (req, res) => {
 });
 
 // =========================
-// 🔍 SEARCH
+// 🔍 SEARCH (UPDATED)
 // =========================
 router.get("/search/:query", async (req, res) => {
   try {
@@ -101,7 +101,10 @@ router.get("/search/:query", async (req, res) => {
     const searchConditions = words.map(word => ({
       $or: [
         { brand: new RegExp(word, "i") },
-        { model: new RegExp(word, "i") }
+        { model: new RegExp(word, "i") },
+        { type: new RegExp(word, "i") },           // 🔥 FIX
+        { fuelType: new RegExp(word, "i") },       // 🔥 FIX
+        { transmission: new RegExp(word, "i") }    // 🔥 FIX
       ]
     }));
 
@@ -133,6 +136,24 @@ router.get("/", async (req, res) => {
     const cars = await Car.find(filter).sort({ createdAt: -1 });
 
     res.json(cars);
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// =========================
+// ✅ GET SINGLE CAR
+// =========================
+router.get("/:id", async (req, res) => {
+  try {
+    const car = await Car.findById(req.params.id);
+
+    if (!car) {
+      return res.status(404).json({ message: "Car not found" });
+    }
+
+    res.json(car);
 
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -189,80 +210,6 @@ router.post("/", upload.array("images", 20), async (req, res) => {
 });
 
 // =========================
-// ✏️ UPDATE CAR
-// =========================
-router.put("/:id", upload.array("images", 20), async (req, res) => {
-  try {
-    const car = await Car.findById(req.params.id);
-
-    if (!car) {
-      return res.status(404).json({ message: "Car not found" });
-    }
-
-    const updatedData = {
-      brand: req.body.brand,
-      model: req.body.model,
-      type: req.body.type,
-
-      priceRange: req.body.priceRange,
-      engineOptions: req.body.engineOptions?.split(",").map(s => s.trim()) || [],
-      mileage: req.body.mileage,
-
-      fuelType: req.body.fuelType?.split(",").map(s => s.trim()) || [],
-      transmission: req.body.transmission?.split(",").map(s => s.trim()) || [],
-
-      seatingCapacity: Number(req.body.seatingCapacity),
-
-      description: req.body.description || car.description,
-      features: req.body.features?.split(",").map(s => s.trim()) || car.features,
-      pros: req.body.pros?.split(",").map(s => s.trim()) || car.pros,
-      cons: req.body.cons?.split(",").map(s => s.trim()) || car.cons,
-
-      verdict: req.body.verdict?.trim() || car.verdict,
-      ncapRating: req.body.ncapRating || car.ncapRating,
-      bestFor: req.body.bestFor
-        ? req.body.bestFor.split(",").map(s => s.trim())
-        : car.bestFor,
-
-      rating: Number(req.body.rating) || car.rating
-    };
-
-    let existingImages = [];
-
-    if (req.body.existingImages) {
-      try {
-        existingImages = JSON.parse(req.body.existingImages);
-      } catch {
-        existingImages = car.images || [];
-      }
-    }
-
-    let newImages = [];
-
-    if (req.files && req.files.length > 0) {
-      const folderName = req.body.model.toLowerCase().replace(/\s+/g, "");
-
-      newImages = req.files.map(file =>
-        `${folderName}/${file.filename}`
-      );
-    }
-
-    updatedData.images = [...existingImages, ...newImages];
-
-    const updatedCar = await Car.findByIdAndUpdate(
-      req.params.id,
-      updatedData,
-      { new: true }
-    );
-
-    res.json({ success: true, message: "✏️ Car Updated", car: updatedCar });
-
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// =========================
 // ❌ DELETE CAR
 // =========================
 router.delete("/:id", async (req, res) => {
@@ -276,24 +223,6 @@ router.delete("/:id", async (req, res) => {
     await Car.findByIdAndDelete(req.params.id);
 
     res.json({ success: true, message: "❌ Car Deleted" });
-
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// =========================
-// ⚠️ KEEP THIS LAST ALWAYS
-// =========================
-router.get("/:id", async (req, res) => {
-  try {
-    const car = await Car.findById(req.params.id);
-
-    if (!car) {
-      return res.status(404).json({ message: "Car not found" });
-    }
-
-    res.json(car);
 
   } catch (err) {
     res.status(500).json({ message: err.message });
