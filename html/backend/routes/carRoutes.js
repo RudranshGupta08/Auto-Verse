@@ -32,28 +32,38 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // =========================
-// ✅ GET ALL CARS
+// ❤️ WISHLIST (MOVED UP)
 // =========================
-router.get("/", async (req, res) => {
-  try {
-    const { brand, type } = req.query;
+router.post("/wishlist/:id", auth, async (req, res) => {
+  const user = await User.findById(req.user.id);
 
-    let filter = {};
-
-    if (brand) filter.brand = new RegExp(brand, "i");
-    if (type) filter.type = new RegExp(type, "i");
-
-    const cars = await Car.find(filter).sort({ createdAt: -1 });
-
-    res.json(cars);
-
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  if (!user.wishlist.includes(req.params.id)) {
+    user.wishlist.push(req.params.id);
+    await user.save();
   }
+
+  res.json({ message: "Added to wishlist" });
+});
+
+router.get("/wishlist/me", auth, async (req, res) => {
+  const user = await User.findById(req.user.id).populate("wishlist");
+  res.json(user.wishlist);
+});
+
+router.delete("/wishlist/:id", auth, async (req, res) => {
+  const user = await User.findById(req.user.id);
+
+  user.wishlist = user.wishlist.filter(
+    carId => carId.toString() !== req.params.id
+  );
+
+  await user.save();
+
+  res.json({ message: "Removed from wishlist" });
 });
 
 // =========================
-// 🔍 SEARCH (UNCHANGED)
+// 🔍 SEARCH
 // =========================
 router.get("/search/:query", async (req, res) => {
   try {
@@ -109,17 +119,20 @@ router.get("/search/:query", async (req, res) => {
 });
 
 // =========================
-// ✅ GET SINGLE CAR
+// ✅ GET ALL CARS
 // =========================
-router.get("/:id", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const car = await Car.findById(req.params.id);
+    const { brand, type } = req.query;
 
-    if (!car) {
-      return res.status(404).json({ message: "Car not found" });
-    }
+    let filter = {};
 
-    res.json(car);
+    if (brand) filter.brand = new RegExp(brand, "i");
+    if (type) filter.type = new RegExp(type, "i");
+
+    const cars = await Car.find(filter).sort({ createdAt: -1 });
+
+    res.json(cars);
 
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -176,7 +189,7 @@ router.post("/", upload.array("images", 20), async (req, res) => {
 });
 
 // =========================
-// ✏️ UPDATE CAR (FIXED IMAGE MERGE)
+// ✏️ UPDATE CAR
 // =========================
 router.put("/:id", upload.array("images", 20), async (req, res) => {
   try {
@@ -214,9 +227,6 @@ router.put("/:id", upload.array("images", 20), async (req, res) => {
       rating: Number(req.body.rating) || car.rating
     };
 
-    // =========================
-    // 🔥 FIXED IMAGE LOGIC
-    // =========================
     let existingImages = [];
 
     if (req.body.existingImages) {
@@ -273,34 +283,21 @@ router.delete("/:id", async (req, res) => {
 });
 
 // =========================
-// ❤️ WISHLIST
+// ⚠️ KEEP THIS LAST ALWAYS
 // =========================
-router.post("/wishlist/:id", auth, async (req, res) => {
-  const user = await User.findById(req.user.id);
+router.get("/:id", async (req, res) => {
+  try {
+    const car = await Car.findById(req.params.id);
 
-  if (!user.wishlist.includes(req.params.id)) {
-    user.wishlist.push(req.params.id);
-    await user.save();
+    if (!car) {
+      return res.status(404).json({ message: "Car not found" });
+    }
+
+    res.json(car);
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
-
-  res.json({ message: "Added to wishlist" });
-});
-
-router.get("/wishlist/me", auth, async (req, res) => {
-  const user = await User.findById(req.user.id).populate("wishlist");
-  res.json(user.wishlist);
-});
-
-router.delete("/wishlist/:id", auth, async (req, res) => {
-  const user = await User.findById(req.user.id);
-
-  user.wishlist = user.wishlist.filter(
-    carId => carId.toString() !== req.params.id
-  );
-
-  await user.save();
-
-  res.json({ message: "Removed from wishlist" });
 });
 
 export default router;
