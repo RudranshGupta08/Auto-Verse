@@ -30,11 +30,15 @@ if (!query) {
   throw new Error("No query");
 }
 
+// 🔥 API CALL
 fetch(`https://auto-verse-hcp5.onrender.com/api/cars/search/${query}`)
   .then(res => res.json())
   .then(data => {
 
-    if (!data.found || !data.cars.length) {
+    // ✅ FIX: handle both array & object response
+    const cars = Array.isArray(data) ? data : data.cars;
+
+    if (!cars || !cars.length) {
       container.innerHTML = `
         <div style="text-align:center; margin-top:60px;">
           <h2 style="color:#ff4d4d;">
@@ -48,7 +52,7 @@ fetch(`https://auto-verse-hcp5.onrender.com/api/cars/search/${query}`)
       return;
     }
 
-    container.innerHTML = data.cars.map((car, index) => {
+    container.innerHTML = cars.map((car, index) => {
 
       const format = val =>
         Array.isArray(val) ? val.join(", ") : (val || "N/A");
@@ -66,7 +70,7 @@ fetch(`https://auto-verse-hcp5.onrender.com/api/cars/search/${query}`)
             <div class="rating">${stars}</div>
           </div>
 
-          <!-- 🔥 IMAGE SLIDER -->
+          <!-- IMAGE SLIDER -->
           <div class="image-slider-container">
             <button class="nav-btn left" data-index="${index}">❮</button>
 
