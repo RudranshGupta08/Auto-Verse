@@ -63,7 +63,7 @@ router.delete("/wishlist/:id", auth, async (req, res) => {
 });
 
 // =========================
-// 🔍 SEARCH (UPDATED)
+// 🔍 SEARCH (FIXED)
 // =========================
 router.get("/search/:query", async (req, res) => {
   try {
@@ -102,12 +102,15 @@ router.get("/search/:query", async (req, res) => {
       $or: [
         { brand: new RegExp(word, "i") },
         { model: new RegExp(word, "i") },
-        { type: new RegExp(word, "i") },           // 🔥 FIX
-        { fuelType: new RegExp(word, "i") },       // 🔥 FIX
-        { transmission: new RegExp(word, "i") }    // 🔥 FIX
+        { type: new RegExp(word, "i") },
+
+        // ✅ FIX FOR ARRAY FIELDS
+        { fuelType: { $elemMatch: { $regex: word, $options: "i" } } },
+        { transmission: { $elemMatch: { $regex: word, $options: "i" } } }
       ]
     }));
 
+    // 🔥 KEEPING YOUR ORIGINAL LOGIC
     const cars = await Car.find({ $and: searchConditions });
 
     if (!cars.length) {
