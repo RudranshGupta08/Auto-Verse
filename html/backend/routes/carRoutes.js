@@ -32,7 +32,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // =========================
-// ❤️ WISHLIST
+// ❤️ WISHLIST (KEEP ABOVE :id)
 // =========================
 router.post("/wishlist/:id", auth, async (req, res) => {
   const user = await User.findById(req.user.id);
@@ -63,7 +63,7 @@ router.delete("/wishlist/:id", auth, async (req, res) => {
 });
 
 // =========================
-// 🔍 SEARCH (FIXED)
+// 🔍 SEARCH (IMPORTANT: ABOVE /:id)
 // =========================
 router.get("/search/:query", async (req, res) => {
   try {
@@ -104,13 +104,12 @@ router.get("/search/:query", async (req, res) => {
         { model: new RegExp(word, "i") },
         { type: new RegExp(word, "i") },
 
-        // ✅ FIX FOR ARRAY FIELDS
+        // ✅ FIX ARRAY MATCH
         { fuelType: { $elemMatch: { $regex: word, $options: "i" } } },
         { transmission: { $elemMatch: { $regex: word, $options: "i" } } }
       ]
     }));
 
-    // 🔥 KEEPING YOUR ORIGINAL LOGIC
     const cars = await Car.find({ $and: searchConditions });
 
     if (!cars.length) {
@@ -139,24 +138,6 @@ router.get("/", async (req, res) => {
     const cars = await Car.find(filter).sort({ createdAt: -1 });
 
     res.json(cars);
-
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// =========================
-// ✅ GET SINGLE CAR
-// =========================
-router.get("/:id", async (req, res) => {
-  try {
-    const car = await Car.findById(req.params.id);
-
-    if (!car) {
-      return res.status(404).json({ message: "Car not found" });
-    }
-
-    res.json(car);
 
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -226,6 +207,24 @@ router.delete("/:id", async (req, res) => {
     await Car.findByIdAndDelete(req.params.id);
 
     res.json({ success: true, message: "❌ Car Deleted" });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// =========================
+// ⚠️ KEEP THIS LAST ALWAYS
+// =========================
+router.get("/:id", async (req, res) => {
+  try {
+    const car = await Car.findById(req.params.id);
+
+    if (!car) {
+      return res.status(404).json({ message: "Car not found" });
+    }
+
+    res.json(car);
 
   } catch (err) {
     res.status(500).json({ message: err.message });
