@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
-    const res = await fetch(`http://localhost:5000/api/cars/${id}`);
+    const res = await fetch(`https://auto-verse-hcp5.onrender.com//api/cars/${id}`);
     const car = await res.json();
 
     if (!car || car.message) {
@@ -66,9 +66,9 @@ document.addEventListener("DOMContentLoaded", async () => {
           ${
             car.images?.length
               ? car.images.map(img =>
-                  `<img src="http://localhost:5000/images/${img}">`
+                  `<img src="https://auto-verse-hcp5.onrender.com//images/${img}">`
                 ).join("")
-              : `<img src="http://localhost:5000/images/placeholder.jpg">`
+              : `<img src="https://auto-verse-hcp5.onrender.com//images/placeholder.jpg">`
           }
         </div>
 

@@ -30,7 +30,7 @@ if (!query) {
   throw new Error("No query");
 }
 
-fetch(`http://localhost:5000/api/cars/search/${query}`)
+fetch(`https://auto-verse-hcp5.onrender.com//api/cars/search/${query}`)
   .then(res => res.json())
   .then(data => {
 
@@ -74,9 +74,9 @@ fetch(`http://localhost:5000/api/cars/search/${query}`)
               ${
                 (car.images || []).length
                   ? car.images.map(img =>
-                      `<img src="http://localhost:5000/images/${img}">`
+                      `<img src="https://auto-verse-hcp5.onrender.com//images/${img}">`
                     ).join("")
-                  : `<img src="http://localhost:5000/images/placeholder.jpg">`
+                  : `<img src="https://auto-verse-hcp5.onrender.com//images/placeholder.jpg">`
               }
             </div>
 

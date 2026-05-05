@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     const cars = await Promise.all(
       compare.map(id =>
-        fetch(`http://localhost:5000/api/cars/${id}`)
+        fetch(`https://auto-verse-hcp5.onrender.com//api/cars/${id}`)
           .then(res => res.json())
       )
     );
@@ -27,12 +27,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         <tr>
           <th>Feature</th>
           <th>
-            <img src="http://localhost:5000/images/${car1.images[0]}" class="car-img">
+            <img src="https://auto-verse-hcp5.onrender.com//images/${car1.images[0]}" class="car-img">
             <div class="car-title">${car1.brand} ${car1.model}</div>
             <button class="remove-btn" data-id="${car1._id}">Remove</button>
           </th>
           <th>
-            <img src="http://localhost:5000/images/${car2.images[0]}" class="car-img">
+            <img src="https://auto-verse-hcp5.onrender.com//images/${car2.images[0]}" class="car-img">
             <div class="car-title">${car2.brand} ${car2.model}</div>
             <button class="remove-btn" data-id="${car2._id}">Remove</button>
           </th>

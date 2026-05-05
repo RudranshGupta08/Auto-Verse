@@ -8,7 +8,7 @@ async function sendMessage() {
 
   chatBox.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
 
-  const res = await fetch("http://localhost:5000/api/ai/chat", {
+  const res = await fetch("https://auto-verse-hcp5.onrender.com//api/ai/chat", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

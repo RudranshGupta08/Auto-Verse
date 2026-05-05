@@ -14,6 +14,9 @@ import aiRoutes from "./routes/aiRoutes.js";
 
 const app = express();
 
+const cors = require("cors");
+app.use(cors());
+
 // =========================
 // 🔥 FIX __dirname
 // =========================
