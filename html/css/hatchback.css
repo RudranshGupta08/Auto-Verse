@@ -482,3 +482,23 @@ footer {
 .ai-bubble:hover {
   background: #ffcc33;
 }
+
+@media (max-width: 768px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  .container,
+  .section,
+  .car-card {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+
+}

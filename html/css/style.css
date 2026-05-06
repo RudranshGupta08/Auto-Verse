@@ -450,3 +450,42 @@ footer {
 .ai-bubble:hover {
   background: #ffcc33;
 }
+
+/* =========================
+   📱 MOBILE FIX
+========================= */
+@media (max-width: 768px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .navbar,
+  .container,
+  .hero,
+  .content,
+  .search-box {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .search-box {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-box input,
+  .search-box button {
+    width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+}
