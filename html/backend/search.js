@@ -23,7 +23,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // create navbar if not exists
     container = document.createElement("div");
     container.classList.add("navbar");
-    header.appendChild(container);
+
+    if (header) {
+      header.appendChild(container);
+    } else {
+      document.body.prepend(container);
+    }
   }
 
   container.appendChild(searchBox);
@@ -35,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("searchBtn");
 
   function search() {
+
     const query = input.value.trim();
 
     if (!query) {
@@ -42,12 +48,17 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    window.location.href = `search.html?query=${encodeURIComponent(query)}`;
+    window.location.href =
+      `search.html?query=${encodeURIComponent(query)}`;
   }
 
+  // ✅ EVENTS
   btn.addEventListener("click", search);
+
   input.addEventListener("keypress", e => {
-    if (e.key === "Enter") search();
+    if (e.key === "Enter") {
+      search();
+    }
   });
 
-});
+}); // ✅ FINAL CLOSING
