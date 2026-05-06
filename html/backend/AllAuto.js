@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // =========================
     // 🔥 FETCH DATA
     // =========================
-    const res = await fetch("https://auto-verse-hcp5.onrender.com/api/cars");
+    const res = await fetch(`${API_BASE}/cars`);
     const allCars = await res.json();
 
     console.log("All Cars:", allCars);

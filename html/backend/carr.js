@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
-    const res = await fetch(`https://auto-verse-hcp5.onrender.com/api/cars/${id}`);
+    const res = await fetch(`${API_BASE}/cars/${id}`);
     const car = await res.json();
 
     if (!car || car.message) {

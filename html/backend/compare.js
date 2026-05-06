@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     const cars = await Promise.all(
       compare.map(id =>
-        fetch(`https://auto-verse-hcp5.onrender.com/api/cars/${id}`)
+        fetch(`${API_BASE}/cars`)
           .then(res => res.json())
       )
     );

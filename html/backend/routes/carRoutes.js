@@ -145,6 +145,26 @@ router.get("/", async (req, res) => {
 });
 
 // =========================
+// ⚠️ KEEP THIS LAST ALWAYS
+// =========================
+router.get("/:id", async (req, res) => {
+  try {
+    const car = await Car.findById(req.params.id);
+
+    if (!car) {
+      return res.status(404).json({ message: "Car not found" });
+    }
+
+    res.json(car);
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+export default router;
+
+// =========================
 // ✅ ADD CAR
 // =========================
 router.post("/", upload.array("images", 20), async (req, res) => {
@@ -212,23 +232,3 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
-// =========================
-// ⚠️ KEEP THIS LAST ALWAYS
-// =========================
-router.get("/:id", async (req, res) => {
-  try {
-    const car = await Car.findById(req.params.id);
-
-    if (!car) {
-      return res.status(404).json({ message: "Car not found" });
-    }
-
-    res.json(car);
-
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-export default router;

@@ -80,7 +80,7 @@ function handleFiles(files) {
 // LOAD
 // =========================
 async function loadCars() {
-  const res = await fetch("https://auto-verse-hcp5.onrender.com/api/cars");
+  const res = await fetch(`${API_BASE}/cars`);
   const cars = await res.json();
 
   carsList.innerHTML = cars.map(car => `
@@ -100,7 +100,7 @@ async function loadCars() {
 window.editCar = async (id) => {
   editId = id;
 
-  const res = await fetch(`https://auto-verse-hcp5.onrender.com/api/cars/${id}`);
+  const res = await fetch(`${API_BASE}/cars/${id}`);
   const car = await res.json();
 
   Object.keys(car).forEach(key => {
@@ -145,9 +145,9 @@ window.editCar = async (id) => {
 window.deleteCar = async (id) => {
   if (!confirm("Delete this car?")) return;
 
-  await fetch(`https://auto-verse-hcp5.onrender.com/api/cars/${id}`, {
+  await fetch(`${API_BASE}/cars/${id}`), {
     method: "DELETE"
-  });
+  };
 
   loadCars();
 };
