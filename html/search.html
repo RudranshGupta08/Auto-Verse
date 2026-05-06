@@ -9,37 +9,41 @@
 
 <body class="search-page">
 
-<header class="navbar">
-  <h1>🔍 Search Results</h1>
-</header>
+  <header class="navbar">
+    <h1>🔍 Search Results</h1>
+  </header>
 
-<main id="results"></main>
+  <main id="results"></main>
 
-<footer>
-  <p>© 2025 AutoVerse</p>
-</footer>
+  <footer>
+    <p>© 2025 AutoVerse</p>
+  </footer>
 
-<script>
-const params = new URLSearchParams(window.location.search);
-const query = params.get("query") || "";
+  <script>
+    const API_BASE = "https://auto-verse-hcp5.onrender.com/api";
+  </script>
 
-const container = document.getElementById("results");
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get("query") || "";
 
-if (!query) {
-  container.innerHTML = "<h2>⚠️ Invalid search</h2>";
-  throw new Error("No query");
-}
+    const container = document.getElementById("results");
 
-// 🔥 API CALL
-fetch(`${API_BASE}/cars/search/${query}`)
-  .then(res => res.json())
-  .then(data => {
+    if (!query) {
+      container.innerHTML = "<h2>⚠️ Invalid search</h2>";
+      throw new Error("No query");
+    }
 
-    // ✅ FIX: handle both array & object response
-    const cars = Array.isArray(data) ? data : data.cars;
+    // 🔥 API CALL
+    fetch(`${API_BASE}/cars/search/${query}`)
+      .then(res => res.json())
+      .then(data => {
 
-    if (!cars || !cars.length) {
-      container.innerHTML = `
+        // ✅ FIX: handle both array & object response
+        const cars = Array.isArray(data) ? data : data.cars;
+
+        if (!cars || !cars.length) {
+          container.innerHTML = `
         <div style="text-align:center; margin-top:60px;">
           <h2 style="color:#ff4d4d;">
             🚫 No cars found in AutoVerse database
@@ -49,19 +53,19 @@ fetch(`${API_BASE}/cars/search/${query}`)
           </p>
         </div>
       `;
-      return;
-    }
+          return;
+        }
 
-    container.innerHTML = cars.map((car, index) => {
+        container.innerHTML = cars.map((car, index) => {
 
-      const format = val =>
-        Array.isArray(val) ? val.join(", ") : (val || "N/A");
+          const format = val =>
+            Array.isArray(val) ? val.join(", ") : (val || "N/A");
 
-      const stars =
-        "★".repeat(car.rating || 3) +
-        "☆".repeat(5 - (car.rating || 3));
+          const stars =
+            "★".repeat(car.rating || 3) +
+            "☆".repeat(5 - (car.rating || 3));
 
-      return `
+          return `
         <div class="section">
 
           <div class="car-header">
@@ -75,13 +79,12 @@ fetch(`${API_BASE}/cars/search/${query}`)
             <button class="nav-btn left" data-index="${index}">❮</button>
 
             <div class="image-slider" id="slider-${index}">
-              ${
-                (car.images || []).length
-                  ? car.images.map(img =>
-                      `<img src="https://auto-verse-hcp5.onrender.com/images/${img}">`
-                    ).join("")
-                  : `<img src="https://auto-verse-hcp5.onrender.com/images/placeholder.jpg">`
-              }
+              ${(car.images || []).length
+              ? car.images.map(img =>
+                `<img src="https://auto-verse-hcp5.onrender.com/images/${img}">`
+              ).join("")
+              : `<img src="https://auto-verse-hcp5.onrender.com/images/placeholder.jpg">`
+            }
             </div>
 
             <button class="nav-btn right" data-index="${index}">❯</button>
@@ -129,37 +132,38 @@ fetch(`${API_BASE}/cars/search/${query}`)
 
         </div>
       `;
-    }).join("");
+        }).join("");
 
-    // =========================
-    // 🔥 SLIDER LOGIC
-    // =========================
-    document.querySelectorAll(".nav-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
+        // =========================
+        // 🔥 SLIDER LOGIC
+        // =========================
+        document.querySelectorAll(".nav-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
 
-        const index = btn.dataset.index;
-        const slider = document.getElementById(`slider-${index}`);
+            const index = btn.dataset.index;
+            const slider = document.getElementById(`slider-${index}`);
 
-        let current = slider.dataset.index ? parseInt(slider.dataset.index) : 0;
-        const total = slider.children.length;
+            let current = slider.dataset.index ? parseInt(slider.dataset.index) : 0;
+            const total = slider.children.length;
 
-        if (btn.classList.contains("left")) {
-          current = (current - 1 + total) % total;
-        } else {
-          current = (current + 1) % total;
-        }
+            if (btn.classList.contains("left")) {
+              current = (current - 1 + total) % total;
+            } else {
+              current = (current + 1) % total;
+            }
 
-        slider.style.transform = `translateX(-${current * 100}%)`;
-        slider.dataset.index = current;
+            slider.style.transform = `translateX(-${current * 100}%)`;
+            slider.dataset.index = current;
+          });
+        });
+
+      })
+      .catch(err => {
+        console.error(err);
+        container.innerHTML = "<h2>⚠️ Error loading search results</h2>";
       });
-    });
-
-  })
-  .catch(err => {
-    console.error(err);
-    container.innerHTML = "<h2>⚠️ Error loading search results</h2>";
-  });
-</script>
+  </script>
 
 </body>
+
 </html>
