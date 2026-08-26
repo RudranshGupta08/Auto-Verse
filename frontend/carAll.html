@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title id="page-title">AutoVerse Cars</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/carAll.css" />
+  <link rel="stylesheet" href="assets/css/search.css" />
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+
+    <!-- LOGO -->
+    <div class="logo">
+      <img src="assets/images/Autoverselogo.png" class="logo-img">
+      <span>Auto Verse</span>
+    </div>
+
+    <!-- NAV + SEARCH -->
+    <nav class="navbar">
+
+      <div class="nav-links">
+        <a href="parts-o-corner.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="login.html">Login</a>
+      </div>
+
+      <!-- SEARCH -->
+      <form class="search-box" onsubmit="handleSearch(event)">
+        <input type="text" id="searchInput" placeholder="Search cars..." required>
+        <button type="submit">🔍</button>
+      </form>
+
+    </nav>
+
+  </header>
+
+  <!-- ===== PAGE HEADING ===== -->
+  <section class="heading-section">
+    <h1 id="page-heading" class="page-heading"></h1>
+  </section>
+
+  <!-- ===== MAIN ===== -->
+  <main>
+
+    <div class="section-title" id="section-title"></div>
+    <p class="section-desc" id="section-desc"></p>
+
+    <!-- CAR LIST -->
+    <section id="car-container" class="car-container"></section>
+
+  </main>
+
+  <!-- ===== FLOATING COMPARE ===== -->
+  <a href="compare.html" class="compare-float" id="compareBtn">
+    ⚖️ Compare Cars
+  </a>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>© 2025 AutoVerse. All Rights Reserved.</p>
+  </footer>
+
+  <!-- ===== PAGE SCRIPT ===== -->
+  <script>
+    const params = new URLSearchParams(window.location.search);
+
+    const brand = params.get("brand") || "";
+    const type = params.get("type") || "";
+
+    const formatText = (text) =>
+      text ? text.charAt(0).toUpperCase() + text.slice(1) : "";
+
+    const brandName = formatText(brand);
+    const typeName = formatText(type);
+
+    // PAGE CONTENT
+    document.getElementById("page-heading").innerText =
+      `${brandName} ${typeName}s`;
+
+    document.getElementById("page-title").innerText =
+      `${brandName} ${typeName}s | AutoVerse`;
+
+    document.getElementById("section-title").innerText =
+      `Explore ${brandName} ${typeName}s`;
+
+    document.getElementById("section-desc").innerText =
+      `Browse all available ${typeName}s from ${brandName}. Compare features, performance, and pricing in one place.`;
+
+    // IMPORTANT (FOR FILTER)
+    document.body.dataset.brand = brand.toLowerCase();
+    document.body.dataset.type = type.toLowerCase();
+  </script>
+
+  <!-- ===== SEARCH ===== -->
+  <script>
+    function handleSearch(e) {
+      e.preventDefault();
+      const query = document.getElementById("searchInput").value.trim();
+      if (!query) return;
+      window.location.href = `search.html?query=${encodeURIComponent(query)}`;
+    }
+  </script>
+
+  <!-- ===== MAIN SCRIPT ===== -->
+  <script>
+    const API_BASE = API_BASE_URL;
+  </script>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/carAll.js"></script>
+  <script src="assets/js/AllAuto.js"></script>
+  <script src="assets/js/search.js"></script>
+
+</body>
+
+</html>

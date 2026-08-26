@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>User Signup</title>
+
+  <link rel="stylesheet" href="assets/css/signup.css">
+
+  <!-- API Configuration -->
+  <script src="assets/js/config.js"></script>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">
+
+      <img
+        src="assets/images/Autoverselogo.png"
+        alt="Auto Verse Logo"
+        class="logo-img"
+      >
+
+      <span>Auto Verse</span>
+
+    </div>
+  </header>
+
+
+  <div class="signup-container">
+
+    <h2>Create an Account</h2>
+
+    <form
+      id="signupForm"
+      class="signup-form"
+    >
+
+      <div class="form-group">
+
+        <label for="username">
+          Choose Username
+        </label>
+
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Enter username"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="password">
+          Choose Password
+        </label>
+
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter password"
+          required
+        >
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="btn"
+      >
+        Signup
+      </button>
+
+
+      <p class="login-link">
+
+        Already have an account?
+
+        <a href="login.html">
+          Login
+        </a>
+
+      </p>
+
+    </form>
+
+  </div>
+
+
+  <!-- =========================
+       SIGNUP SCRIPT
+  ========================== -->
+
+  <script>
+
+    const signupForm =
+      document.getElementById("signupForm");
+
+
+    signupForm.addEventListener(
+      "submit",
+      async (event) => {
+
+        event.preventDefault();
+
+
+        const username =
+          document
+            .getElementById("username")
+            .value
+            .trim();
+
+
+        const password =
+          document
+            .getElementById("password")
+            .value;
+
+
+        try {
+
+          const response =
+            await fetch(
+              `${API_BASE_URL}/auth/signup`,
+              {
+                method: "POST",
+
+                headers: {
+                  "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                  username,
+                  password
+                })
+              }
+            );
+
+
+          const data =
+            await response.json();
+
+
+          if (!response.ok) {
+
+            throw new Error(
+              data.message ||
+              "Signup failed"
+            );
+
+          }
+
+
+          alert(
+            data.message ||
+            "Signup successful!"
+          );
+
+
+          window.location.href =
+            "login.html";
+
+
+        } catch (error) {
+
+          console.error(
+            "Signup Error:",
+            error
+          );
+
+
+          alert(
+            error.message ||
+            "Unable to create account. Please try again."
+          );
+
+        }
+
+      }
+    );
+
+  </script>
+
+</body>
+
+</html>
