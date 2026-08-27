@@ -1,32 +1,135 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Compare Cars | AutoVerse</title>
-
+  <title>Compare | AutoVerse</title>
   <link rel="stylesheet" href="assets/css/compare.css">
+  <script src="assets/js/config.js"></script>
 </head>
-
 <body>
+  <div class="cursor-dot"></div><div class="cursor-ring"></div>
+  <div class="scroll-progress"><span id="scrollProgress"></span></div>
 
-  <header class="navbar">
-    <h1>⚖️ Compare Cars</h1>
-    <p>Select 2 cars and compare side-by-side</p>
+  <header class="compare-nav" id="compareNav">
+    <a class="brand" href="discover.html">
+      <span class="brand-mark">AV</span>
+      <span><strong>AUTOVERSE</strong><small>AUTOMOTIVE INTELLIGENCE</small></span>
+    </a>
+    <nav class="app-links" aria-label="AutoVerse navigation">
+      <a href="discover.html">Discover</a>
+      <a href="vehicles.html">Vehicles</a>
+      <a class="active" href="compare.html">Compare</a>
+      <a href="search.html">Search</a>
+      <a href="discover.html#intelligence">Intelligence</a>
+    </nav>
+    <a class="nav-search" href="vehicles.html">⌕</a>
   </header>
 
-  <div id="compare-container" class="compare-container">
-    <h2 class="loading">Loading comparison...</h2>
-  </div>
+  <main>
+    <section class="compare-hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> AUTOVERSE / COMPARISON STUDIO</p>
+        <p class="kicker">THE DECISION ROOM.</p>
+        <h1>Put the machines<br><em>side by side.</em></h1>
+        <p class="hero-description">
+          Compare the numbers that matter, the details you feel, and the trade-offs
+          you should know before you walk into the showroom.
+        </p>
+      </div>
+      <div class="hero-word">COMPARE</div>
+      <div class="hero-foot"><span>01 / COMPARISON STUDIO</span><span>SELECT UP TO 3 MACHINES</span></div>
+    </section>
 
+    <section class="studio-section">
+      <div class="section-line"><span>02 — BUILD YOUR COMPARISON</span><i></i></div>
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow"><span></span> CHOOSE YOUR MACHINES</p>
+          <h2>Three cars.<br><em>One decision.</em></h2>
+        </div>
+        <p>Search the live AutoVerse catalogue and build a comparison without leaving the page.</p>
+      </div>
+
+      <div class="selector-grid" id="selectorGrid">
+        <div class="selector-card" data-slot="0">
+          <span class="slot-number">01</span>
+          <div class="selector-empty">
+            <b>ADD VEHICLE</b>
+            <p>Search brand or model</p>
+          </div>
+          <div class="selector-search">
+            <input type="search" placeholder="Search a car..." autocomplete="off">
+            <div class="suggestions"></div>
+          </div>
+        </div>
+        <div class="selector-card" data-slot="1">
+          <span class="slot-number">02</span>
+          <div class="selector-empty">
+            <b>ADD VEHICLE</b>
+            <p>Search brand or model</p>
+          </div>
+          <div class="selector-search">
+            <input type="search" placeholder="Search a car..." autocomplete="off">
+            <div class="suggestions"></div>
+          </div>
+        </div>
+        <div class="selector-card" data-slot="2">
+          <span class="slot-number">03</span>
+          <div class="selector-empty">
+            <b>ADD VEHICLE</b>
+            <p>Search brand or model</p>
+          </div>
+          <div class="selector-search">
+            <input type="search" placeholder="Search a car..." autocomplete="off">
+            <div class="suggestions"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="compare-action-row">
+        <p id="selectionMeta">0 / 3 vehicles selected</p>
+        <button id="compareBtn" class="gold-btn" type="button">COMPARE MACHINES <span>↓</span></button>
+      </div>
+    </section>
+
+    <section class="comparison-section" id="comparisonSection">
+      <div class="section-line"><span>03 — VEHICLE INTELLIGENCE</span><i></i></div>
+      <div class="comparison-head">
+        <div>
+          <p class="eyebrow"><span></span> AUTOVERSE SIDE BY SIDE</p>
+          <h2>What changes<br><em>between them?</em></h2>
+        </div>
+        <p id="comparisonNote">Select at least two vehicles to reveal the comparison.</p>
+      </div>
+      <div class="comparison-table-wrap" id="comparisonTable">
+        <div class="compare-placeholder">
+          <span>VS</span>
+          <h3>Your comparison is waiting.</h3>
+          <p>Choose two or three vehicles above.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="decision-section" id="decisionSection">
+      <div class="decision-copy">
+        <p class="eyebrow"><span></span> THE AUTOVERSE TAKE</p>
+        <h2>Numbers tell you<br><em>what changes.</em></h2>
+        <p>AutoVerse will highlight the practical differences first, so you can decide what deserves a showroom visit.</p>
+      </div>
+      <div class="decision-card" id="decisionCard">
+        <span>COMPARISON INSIGHT</span>
+        <h3>Add vehicles to unlock the AutoVerse take.</h3>
+      </div>
+    </section>
+  </main>
+
+  <footer class="compare-footer">
+    <strong>AUTOVERSE</strong>
+    <span>Automotive Intelligence Platform</span>
+    <small>Discover · Understand · Compare · Decide</small>
+  </footer>
+
+  <script src="assets/js/compare.js"></script>
 </body>
-
-<script>
-  const API_BASE = API_BASE_URL;
-</script>
-<script src="assets/js/search.js"></script>
-<script src="assets/js/config.js"></script> 
-<script src="assets/js/compare.js"></script>
-
 </html>

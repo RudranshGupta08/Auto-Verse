@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vehicles | AutoVerse</title>
+  <link rel="stylesheet" href="assets/css/vehicles.css">
+  <script src="assets/js/config.js"></script>
+</head>
+<body>
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+  <div class="scroll-progress"><span id="scrollProgress"></span></div>
+
+  <header class="vehicles-nav" id="vehiclesNav">
+    <a class="brand" href="discover.html">
+      <span class="brand-mark">AV</span>
+      <span><strong>AUTOVERSE</strong><small>AUTOMOTIVE INTELLIGENCE</small></span>
+    </a>
+
+    <nav class="app-links" aria-label="AutoVerse navigation">
+      <a href="discover.html">Discover</a>
+      <a class="active" href="vehicles.html">Vehicles</a>
+      <a href="compare.html">Compare</a>
+      <a href="search.html">Search</a>
+      <a href="#intelligence">Intelligence</a>
+    </nav>
+
+    <button class="mobile-filter-btn" id="mobileFilterBtn" type="button">FILTERS</button>
+  </header>
+
+  <main>
+    <section class="vehicles-hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> THE AUTOVERSE VEHICLE UNIVERSE</p>
+        <h1>Every machine.<br><em>One intelligent catalogue.</em></h1>
+        <p class="hero-description">
+          Explore the live AutoVerse catalogue, narrow it down with precision,
+          or search for the machine already on your mind.
+        </p>
+      </div>
+
+      <div class="hero-stats" id="heroStats">
+        <div><strong id="totalVehicles">—</strong><span>VEHICLES</span></div>
+        <div><strong id="totalBrands">—</strong><span>BRANDS</span></div>
+        <div><strong id="totalTypes">—</strong><span>BODY TYPES</span></div>
+      </div>
+    </section>
+
+    <section class="catalogue-shell">
+      <aside class="filters-panel" id="filtersPanel">
+        <div class="filters-head">
+          <div>
+            <p class="eyebrow"><span></span> REFINE THE UNIVERSE</p>
+            <h2>Find your machine.</h2>
+          </div>
+          <button id="closeFilters" type="button" aria-label="Close filters">×</button>
+        </div>
+
+        <div class="filter-group search-group">
+          <label for="vehicleSearch">SEARCH</label>
+          <div class="search-field">
+            <input id="vehicleSearch" type="search" placeholder="Brand, model or vehicle..." autocomplete="off">
+            <span>⌕</span>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label for="brandFilter">BRAND</label>
+          <select id="brandFilter"><option value="">All brands</option></select>
+        </div>
+
+        <div class="filter-group">
+          <label for="typeFilter">BODY TYPE</label>
+          <select id="typeFilter"><option value="">All body types</option></select>
+        </div>
+
+        <div class="filter-group">
+          <label for="fuelFilter">POWERTRAIN</label>
+          <select id="fuelFilter">
+            <option value="">All powertrains</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="transmissionFilter">TRANSMISSION</label>
+          <select id="transmissionFilter">
+            <option value="">All transmissions</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>PRICE RANGE</label>
+          <div class="range-row">
+            <input id="minPrice" type="number" min="0" placeholder="Min ₹L">
+            <span>—</span>
+            <input id="maxPrice" type="number" min="0" placeholder="Max ₹L">
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label for="seatsFilter">SEATING</label>
+          <select id="seatsFilter">
+            <option value="">Any seating</option>
+          </select>
+        </div>
+
+        <div class="filter-actions">
+          <button id="applyFilters" class="gold-btn" type="button">APPLY FILTERS <span>→</span></button>
+          <button id="clearFilters" class="text-btn" type="button">CLEAR ALL</button>
+        </div>
+      </aside>
+
+      <div class="catalogue">
+        <div class="catalogue-toolbar">
+          <div>
+            <p class="eyebrow"><span></span> LIVE CATALOGUE</p>
+            <h2 id="resultsTitle">All vehicles.</h2>
+            <p id="resultsMeta">Loading the automotive universe…</p>
+          </div>
+
+          <div class="sort-wrap">
+            <label for="sortFilter">SORT</label>
+            <select id="sortFilter">
+              <option value="featured">Featured</option>
+              <option value="newest">Newest → Oldest</option>
+              <option value="oldest">Oldest → Newest</option>
+              <option value="priceAsc">Price — Low to High</option>
+              <option value="priceDesc">Price — High to Low</option>
+              <option value="rating">Highest Rated</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="active-filters" id="activeFilters"></div>
+
+        <div class="vehicle-grid" id="vehicleGrid">
+          <div class="catalogue-loading">
+            <span class="loader"></span>
+            <p>Loading the automotive universe</p>
+          </div>
+        </div>
+
+        <div class="explore-footer" id="exploreFooter">
+          <div>
+            <span id="showingText">Showing 0 of 0 vehicles</span>
+            <i></i>
+          </div>
+          <button id="exploreMore" class="explore-more" type="button">
+            EXPLORE MORE <span>+</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="vehicles-footer">
+    <strong>AUTOVERSE</strong>
+    <span>Automotive Intelligence Platform</span>
+    <small>Discover · Understand · Compare · Decide</small>
+  </footer>
+
+  <script src="assets/js/vehicles.js"></script>
+</body>
+</html>

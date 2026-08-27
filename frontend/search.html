@@ -6,392 +6,1197 @@
 
     <title>Search Results | AutoVerse</title>
 
-    <link rel="stylesheet" href="assets/css/search.css" />
+    <link rel="stylesheet" href="assets/css/search-finder.css" />
 
     <!-- API Configuration -->
     <script src="assets/js/config.js"></script>
+  <style>
+      .car-result {
+        cursor: pointer;
+        transition: transform 0.35s ease, border-color 0.35s ease;
+      }
+
+      .car-result:hover {
+        transform: translateY(-4px);
+      }
+    </style>
+
   </head>
 
   <body class="search-page">
+    <div class="page-noise"></div>
+    <div class="page-vignette"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+    <div class="scroll-line"><span id="scrollProgress"></span></div>
 
-    <header class="navbar">
-      <h1>🔍 Search Results</h1>
+    <header class="av-search-nav">
+      <a class="av-brand" href="discover.html">
+        <span class="brand-mark">AV</span>
+        <span><strong>AUTOVERSE</strong><small>AUTOMOTIVE INTELLIGENCE</small></span>
+      </a>
+      <nav>
+        <a href="discover.html">Discover</a>
+        <a class="active" href="search.html">Search</a>
+        <a href="compare.html">Compare</a>
+      </nav>
+      <a class="nav-back" href="discover.html">← Discover</a>
     </header>
 
-    <main id="results"></main>
+    <main>
+      <section class="search-hero">
+        <div class="hero-copy">
+          <p class="eyebrow"><span></span> AUTOVERSE / VEHICLE INTELLIGENCE</p>
+          <h1 id="pageTitle">Find the <em>right machine.</em></h1>
+          <p id="pageSubtitle">
+            Search the AutoVerse catalogue or let your preferences narrow the universe for you.
+          </p>
+        </div>
+        <div class="hero-meta">
+          <span>LIVE CATALOGUE</span>
+          <span>01 / SEARCH</span>
+        </div>
+      </section>
+      <section class="results-wrap">
+        <div id="results"></div>
+      </section>
+    </main>
 
-    <footer>
-      <p>© 2025 AutoVerse</p>
+    <footer class="av-footer">
+      <strong>AUTOVERSE</strong>
+      <span>Automotive Intelligence Platform</span>
+      <small>Discover · Understand · Compare · Decide</small>
     </footer>
 
     <script>
-      const API_BASE = API_BASE_URL;
+  const API_BASE = API_BASE_URL;
 
-      const params =
-        new URLSearchParams(window.location.search);
+  const params =
+    new URLSearchParams(window.location.search);
 
-      const query =
-        params.get("query") || "";
+  const query =
+    (params.get("query") || "").trim();
 
-      const container =
-        document.getElementById("results");
+  const finderType =
+    (params.get("type") || "").trim().toLowerCase();
 
-      if (!query) {
+  const budgetRaw =
+    (params.get("budget") || "").trim();
+
+  // Supports both "20" and ranges such as "10-15".
+  const budgetNumbers =
+    (budgetRaw.match(/\d+(?:\.\d+)?/g) || [])
+      .map(Number);
+
+  const finderBudget =
+    budgetNumbers.length
+      ? Math.max(...budgetNumbers)
+      : 0;
+
+  const finderFuel =
+    (params.get("fuel") || "").trim().toLowerCase();
+
+  const finderPurpose =
+    (params.get("purpose") || "").trim().toLowerCase();
+
+  const container =
+    document.getElementById("results");
+
+
+  // ========================================
+  // HELPERS
+  // ========================================
+
+  const escapeHTML = (value) =>
+    String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+
+  const arrayValue = (value) =>
+    Array.isArray(value)
+      ? value
+      : value
+        ? [value]
+        : [];
+
+
+  const textValue = (value) =>
+    arrayValue(value)
+      .join(" ")
+      .toLowerCase();
+
+
+  // ========================================
+  // PRICE PARSER
+  // ========================================
+
+  const priceInLakh = (car) => {
+
+    if (
+      Number(car.minPrice) > 0
+    ) {
+      return Number(car.minPrice) / 100000;
+    }
+
+    const raw =
+      String(car.priceRange || "")
+        .toLowerCase();
+
+    const matches =
+      raw.match(/\d+(?:\.\d+)?/g);
+
+    if (!matches || !matches.length) {
+      return Infinity;
+    }
+
+    return Math.min(
+      ...matches.map(Number)
+    );
+  };
+
+
+  // ========================================
+  // VEHICLE TYPE
+  // ========================================
+
+  const getBodyType = (car) =>
+    String(
+      car.bodyType ||
+      car.type ||
+      ""
+    )
+      .trim()
+      .toLowerCase();
+
+
+  // ========================================
+  // FUEL MATCH
+  // ========================================
+
+  const matchesFuel = (car) => {
+
+    if (!finderFuel) {
+      return true;
+    }
+
+    const fuel =
+      textValue(car.fuelType);
+
+    if (finderFuel === "ev") {
+
+      return (
+        car.isEV === true ||
+        fuel.includes("electric") ||
+        fuel === "ev" ||
+        fuel.includes(" ev")
+      );
+
+    }
+
+    return fuel.includes(
+      finderFuel
+    );
+  };
+
+
+  // ========================================
+  // PURPOSE MATCHING
+  // ========================================
+
+  const purposeKeywords = {
+
+    family: [
+      "family",
+      "comfort",
+      "space",
+      "seating",
+      "practical"
+    ],
+
+    highway: [
+      "highway",
+      "touring",
+      "long",
+      "comfort",
+      "mileage"
+    ],
+
+    city: [
+      "city",
+      "urban",
+      "compact",
+      "easy",
+      "maneuver"
+    ],
+
+    performance: [
+      "performance",
+      "sport",
+      "power",
+      "turbo",
+      "handling"
+    ],
+
+    luxury: [
+      "luxury",
+      "premium",
+      "comfort",
+      "refined",
+      "leather"
+    ]
+
+  };
+
+
+  const purposeScore = (car) => {
+
+    if (!finderPurpose) {
+      return 0;
+    }
+
+    const text = [
+
+      car.bestFor,
+      car.description,
+      car.features,
+      car.pros,
+      car.verdict
+
+    ]
+      .map(textValue)
+      .join(" ");
+
+    const keywords =
+      purposeKeywords[
+        finderPurpose
+      ] || [];
+
+    return keywords.reduce(
+      (score, keyword) =>
+        score +
+        (
+          text.includes(keyword)
+            ? 1
+            : 0
+        ),
+      0
+    );
+  };
+
+
+  // ========================================
+  // FINDER SCORING
+  // ========================================
+
+  const scoreVehicle = (car) => {
+
+    let score = 0;
+
+
+    // BODY TYPE
+    if (finderType) {
+
+      if (
+        getBodyType(car) === finderType
+      ) {
+
+        score += 100;
+
+      } else {
+
+        return -Infinity;
+
+      }
+
+    }
+
+
+    // BUDGET
+    if (finderBudget) {
+
+      const price =
+        priceInLakh(car);
+
+      if (
+        price !== Infinity &&
+        price <= finderBudget
+      ) {
+
+        score += 50;
+
+      } else if (
+        price !== Infinity &&
+        price <= finderBudget * 1.10
+      ) {
+
+        // Slightly over budget:
+        // keep as an alternative.
+        score += 10;
+
+      } else {
+
+        return -Infinity;
+
+      }
+
+    }
+
+
+    // FUEL
+    if (finderFuel) {
+
+      if (
+        matchesFuel(car)
+      ) {
+
+        score += 40;
+
+      } else {
+
+        return -Infinity;
+
+      }
+
+    }
+
+
+    // PURPOSE
+    score +=
+      purposeScore(car) * 8;
+
+
+    // EXISTING RATING
+    score +=
+      Number(car.rating) || 0;
+
+
+    return score;
+
+  };
+
+
+  // ========================================
+  // VEHICLE CARD
+  // ========================================
+
+  const imageBase =
+    "https://auto-verse-hcp5.onrender.com/images/";
+
+
+  const renderVehicle = (
+    car,
+    index,
+    finderMode
+  ) => {
+
+    const rating =
+      Math.max(
+        1,
+        Math.min(
+          5,
+          Math.round(
+            Number(car.rating) || 3
+          )
+        )
+      );
+
+
+    const images =
+      Array.isArray(car.images) &&
+      car.images.length
+        ? car.images
+        : ["placeholder.jpg"];
+
+
+    return `
+
+      <div
+        class="section car-result"
+        data-id="${escapeHTML(car._id)}"
+        style="cursor:pointer;"
+      >
+
+        <div class="car-header">
+
+          <h1>
+            ${escapeHTML(car.brand)}
+            ${escapeHTML(car.model)}
+          </h1>
+
+          <p class="price">
+            ${escapeHTML(
+              car.priceRange ||
+              "Price on request"
+            )}
+          </p>
+
+          <div class="rating">
+
+            ${"★".repeat(rating)}
+            ${"☆".repeat(5 - rating)}
+
+          </div>
+
+
+          ${
+            finderMode
+              ? `
+                <p
+                  style="
+                    color:#d6a84f;
+                    font-size:11px;
+                    letter-spacing:.15em;
+                  "
+                >
+                  AUTOVERSE MATCH
+                  ${index + 1}
+                </p>
+              `
+              : ""
+          }
+
+        </div>
+
+
+        <!-- IMAGE SLIDER -->
+
+        <div class="image-slider-container">
+
+          <button
+            class="nav-btn left"
+            data-index="${index}"
+            type="button"
+          >
+            ❮
+          </button>
+
+
+          <div
+            class="image-slider"
+            id="slider-${index}"
+          >
+
+            ${images.map(
+              image => `
+
+                <img
+                  src="${imageBase}${escapeHTML(image)}"
+                  alt="${escapeHTML(
+                    car.brand
+                  )} ${escapeHTML(
+                    car.model
+                  )}"
+                  loading="lazy"
+                >
+
+              `
+            ).join("")}
+
+          </div>
+
+
+          <button
+            class="nav-btn right"
+            data-index="${index}"
+            type="button"
+          >
+            ❯
+          </button>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <div class="section">
+
+          <h2>Description</h2>
+
+          <p>
+            ${escapeHTML(
+              car.description ||
+              "No description available."
+            )}
+          </p>
+
+        </div>
+
+
+        <!-- SPECIFICATIONS -->
+
+        <div class="section">
+
+          <h2>Specifications</h2>
+
+          <p>
+            <strong>Type:</strong>
+            ${escapeHTML(
+              car.bodyType ||
+              car.type ||
+              "N/A"
+            )}
+          </p>
+
+          <p>
+            <strong>Engine:</strong>
+            ${escapeHTML(
+              arrayValue(
+                car.engineOptions
+              ).join(", ") ||
+              "N/A"
+            )}
+          </p>
+
+          <p>
+            <strong>Mileage:</strong>
+            ${escapeHTML(
+              car.mileage ||
+              "N/A"
+            )}
+          </p>
+
+          <p>
+            <strong>Fuel:</strong>
+            ${escapeHTML(
+              arrayValue(
+                car.fuelType
+              ).join(", ") ||
+              "N/A"
+            )}
+          </p>
+
+          <p>
+            <strong>Transmission:</strong>
+            ${escapeHTML(
+              arrayValue(
+                car.transmission
+              ).join(", ") ||
+              "N/A"
+            )}
+          </p>
+
+          <p>
+            <strong>Seats:</strong>
+            ${escapeHTML(
+              car.seatingCapacity ||
+              "N/A"
+            )}
+          </p>
+
+          <p>
+            <strong>NCAP:</strong>
+            ${escapeHTML(
+              car.ncapRating ||
+              "Not Rated"
+            )}
+          </p>
+
+        </div>
+
+
+        <!-- FEATURES -->
+
+        <div class="section">
+
+          <h2>Features</h2>
+
+          <ul>
+
+            ${
+              arrayValue(car.features)
+                .map(
+                  feature =>
+                    `<li>${escapeHTML(
+                      feature
+                    )}</li>`
+                )
+                .join("") ||
+              "<li>No feature data available.</li>"
+            }
+
+          </ul>
+
+        </div>
+
+
+        <!-- PROS -->
+
+        <div class="section">
+
+          <h2>Pros 👍</h2>
+
+          <ul>
+
+            ${
+              arrayValue(car.pros)
+                .map(
+                  pro =>
+                    `<li>${escapeHTML(
+                      pro
+                    )}</li>`
+                )
+                .join("") ||
+              "<li>No pros data available.</li>"
+            }
+
+          </ul>
+
+        </div>
+
+
+        <!-- CONS -->
+
+        <div class="section">
+
+          <h2>Cons 👎</h2>
+
+          <ul>
+
+            ${
+              arrayValue(car.cons)
+                .map(
+                  con =>
+                    `<li>${escapeHTML(
+                      con
+                    )}</li>`
+                )
+                .join("") ||
+              "<li>No cons data available.</li>"
+            }
+
+          </ul>
+
+        </div>
+
+
+        <!-- BEST FOR -->
+
+        <div class="section">
+
+          <h2>Best For</h2>
+
+          <ul>
+
+            ${
+              arrayValue(car.bestFor)
+                .map(
+                  item =>
+                    `<li>${escapeHTML(
+                      item
+                    )}</li>`
+                )
+                .join("") ||
+              "<li>No best-for data available.</li>"
+            }
+
+          </ul>
+
+        </div>
+
+
+        <!-- VERDICT -->
+
+        <div class="section">
+
+          <h2>Verdict</h2>
+
+          <p>
+            ${escapeHTML(
+              car.verdict ||
+              "No verdict available."
+            )}
+          </p>
+
+        </div>
+
+      </div>
+
+    `;
+
+  };
+
+
+  // ========================================
+  // LOAD RESULTS
+  // ========================================
+
+  const loadResults =
+    async () => {
+
+      const finderMode =
+        Boolean(
+          finderType ||
+          finderBudget ||
+          finderFuel ||
+          finderPurpose
+        );
+
+      if (finderMode) {
+        const title = document.getElementById("pageTitle");
+        const subtitle = document.getElementById("pageSubtitle");
+
+        if (title) {
+          title.innerHTML = 'AutoVerse <em>found these.</em>';
+        }
+
+        if (subtitle) {
+          subtitle.textContent =
+            "Your preferences have been matched against the live AutoVerse vehicle catalogue.";
+        }
+      }
+
+
+      if (
+        !query &&
+        !finderMode
+      ) {
 
         container.innerHTML =
           "<h2>⚠️ Invalid search</h2>";
 
-        throw new Error("No query");
+        return;
+
       }
 
-      // =========================
-      // API CALL
-      // =========================
 
-      fetch(
-        `${API_BASE}/cars/search/${encodeURIComponent(query)}`
-      )
+      try {
 
-        .then((res) => {
+        let cars = [];
 
-          if (!res.ok) {
-            throw new Error(
-              `Search request failed: ${res.status}`
+
+        // ====================================
+        // FIND MY CAR MODE
+        // ====================================
+
+        if (finderMode) {
+
+          const response =
+            await fetch(
+              `${API_BASE}/cars`
             );
+
+
+          if (!response.ok) {
+
+            throw new Error(
+              `Catalogue request failed: ${response.status}`
+            );
+
           }
 
-          return res.json();
-        })
 
-        .then((data) => {
+          const allCars =
+            await response.json();
 
-          // Handle both array and object responses
-          const cars =
+
+          cars =
+            allCars
+
+              .map(car => ({
+
+                car,
+
+                score:
+                  scoreVehicle(car)
+
+              }))
+
+              .filter(
+                item =>
+                  item.score !== -Infinity
+              )
+
+              .sort(
+                (a, b) =>
+                  b.score - a.score
+              )
+
+              .slice(0, 12)
+
+              .map(
+                item =>
+                  item.car
+              );
+
+        }
+
+
+        // ====================================
+        // NORMAL SEARCH MODE
+        // ====================================
+
+        else {
+
+          const response =
+            await fetch(
+              `${API_BASE}/cars/search/${encodeURIComponent(query)}`
+            );
+
+
+          if (!response.ok) {
+
+            throw new Error(
+              `Search request failed: ${response.status}`
+            );
+
+          }
+
+
+          const data =
+            await response.json();
+
+
+          cars =
             Array.isArray(data)
               ? data
-              : data.cars;
+              : (
+                  data.cars ||
+                  []
+                );
 
-          if (!cars || !cars.length) {
+        }
 
-            container.innerHTML = `
-              <div style="text-align:center; margin-top:60px;">
-                <h2 style="color:#ff4d4d;">
-                  🚫 No cars found in AutoVerse database
-                </h2>
 
-                <p style="color:#ccc;">
-                  Try searching another brand or model
-                </p>
-              </div>
-            `;
+        // ====================================
+        // NO RESULTS
+        // ====================================
 
-            return;
-          }
+        if (!cars.length) {
 
-          container.innerHTML =
-            cars
+          container.innerHTML = `
 
-              .map((car, index) => {
+            <div
+              style="
+                text-align:center;
+                margin-top:60px;
+              "
+            >
 
-                const format = (val) =>
-                  Array.isArray(val)
-                    ? val.join(", ")
-                    : val || "N/A";
+              <h2>
+                🚫 No matching cars found
+              </h2>
 
-                const rating =
-                  Number(car.rating) || 3;
+              <p style="color:#aaa;">
+                Try changing one of your
+                preferences.
+              </p>
 
-                const stars =
-                  "★".repeat(rating) +
-                  "☆".repeat(
-                    Math.max(0, 5 - rating)
+            </div>
+
+          `;
+
+          return;
+
+        }
+
+
+        // ====================================
+        // HEADER
+        // ====================================
+
+        container.innerHTML = `
+
+          <div
+            style="
+              padding:30px 0 10px;
+            "
+          >
+
+            <p
+              style="
+                color:#d6a84f;
+                letter-spacing:.15em;
+                font-size:11px;
+              "
+            >
+              ${
+                finderMode
+                  ? "AUTOVERSE MATCH"
+                  : "SEARCH RESULTS"
+              }
+            </p>
+
+
+            <h2>
+
+              ${
+                finderMode
+                  ? "Cars worth considering."
+                  : `Results for "${escapeHTML(
+                      query
+                    )}"`
+              }
+
+            </h2>
+
+
+            <p style="color:#999;">
+
+              ${cars.length}
+              vehicle${cars.length === 1 ? "" : "s"}
+              found.
+
+            </p>
+
+          </div>
+
+        `;
+
+
+        // ====================================
+        // CAR RESULTS
+        // ====================================
+
+        container.innerHTML +=
+
+          cars
+            .map(
+              (car, index) =>
+                renderVehicle(
+                  car,
+                  index,
+                  finderMode
+                )
+            )
+            .join("");
+
+
+        // ====================================
+        // IMAGE SLIDER
+        // ====================================
+
+        document
+          .querySelectorAll(
+            ".nav-btn"
+          )
+          .forEach(btn => {
+
+            btn.addEventListener(
+              "click",
+              event => {
+
+                event.stopPropagation();
+
+
+                const index =
+                  btn.dataset.index;
+
+
+                const slider =
+                  document.getElementById(
+                    `slider-${index}`
                   );
 
-                return `
-                  <div class="section">
 
-                    <div class="car-header">
-
-                      <h1>
-                        ${car.brand} ${car.model}
-                      </h1>
-
-                      <p class="price">
-                        ${car.priceRange || "N/A"}
-                      </p>
-
-                      <div class="rating">
-                        ${stars}
-                      </div>
-
-                    </div>
-
-                    <!-- IMAGE SLIDER -->
-
-                    <div class="image-slider-container">
-
-                      <button
-                        class="nav-btn left"
-                        data-index="${index}"
-                      >
-                        ❮
-                      </button>
-
-                      <div
-                        class="image-slider"
-                        id="slider-${index}"
-                      >
-
-                        ${
-                          (car.images || []).length
-                            ? car.images
-                                .map(
-                                  (img) =>
-                                    `<img src="https://auto-verse-hcp5.onrender.com/images/${img}" alt="${car.brand} ${car.model}">`
-                                )
-                                .join("")
-                            : `
-                              <img
-                                src="https://auto-verse-hcp5.onrender.com/images/placeholder.jpg"
-                                alt="No image available"
-                              >
-                            `
-                        }
-
-                      </div>
-
-                      <button
-                        class="nav-btn right"
-                        data-index="${index}"
-                      >
-                        ❯
-                      </button>
-
-                    </div>
-
-                    <!-- DESCRIPTION -->
-
-                    <div class="section">
-
-                      <h2>Description</h2>
-
-                      <p>
-                        ${
-                          car.description ||
-                          "No description available"
-                        }
-                      </p>
-
-                    </div>
-
-                    <!-- SPECIFICATIONS -->
-
-                    <div class="section">
-
-                      <h2>Specifications</h2>
-
-                      <p>
-                        <strong>Engine:</strong>
-                        ${format(car.engineOptions)}
-                      </p>
-
-                      <p>
-                        <strong>Mileage:</strong>
-                        ${car.mileage || "N/A"}
-                      </p>
-
-                      <p>
-                        <strong>Fuel:</strong>
-                        ${format(car.fuelType)}
-                      </p>
-
-                      <p>
-                        <strong>Transmission:</strong>
-                        ${format(car.transmission)}
-                      </p>
-
-                      <p>
-                        <strong>Seats:</strong>
-                        ${car.seatingCapacity || "N/A"}
-                      </p>
-
-                      <p>
-                        <strong>NCAP:</strong>
-                        ${car.ncapRating || "Not Rated"}
-                      </p>
-
-                    </div>
-
-                    <!-- FEATURES -->
-
-                    <div class="section">
-
-                      <h2>Features</h2>
-
-                      <ul>
-                        ${
-                          (car.features || [])
-                            .map(
-                              (feature) =>
-                                `<li>${feature}</li>`
-                            )
-                            .join("")
-                        }
-                      </ul>
-
-                    </div>
-
-                    <!-- PROS -->
-
-                    <div class="section">
-
-                      <h2>Pros 👍</h2>
-
-                      <ul>
-                        ${
-                          (car.pros || [])
-                            .map(
-                              (pro) =>
-                                `<li>${pro}</li>`
-                            )
-                            .join("")
-                        }
-                      </ul>
-
-                    </div>
-
-                    <!-- CONS -->
-
-                    <div class="section">
-
-                      <h2>Cons 👎</h2>
-
-                      <ul>
-                        ${
-                          (car.cons || [])
-                            .map(
-                              (con) =>
-                                `<li>${con}</li>`
-                            )
-                            .join("")
-                        }
-                      </ul>
-
-                    </div>
-
-                    <!-- BEST FOR -->
-
-                    <div class="section">
-
-                      <h2>Best For</h2>
-
-                      <ul>
-                        ${
-                          (car.bestFor || [])
-                            .map(
-                              (item) =>
-                                `<li>${item}</li>`
-                            )
-                            .join("")
-                        }
-                      </ul>
-
-                    </div>
-
-                    <!-- VERDICT -->
-
-                    <div class="section">
-
-                      <h2>Verdict</h2>
-
-                      <p>
-                        ${
-                          car.verdict ||
-                          "No verdict available"
-                        }
-                      </p>
-
-                    </div>
-
-                  </div>
-                `;
-              })
-
-              .join("");
-
-          // =========================
-          // IMAGE SLIDER LOGIC
-          // =========================
-
-          document
-            .querySelectorAll(".nav-btn")
-            .forEach((btn) => {
-
-              btn.addEventListener(
-                "click",
-                () => {
-
-                  const index =
-                    btn.dataset.index;
-
-                  const slider =
-                    document.getElementById(
-                      `slider-${index}`
-                    );
-
-                  let current =
-                    slider.dataset.index
-                      ? parseInt(
-                          slider.dataset.index
-                        )
-                      : 0;
-
-                  const total =
-                    slider.children.length;
-
-                  if (!total) return;
-
-                  if (
-                    btn.classList.contains(
-                      "left"
-                    )
-                  ) {
-
-                    current =
-                      (current - 1 + total) %
-                      total;
-
-                  } else {
-
-                    current =
-                      (current + 1) %
-                      total;
-                  }
-
-                  slider.style.transform =
-                    `translateX(-${current * 100}%)`;
-
-                  slider.dataset.index =
-                    current;
+                if (!slider) {
+                  return;
                 }
-              );
-            });
-        })
 
-        .catch((err) => {
 
-          console.error(
-            "❌ Search Error:",
-            err
-          );
+                const total =
+                  slider.children.length;
 
-          container.innerHTML =
-            "<h2>⚠️ Error loading search results</h2>";
-        });
-    </script>
+
+                if (!total) {
+                  return;
+                }
+
+
+                let current =
+                  Number(
+                    slider.dataset.index ||
+                    0
+                  );
+
+
+                if (
+                  btn.classList.contains(
+                    "left"
+                  )
+                ) {
+
+                  current =
+                    (
+                      current -
+                      1 +
+                      total
+                    ) % total;
+
+                } else {
+
+                  current =
+                    (
+                      current +
+                      1
+                    ) % total;
+
+                }
+
+
+                slider.style.transform =
+                  `translateX(-${
+                    current * 100
+                  }%)`;
+
+
+                slider.dataset.index =
+                  current;
+
+              }
+            );
+
+          });
+
+
+        // ====================================
+        // VEHICLE → NEW VEHICLE EXPERIENCE
+        // ====================================
+
+        document
+          .querySelectorAll(
+            ".car-result"
+          )
+          .forEach(card => {
+
+            card.addEventListener(
+              "click",
+              event => {
+
+                if (
+                  event.target.closest(
+                    ".nav-btn"
+                  )
+                ) {
+                  return;
+                }
+
+
+                const id =
+                  card.dataset.id;
+
+
+                if (!id) {
+
+                  console.warn(
+                    "AutoVerse: vehicle ID missing."
+                  );
+
+                  return;
+
+                }
+
+
+                window.location.href =
+                  `vehicle.html?id=${
+                    encodeURIComponent(id)
+                  }`;
+
+              }
+            );
+
+          });
+
+
+      } catch (error) {
+
+        console.error(
+          "❌ AutoVerse Search:",
+          error
+        );
+
+
+        container.innerHTML = `
+
+          <div
+            style="
+              text-align:center;
+              margin-top:60px;
+            "
+          >
+
+            <h2>
+              ⚠️ Unable to load
+              AutoVerse results
+            </h2>
+
+            <p style="color:#aaa;">
+              Please try again.
+            </p>
+
+          </div>
+
+        `;
+
+      }
+
+    };
+
+
+  loadResults();
+
+</script>
 
     <!-- Search JS -->
     <script src="assets/js/search.js"></script>
 
-  </body>
+  
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const body = document.body;
+  const progress = document.getElementById("scrollProgress");
+  const dot = document.querySelector(".cursor-dot");
+  const ring = document.querySelector(".cursor-ring");
+
+  const updateProgress = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    if (progress) progress.style.height = `${max > 0 ? (scrollY / max) * 100 : 0}%`;
+  };
+  addEventListener("scroll", updateProgress, { passive: true });
+  updateProgress();
+
+  if (
+    dot && ring &&
+    matchMedia("(pointer:fine)").matches &&
+    !matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
+    body.classList.add("cursor-ready");
+    let mx = innerWidth / 2, my = innerHeight / 2;
+    let rx = mx, ry = my;
+
+    addEventListener("pointermove", e => {
+      mx = e.clientX;
+      my = e.clientY;
+      dot.style.left = `${mx}px`;
+      dot.style.top = `${my}px`;
+    }, { passive: true });
+
+    const tick = () => {
+      if (!ring.isConnected) return;
+      rx += (mx - rx) * .18;
+      ry += (my - ry) * .18;
+      ring.style.left = `${rx}px`;
+      ring.style.top = `${ry}px`;
+      requestAnimationFrame(tick);
+    };
+    tick();
+
+    document.addEventListener("pointerover", e => {
+      if (e.target.closest("a,button,.car-result,.nav-btn")) {
+        body.classList.add("cursor-hover");
+      }
+    });
+    document.addEventListener("pointerout", e => {
+      if (e.target.closest("a,button,.car-result,.nav-btn")) {
+        body.classList.remove("cursor-hover");
+      }
+    });
+  }
+});
+</script>
+
+</body>
 </html>

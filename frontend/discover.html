@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AutoVerse Discover — explore cars, body types, electric vehicles and intelligent recommendations.">
+  <title>Discover | AutoVerse</title>
+  <link rel="stylesheet" href="assets/css/discover.css">
+</head>
+<body>
+  <div class="page-noise"></div>
+  <div class="page-vignette"></div>
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+  <div class="scroll-progress"><span id="scrollProgress"></span></div>
+
+  <header class="av-app-nav" id="appNav">
+    <a class="app-brand magnetic" href="discover.html" aria-label="AutoVerse Discover">
+      <span class="brand-mark">AV</span>
+      <span class="brand-copy">
+        <strong>AUTOVERSE</strong>
+        <small>AUTOMOTIVE INTELLIGENCE</small>
+      </span>
+    </a>
+
+    <nav class="app-links" aria-label="AutoVerse navigation">
+      <a class="active" href="discover.html">Discover</a>
+      <a href="vehicles.html">Vehicles</a>
+      <a href="compare.html">Compare</a>
+      <a href="search.html">Search</a>
+      <a href="#intelligence">Intelligence</a>
+    </nav>
+
+    <div class="app-actions">
+      <a class="nav-icon magnetic" href="search.html" aria-label="Search">⌕</a>
+      <button class="profile-btn magnetic" id="logoutBtn" type="button">Exit</button>
+    </div>
+
+    <button class="mobile-menu" id="mobileMenu" aria-label="Open navigation">
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <main>
+    <!-- 01 ARRIVAL -->
+    <section class="discover-hero">
+      <div class="hero-atmosphere"></div>
+      <div class="hero-orbit hero-orbit-a"></div>
+      <div class="hero-orbit hero-orbit-b"></div>
+      <div class="hero-grid"></div>
+
+      <div class="arrival-copy reveal">
+        <p class="eyebrow"><span></span> AUTOVERSE / DISCOVER</p>
+        <p class="arrival-kicker">WELCOME TO THE VERSE.</p>
+        <h1>Where cars become<br><em>more than machines.</em></h1>
+        <p class="arrival-description">
+          Explore the world of automobiles through data, design, technology
+          and real-world thinking. Find a car. Understand a car. Fall in love
+          with the right one.
+        </p>
+        <div class="arrival-actions">
+          <a href="#bodyTypes" class="solid-btn large magnetic">Explore the universe <span>↓</span></a>
+          <a href="#finder" class="text-btn magnetic">Find your right car <span>↘</span></a>
+        </div>
+      </div>
+
+      <div class="arrival-words" aria-hidden="true">
+        <span>DISCOVER</span>
+        <span>UNDERSTAND</span>
+        <span>COMPARE</span>
+        <span>DECIDE</span>
+      </div>
+
+      <div class="hero-foot reveal">
+        <span>01 / THE ARRIVAL</span>
+        <span>SCROLL TO EXPLORE</span>
+      </div>
+    </section>
+
+    <!-- 02 BODY TYPES -->
+    <section class="discover-section" id="bodyTypes">
+      <div class="section-line reveal"><span>02 — THE AUTOMOTIVE UNIVERSE</span><i></i></div>
+
+      <div class="section-heading reveal">
+        <div>
+          <p class="eyebrow"><span></span> CHOOSE YOUR WORLD</p>
+          <h2>Every body type<br>has a <em>character.</em></h2>
+        </div>
+        <p>
+          From compact city cars to commanding family machines, understand
+          what each shape is built to do before you choose what belongs in
+          your garage.
+        </p>
+      </div>
+
+      <div class="body-type-grid">
+        <a class="body-card reveal magnetic" href="hatchback.html">
+          <div class="card-index">01</div>
+          <div class="card-icon">HB</div>
+          <div class="card-content">
+            <span>HATCHBACK</span>
+            <h3>Small footprint.<br><em>Big practicality.</em></h3>
+            <p>A compact body with a rear hatch — easy in the city, practical for everyday life.</p>
+            <b>EXPLORE HATCHBACKS <i>↗</i></b>
+          </div>
+        </a>
+
+        <a class="body-card reveal magnetic" href="sedan.html">
+          <div class="card-index">02</div>
+          <div class="card-icon">SD</div>
+          <div class="card-content">
+            <span>SEDAN</span>
+            <h3>Comfort with<br><em>presence.</em></h3>
+            <p>A classic three-box design built around refinement, comfort and a dedicated boot.</p>
+            <b>EXPLORE SEDANS <i>↗</i></b>
+          </div>
+        </a>
+
+        <a class="body-card reveal magnetic" href="suv.html">
+          <div class="card-index">03</div>
+          <div class="card-icon">SV</div>
+          <div class="card-content">
+            <span>SUV</span>
+            <h3>Built to go<br><em>beyond.</em></h3>
+            <p>Higher stance, versatile proportions and an all-round character made for modern roads.</p>
+            <b>EXPLORE SUVS <i>↗</i></b>
+          </div>
+        </a>
+
+        <a class="body-card reveal magnetic" href="muv.html">
+          <div class="card-index">04</div>
+          <div class="card-icon">MV</div>
+          <div class="card-content">
+            <span>MUV</span>
+            <h3>Space for<br><em>the journey.</em></h3>
+            <p>Flexible seating and people-first practicality for families, groups and long journeys.</p>
+            <b>EXPLORE MUVS <i>↗</i></b>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 03 FINDER -->
+    <section class="finder-section" id="finder">
+      <div class="finder-glow"></div>
+      <div class="finder-layout">
+        <div class="finder-intro reveal">
+          <p class="eyebrow"><span></span> AUTOVERSE MATCH</p>
+          <h2>Find your<br><em>right car.</em></h2>
+          <p>
+            Tell us what matters. We'll take you from a broad search to cars
+            worth actually considering.
+          </p>
+        </div>
+
+        <form class="finder-panel reveal" id="carFinder">
+          <div class="finder-top">
+            <span>FIND YOUR RIGHT CAR</span>
+            <small>01 / 04</small>
+          </div>
+
+          <label class="finder-field">
+            <span>WHAT ARE YOU LOOKING FOR?</span>
+            <select id="finderType">
+              <option value="">Any body type</option>
+              <option value="suv">SUV</option>
+              <option value="sedan">Sedan</option>
+              <option value="hatchback">Hatchback</option>
+              <option value="muv">MUV</option>
+            </select>
+          </label>
+
+          <label class="finder-field">
+            <span>BUDGET</span>
+            <select id="finderBudget">
+              <option value="">Any budget</option>
+              <option value="10">Under ₹10 lakh</option>
+              <option value="15">Under ₹15 lakh</option>
+              <option value="20">Under ₹20 lakh</option>
+              <option value="30">Under ₹30 lakh</option>
+              <option value="50">Under ₹50 lakh</option>
+            </select>
+          </label>
+
+          <label class="finder-field">
+            <span>POWERTRAIN</span>
+            <select id="finderFuel">
+              <option value="">Any fuel / powertrain</option>
+              <option value="petrol">Petrol</option>
+              <option value="diesel">Diesel</option>
+              <option value="cng">CNG</option>
+              <option value="hybrid">Hybrid</option>
+              <option value="ev">EV</option>
+            </select>
+          </label>
+
+          <label class="finder-field">
+            <span>WHAT MATTERS MOST?</span>
+            <select id="finderPurpose">
+              <option value="">No specific priority</option>
+              <option value="family">Family</option>
+              <option value="highway">Highway</option>
+              <option value="city">City</option>
+              <option value="performance">Performance</option>
+              <option value="luxury">Luxury</option>
+            </select>
+          </label>
+
+          <button class="solid-btn finder-submit magnetic" type="submit">
+            Find my car <span>↗</span>
+          </button>
+
+          <p class="finder-note">AutoVerse will translate your choices into a focused search.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- 04 MOST SEARCHED -->
+    <section class="discover-section vehicle-rail-section" id="popular">
+      <div class="section-line reveal"><span>04 — WHAT PEOPLE ARE EXPLORING</span><i></i></div>
+
+      <div class="section-heading reveal">
+        <div>
+          <p class="eyebrow"><span></span> POPULAR ON AUTOVERSE</p>
+          <h2>The cars<br><em>everyone notices.</em></h2>
+        </div>
+        <a class="text-btn magnetic" href="carAll.html">View all vehicles <span>↗</span></a>
+      </div>
+
+      <div class="vehicle-rail" id="popularCars">
+        <div class="loading-state">Loading the automotive universe<span>…</span></div>
+      </div>
+    </section>
+
+    <!-- 05 EV -->
+    <section class="ev-section" id="ev">
+      <div class="ev-atmosphere"></div>
+      <div class="ev-layout">
+        <div class="ev-copy reveal">
+          <p class="eyebrow"><span></span> THE ELECTRIC ERA</p>
+          <h2>Silent power.<br><em>A different road.</em></h2>
+          <p>
+            Electric cars are changing what performance, efficiency and
+            everyday mobility can feel like. Explore the machines shaping
+            India's electric future.
+          </p>
+          <a href="search.html?query=ev" class="text-btn magnetic">Explore electric cars <span>↗</span></a>
+        </div>
+
+        <div class="ev-grid reveal" id="evCars">
+          <div class="loading-state">Charging the EV universe<span>…</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 PREMIUM -->
+    <section class="discover-section premium-section">
+      <div class="section-line reveal"><span>06 — THE MACHINES PEOPLE DREAM ABOUT</span><i></i></div>
+      <div class="premium-banner reveal">
+        <div>
+          <p class="eyebrow"><span></span> BEYOND ORDINARY</p>
+          <h2>Performance.<br>Luxury. <em>Presence.</em></h2>
+          <p>
+            Some cars are transportation. Some become a statement. Discover
+            the machines built to make an entrance.
+          </p>
+        </div>
+        <div class="premium-tags">
+          <span>PERFORMANCE</span>
+          <span>LUXURY</span>
+          <span>OFF-ROAD</span>
+          <span>EXOTIC</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 KNOW YOUR MACHINE -->
+   <section class="discover-section knowledge-section">
+  <div class="section-line reveal">
+    <span>07 — KNOW YOUR MACHINE</span>
+    <i></i>
+  </div>
+
+  <div class="section-heading reveal">
+    <div>
+      <p class="eyebrow"><span></span> CAR GUY KNOWLEDGE</p>
+      <h2>Numbers are easy.<br><em>Understanding is rare.</em></h2>
+    </div>
+
+    <p>
+      Short, useful automotive explainers that help you walk into
+      the showroom with better questions.
+    </p>
+  </div>
+
+  <div class="knowledge-grid">
+
+    <!-- TORQUE -->
+    <article class="knowledge-card reveal magnetic">
+      <span>01</span>
+      <h3>TORQUE</h3>
+      <p>
+        Torque is the twisting force produced by an engine or motor.
+        More torque generally means stronger low-speed pull, making
+        acceleration, overtaking, climbing and carrying passengers easier.
+      </p>
+      <b>UNDERSTAND →</b>
+    </article>
+
+    <!-- FWD / RWD / AWD -->
+    <article class="knowledge-card reveal magnetic">
+      <span>02</span>
+      <h3>FWD / RWD / AWD</h3>
+      <p>
+        FWD sends power to the front wheels, RWD to the rear wheels,
+        while AWD can distribute power across all four. The difference
+        affects traction, handling, stability and driving feel.
+      </p>
+      <b>UNDERSTAND →</b>
+    </article>
+
+    <!-- ADAS -->
+    <article class="knowledge-card reveal magnetic">
+      <span>03</span>
+      <h3>ADAS</h3>
+      <p>
+        Advanced Driver Assistance Systems use cameras, radar and
+        sensors to help with functions such as automatic emergency
+        braking, lane assistance, adaptive cruise control and blind-spot monitoring.
+      </p>
+      <b>UNDERSTAND →</b>
+    </article>
+
+    <!-- PETROL / DIESEL / EV -->
+    <article class="knowledge-card reveal magnetic">
+      <span>04</span>
+      <h3>PETROL / DIESEL / EV</h3>
+      <p>
+        Petrol engines are usually smooth and responsive, diesels are
+        known for strong torque and efficiency, while EVs deliver instant
+        torque with quiet, efficient electric propulsion. The right choice
+        depends on how you actually drive.
+      </p>
+      <b>UNDERSTAND →</b>
+    </article>
+
+  </div>
+</section>
+
+    <!-- 08 AI -->
+    <section class="intelligence-section" id="intelligence">
+      <div class="intelligence-atmosphere"></div>
+      <div class="intelligence-layout">
+        <div class="intelligence-copy reveal">
+          <p class="eyebrow"><span></span> AUTOVERSE INTELLIGENCE</p>
+          <h2>Don't know<br>what to buy?<br><em>Ask.</em></h2>
+          <p>
+            Describe the car you want in your own words. AutoVerse can turn
+            your priorities into a shortlist worth exploring.
+          </p>
+        </div>
+
+        <div class="ai-preview reveal">
+          <div class="ai-top"><span>● AUTOVERSE AI</span><small>INTELLIGENCE ONLINE</small></div>
+          <div class="ai-user">“I need a comfortable SUV under ₹25 lakh for family highway trips.”</div>
+          <div class="ai-answer">
+            <small>ANALYSIS COMPLETE</small>
+            <h3>3 vehicles match your priorities.</h3>
+            <div class="ai-match"><span>01</span><div><small>AUTOVERSE PICK</small><strong>Best overall match</strong></div><b>↗</b></div>
+            <div class="ai-match"><span>02</span><div><small>ALTERNATIVE</small><strong>More performance</strong></div><b>↗</b></div>
+            <div class="ai-match"><span>03</span><div><small>WILDCARD</small><strong>Maximum practicality</strong></div><b>↗</b></div>
+          </div>
+          <a href="search.html?query=best%20family%20SUV%20under%2025%20lakh" class="ai-input magnetic">ASK AUTOVERSE <span>↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 END -->
+    <section class="discover-final">
+      <p class="eyebrow reveal">YOU'VE ENTERED THE VERSE.</p>
+      <h2 class="reveal">Your next car<br><em>is out there.</em></h2>
+      <p class="reveal">Now you know where to look.</p>
+      <a class="solid-btn large magnetic reveal" href="carAll.html">Continue exploring <span>↗</span></a>
+    </section>
+  </main>
+
+  <footer class="av-app-footer">
+    <strong>AUTOVERSE</strong>
+    <span>Automotive Intelligence Platform</span>
+    <span>Discover · Understand · Compare · Decide</span>
+    <small>© 2026 AutoVerse</small>
+  </footer>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/discover.js"></script>
+</body>
+</html>

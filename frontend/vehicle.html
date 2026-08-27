@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AutoVerse vehicle intelligence — detailed specifications, real-world information, strengths and trade-offs.">
+  <title>Vehicle | AutoVerse</title>
+  <link rel="stylesheet" href="assets/css/vehicle.css">
+</head>
+<body>
+  <div class="page-noise"></div>
+  <div class="page-vignette"></div>
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+  <div class="scroll-progress"><span id="scrollProgress"></span></div>
+
+  <header class="av-app-nav" id="appNav">
+    <a class="app-brand magnetic" href="discover.html">
+      <span class="brand-mark">AV</span>
+      <span class="brand-copy"><strong>AUTOVERSE</strong><small>AUTOMOTIVE INTELLIGENCE</small></span>
+    </a>
+    <nav class="app-links">
+      <a href="discover.html">Discover</a>
+      <a class="active" href="carAll.html">Vehicles</a>
+      <a href="compare.html">Compare</a>
+      <a href="search.html">Search</a>
+      <a href="discover.html#intelligence">Intelligence</a>
+    </nav>
+    <div class="app-actions">
+      <a class="nav-icon magnetic" href="search.html">⌕</a>
+      <button class="profile-btn magnetic" id="logoutBtn" type="button">Exit</button>
+    </div>
+    <button class="mobile-menu" id="mobileMenu" aria-label="Open navigation"><span></span><span></span></button>
+  </header>
+
+  <main id="vehicleRoot">
+    <section class="vehicle-hero">
+      <div class="hero-copy reveal">
+        <a class="back-link magnetic" href="discover.html">← BACK TO DISCOVER</a>
+        <p class="eyebrow"><span></span> AUTOVERSE / VEHICLE INTELLIGENCE</p>
+        <p class="vehicle-brand" id="vehicleBrand">LOADING</p>
+        <h1 id="vehicleName">Loading<br><em>vehicle.</em></h1>
+        <p class="vehicle-type" id="vehicleType">—</p>
+        <div class="hero-actions">
+          <a class="solid-btn magnetic" id="compareLink" href="compare.html">Compare <span>↗</span></a>
+          <button class="text-btn magnetic" id="saveBtn" type="button">Save vehicle <span>＋</span></button>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal">
+        <div class="image-frame">
+          <img id="heroImage" alt="Vehicle">
+          <div class="image-overlay"></div>
+          <div class="image-label"><span>01 / EXTERIOR</span><b id="imageCount">01</b></div>
+        </div>
+      </div>
+
+      <div class="hero-foot"><span>01 / THE MACHINE</span><span>SCROLL TO UNDERSTAND</span></div>
+    </section>
+
+    <section class="spec-strip reveal">
+      <div><span>PRICE</span><strong id="price">—</strong></div>
+      <div><span>ENGINE</span><strong id="engine">—</strong></div>
+      <div><span>MILEAGE</span><strong id="mileage">—</strong></div>
+      <div><span>FUEL</span><strong id="fuel">—</strong></div>
+      <div><span>TRANSMISSION</span><strong id="transmission">—</strong></div>
+      <div><span>SEATING</span><strong id="seating">—</strong></div>
+    </section>
+
+    <section class="vehicle-section overview">
+      <div class="section-line reveal"><span>02 — UNDERSTAND THE MACHINE</span><i></i></div>
+      <div class="two-col">
+        <div class="section-heading reveal">
+          <p class="eyebrow"><span></span> THE OVERVIEW</p>
+          <h2>What is<br><em>this car?</em></h2>
+        </div>
+        <div class="content-copy reveal">
+          <p id="description">Loading vehicle information…</p>
+          <div class="best-for">
+            <span>BEST FOR</span>
+            <div id="bestFor"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vehicle-section dark-panel">
+      <div class="section-line reveal"><span>03 — THE NUMBERS</span><i></i></div>
+      <div class="spec-layout">
+        <div class="section-heading reveal">
+          <p class="eyebrow"><span></span> TECHNICAL PROFILE</p>
+          <h2>Everything<br><em>under the skin.</em></h2>
+        </div>
+        <div class="spec-table reveal" id="specTable"></div>
+      </div>
+    </section>
+
+    <section class="vehicle-section">
+      <div class="section-line reveal"><span>04 — WHAT YOU GET</span><i></i></div>
+      <div class="feature-layout">
+        <div class="section-heading reveal">
+          <p class="eyebrow"><span></span> FEATURES</p>
+          <h2>The details<br><em>that matter.</em></h2>
+        </div>
+        <div class="feature-grid reveal" id="featureGrid"></div>
+      </div>
+    </section>
+
+    <section class="vehicle-section decision-section">
+      <div class="section-line reveal"><span>05 — THE AUTOVERSE LENS</span><i></i></div>
+      <div class="decision-grid">
+        <article class="decision-card pros reveal">
+          <span class="decision-number">01</span>
+          <p class="eyebrow">WHAT WORKS</p>
+          <h3>Pros</h3>
+          <ul id="prosList"></ul>
+        </article>
+        <article class="decision-card cons reveal">
+          <span class="decision-number">02</span>
+          <p class="eyebrow">WHAT TO CONSIDER</p>
+          <h3>Cons</h3>
+          <ul id="consList"></ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="vehicle-section verdict-section">
+      <div class="verdict-card reveal">
+        <p class="eyebrow"><span></span> AUTOVERSE VERDICT</p>
+        <h2 id="verdictTitle">Our take on<br><em>the machine.</em></h2>
+        <p id="verdictText">Loading the AutoVerse verdict…</p>
+        <div class="verdict-meta">
+          <span>USER RATING <b id="rating">—</b></span>
+          <span>SAFETY <b id="ncap">—</b></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="vehicle-section gallery-section" id="gallerySection">
+      <div class="section-line reveal"><span>06 — SEE IT FROM EVERY ANGLE</span><i></i></div>
+      <div class="gallery-layout">
+        <div class="gallery-main reveal">
+          <img id="galleryMain" alt="Vehicle exterior">
+          <span id="galleryCaption">01 / EXTERIOR</span>
+        </div>
+        <div class="gallery-thumbs reveal" id="galleryThumbs"></div>
+      </div>
+    </section>
+
+    <section class="vehicle-final">
+      <p class="eyebrow reveal">NOW YOU KNOW THE MACHINE.</p>
+      <h2 class="reveal">Is it the<br><em>right one for you?</em></h2>
+      <div class="final-actions reveal">
+        <a class="solid-btn large magnetic" href="search.html">Explore more cars <span>↗</span></a>
+        <a class="text-btn magnetic" href="compare.html">Compare vehicles <span>↗</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="av-app-footer">
+    <strong>AUTOVERSE</strong><span>Automotive Intelligence Platform</span><small>© 2026 AutoVerse</small>
+  </footer>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/vehicle.js"></script>
+</body>
+</html>

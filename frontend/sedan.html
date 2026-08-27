@@ -1,148 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> Sedan Cars - Auto Verse</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/sedan.css">
-  <link rel="stylesheet" href="assets/css/search.css">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Explore sedan cars on AutoVerse.">
+<title>Sedan Cars | AutoVerse</title>
+<link rel="stylesheet" href="assets/css/category.css">
 </head>
+<body data-type="sedan">
+<div class="page-noise"></div><div class="page-vignette"></div><div class="cursor-dot"></div><div class="cursor-ring"></div>
+<div class="scroll-progress"><span id="scrollProgress"></span></div>
 
-<body>
+<header class="av-app-nav" id="appNav">
+<a class="app-brand" href="discover.html"><span class="brand-mark">AV</span><span class="brand-copy"><strong>AUTOVERSE</strong><small>AUTOMOTIVE INTELLIGENCE</small></span></a>
+<nav class="app-links">
+<a href="discover.html">Discover</a><a class="active" href="sedan.html">Vehicles</a><a href="compare.html">Compare</a><a href="search.html">Search</a><a href="discover.html#intelligence">Intelligence</a>
+</nav>
+<div class="app-actions"><a class="nav-icon" href="search.html">⌕</a><button class="profile-btn" id="logoutBtn">Exit</button></div>
+<button class="mobile-menu" id="mobileMenu"><span></span><span></span></button>
+</header>
 
-  <!-- ===== HEADER ===== -->
-  <header>
+<main>
+<section class="category-hero" data-word="SEDAN">
+<div class="hero-content reveal">
+<a class="text-btn" href="discover.html">← BACK TO DISCOVER</a>
+<p class="eyebrow"><span></span> AUTOVERSE / VEHICLE UNIVERSE</p>
+<div class="category-number">04 / SEDAN</div>
+<h1>Explore the<br><em>sedan world.</em></h1>
+<p class="hero-description">Sedans bring together a classic three-box shape, a dedicated boot, composed road manners and a strong focus on comfort.</p>
+<div class="hero-actions"><a class="solid-btn" href="#vehicles">Explore Sedans <span>↓</span></a><a class="text-btn" href="search.html?query=sedan">Search Sedans <span>↗</span></a></div>
+</div>
+<div class="hero-foot"><span>01 / SEDAN UNIVERSE</span><span>SCROLL TO EXPLORE</span></div>
+</section>
 
-    <!-- LOGO -->
-    <div class="logo">
-      <img src="assets/images/Autoverselogo.png" alt="Auto Verse Logo" class="logo-img" />
-      <span>Auto Verse</span>
-    </div>
+<section class="category-section" id="vehicles">
+<div class="section-line reveal"><span>02 — SEDAN CATALOGUE</span><i></i></div>
+<div class="section-heading reveal">
+<div><p class="eyebrow"><span></span> AUTOVERSE COLLECTION</p><h2>Find your<br><em>sedan.</em></h2></div>
+<p>Explore the sedans currently available in the AutoVerse catalogue. Every card connects directly to the vehicle intelligence experience.</p>
+</div>
+<div class="filter-bar reveal"><span class="filter-label" id="vehicleCount">LOADING VEHICLES</span><select class="filter-select" id="sortCars"><option value="featured">Featured</option><option value="rating">Highest rated</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option></select></div>
+<div class="vehicle-grid" id="vehicleGrid"><div class="loading-state">Loading the sedan universe<span>…</span></div></div>
+</section>
 
-    <!-- NAVBAR -->
-    <nav class="navbar">
+<section class="category-section dark-panel">
+<div class="section-line reveal"><span>03 — KNOW THE BODY TYPE</span><i></i></div>
+<div class="info-block">
+<div class="section-heading reveal"><div><p class="eyebrow"><span></span> BEFORE THE SHOWROOM</p><h2>Know what<br><em>you want.</em></h2></div></div>
+<div class="info-copy reveal"><p>Sedans bring together a classic three-box shape, a dedicated boot, composed road manners and a strong focus on comfort.</p><div class="fact-list">
+<div class="fact"><b>01</b><span>Explore real vehicles available in the AutoVerse database.</span></div>
+<div class="fact"><b>02</b><span>Open any vehicle for specifications, features, pros, cons and the AutoVerse verdict.</span></div>
+<div class="fact"><b>03</b><span>Compare your shortlist before you step into the showroom.</span></div>
+</div></div>
+</div>
+</section>
 
-      <div class="nav-links">
-        <a href="parts-o-corner.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-        <a href="login.html">Login</a>
-      </div>
+<section class="category-final">
+<p class="eyebrow reveal">YOU'VE SEEN THE SEDAN UNIVERSE.</p>
+<h2 class="reveal">Now find the<br><em>one that fits.</em></h2>
+<p class="reveal">Your next step: explore a specific vehicle, compare it, and understand what you're actually buying.</p>
+<a class="solid-btn reveal" href="search.html?query=sedan">Continue exploring <span>↗</span></a>
+</section>
+</main>
 
-      <!-- 🔥 SEARCH -->
-      <form class="search-box" onsubmit="handleSearch(event)">
-        <input type="text" id="searchInput" placeholder="Search cars..." required>
-        <button type="submit">🔍</button>
-      </form>
-
-    </nav>
-
-  </header>
-
-  <!-- ===== HERO ===== -->
-  <main>
-    <h1 class="page-title">Explore the Best Sedans in India</h1>
-
-    <p>
-      Sedans offer a perfect blend of comfort, style, and performance.
-      Whether you want a budget-friendly commuter sedan or a premium luxury ride, we cover all popular sedan brands in
-      India.
-    </p>
-  </main>
-
-  <!-- ===== BRANDS ===== -->
-  <section class="car-brands">
-    <h2>Popular Sedan Brands</h2>
-
-    <ul class="brand-list">
-
-      <li><a href="carAll.html?brand=maruti&type=sedan"><img src="assets/images/suzuki.png"><span>Maruti Suzuki</span></a></li>
-      <li><a href="carAll.html?brand=hyundai&type=sedan"><img src="assets/images/hyundai.png"><span>Hyundai</span></a></li>
-      <li><a href="carAll.html?brand=tata&type=sedan"><img src="assets/images/tata.png"><span>Tata Motors</span></a></li>
-      <li><a href="carAll.html?brand=honda&type=sedan"><img src="assets/images/honda.png"><span>Honda</span></a></li>
-      <li><a href="carAll.html?brand=toyota&type=sedan"><img src="assets/images/toyota.png"><span>Toyota</span></a></li>
-      <li><a href="carAll.html?brand=skoda&type=sedan"><img src="assets/images/skoda.png"><span>Skoda</span></a></li>
-      <li><a href="carAll.html?brand=volkswagen&type=sedan"><img src="assets/images/volkswagen.png"><span>Volkswagen</span></a>
-      </li>
-      <li><a href="carAll.html?brand=ford&type=sedan"><img src="assets/images/ford.png"><span>Ford</span></a></li>
-      <li><a href="carAll.html?brand=bmw&type=sedan"><img src="assets/images/bmw.png"><span>BMW</span></a></li>
-      <li><a href="carAll.html?brand=mercedes&type=sedan"><img src="assets/images/mercedes.png"><span>Mercedes-Benz</span></a>
-      </li>
-      <li><a href="carAll.html?brand=audi&type=sedan"><img src="assets/images/audi.png"><span>Audi</span></a></li>
-      <li><a href="carAll.html?brand=jaguar&type=sedan"><img src="assets/images/jaguar.png"><span>Jaguar</span></a></li>
-
-    </ul>
-  </section>
-
-  <!-- ===== 🤖 MINI AI POPUP ===== -->
-  <div id="ai-mini">
-
-    <div class="ai-bubble" onclick="openAI()">
-      <strong>Hello! How can I help?</strong><br>
-      <span>AutoVerse Assistance</span>
-    </div>
-
-    <div id="ai-icon" onclick="openAI()">🤖</div>
-
-  </div>
-
-  <!-- ===== 🤖 AI PANEL ===== -->
-  <div id="ai-panel">
-
-    <!-- HEADER -->
-    <div class="ai-header">
-      <span>AutoVerse AI</span>
-
-      <div style="display:flex; gap:10px;">
-        <div class="menu" onclick="toggleMenu()">⋮</div>
-        <div onclick="closeAI()" style="cursor:pointer;">✖</div>
-      </div>
-    </div>
-
-    <!-- MENU -->
-    <div id="ai-menu">
-      <p onclick="window.location.href='about.html'">About AutoVerse</p>
-      <p onclick="window.location.href='contact.html'">Contact</p>
-      <p onclick="restartChat()">Restart Session</p>
-    </div>
-
-    <!-- CHAT -->
-    <div id="chat-box"></div>
-
-    <!-- QUICK ACTIONS -->
-    <div class="quick-actions">
-      <button onclick="quickAsk('Best car under 10 lakh')">Under 10L</button>
-      <button onclick="quickAsk('Best family car')">Family</button>
-      <button onclick="quickAsk('Best mileage cars')">Mileage</button>
-      <button onclick="quickAsk('Best SUV in India')">SUV</button>
-    </div>
-
-    <!-- INPUT -->
-    <div class="ai-input">
-      <input type="text" id="chat-input" placeholder="Ask about cars..." onkeypress="handleKey(event)">
-      <button onclick="sendMessage()">➤</button>
-    </div>
-
-  </div>
-  <!-- ===== SCRIPTS ===== -->
-
-  <script>
-    const API_BASE = API_BASE_URL;
-  </script>
-
-  <script src="assets/js/search.js"></script>
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/ai.js"></script>
-
-  <!-- ===== FOOTER ===== -->
-  <footer>
-    <p>&copy; 2025 Auto Verse. All rights reserved.</p>
-  </footer>
-
-</body>
-
-</html>
+<footer class="av-app-footer"><strong>AUTOVERSE</strong><span>Automotive Intelligence Platform</span><span>Discover · Understand · Compare · Decide</span><small>© 2026 AutoVerse</small></footer>
+<script src="assets/js/config.js"></script><script src="assets/js/category.js"></script>
+</body></html>
