@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#050607">
+
+    <title>Brands — AutoVerse</title>
+
+    <meta
+        name="description"
+        content="Explore automotive brands and discover machines inside AutoVerse."
+    >
+
+    <!-- =========================
+         MAIN BRAND CSS
+    ========================== -->
+    <link rel="stylesheet"
+        href="assets/css/brands.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         PAGE ATMOSPHERE
+    ========================== -->
+
+    <div class="page-noise"></div>
+    <div class="page-vignette"></div>
+
+
+    <!-- =========================
+         CUSTOM CURSOR
+    ========================== -->
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+
+    <!-- =========================
+         SCROLL PROGRESS
+    ========================== -->
+
+    <div
+        class="scroll-progress"
+        id="scrollProgress"
+        aria-hidden="true">
+    </div>
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <header class="av-nav"
+        id="brandsNav">
+
+        <a
+            href="index.html"
+            class="av-brand"
+            aria-label="AutoVerse Home">
+
+            <div class="brand-mark">
+                AV
+            </div>
+
+            <div class="brand-copy">
+
+                <strong>
+                    AUTOVERSE
+                </strong>
+
+                <small>
+                    THE AUTOMOTIVE INTELLIGENCE
+                </small>
+
+            </div>
+
+        </a>
+
+
+        <nav class="av-links">
+
+            
+
+            <a href="index.html">
+                HOME
+            </a>
+
+            <a href="platform.html">
+                ABOUT
+            </a>
+
+            <a href="brands.html"
+                class="active">
+                BRANDS
+            </a>
+
+            <a href="dealership.html">
+                SHOWROOM
+            </a>
+
+
+        </nav>
+
+
+        <div class="av-nav-actions">
+
+            <a
+                href="login.html"
+                class="ghost-btn">
+                SIGN IN
+            </a>
+
+        </div>
+
+
+        <button
+            class="mobile-menu"
+            id="mobileMenu"
+            aria-label="Open navigation menu"
+            type="button">
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </button>
+
+    </header>
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <main>
+
+        <section class="brands-hero">
+
+            <div class="hero-atmosphere"></div>
+
+            <div class="hero-orbit hero-orbit-a"></div>
+            <div class="hero-orbit hero-orbit-b"></div>
+
+
+            <div class="brands-hero-content reveal">
+
+                <p class="eyebrow">
+                    <span></span>
+                    AUTOMOTIVE UNIVERSE
+                </p>
+
+                <h1>
+                    Every brand.<br>
+                    <em>One verse.</em>
+                </h1>
+
+                <p class="hero-description">
+
+                    Explore the world's most influential
+                    automotive marques and discover the
+                    machines that define them.
+
+                    <br><br>
+
+                    Powered directly by the AutoVerse
+                    vehicle database.
+
+                </p>
+
+                <div class="hero-actions">
+
+                    <a
+                        href="#brands"
+                        class="solid-btn large">
+                        EXPLORE BRANDS
+                        <span>↓</span>
+                    </a>
+
+                    <a
+                        href="login.html"
+                        class="text-btn">
+                        ENTER THE VERSE
+                        <span>↗</span>
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="hero-bottom">
+
+                <span>
+                    AUTOVERSE / BRANDS
+                </span>
+
+                <span>
+                    SCROLL TO EXPLORE ↓
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             BRANDS INTRO
+        ========================== -->
+
+        <section
+            class="av-section brands-directory"
+            id="brands">
+
+            <div class="section-line">
+
+                <span>
+                    01 — THE COLLECTION
+                </span>
+
+                <i></i>
+
+                <span id="brandCount">
+                    00
+                </span>
+
+            </div>
+
+
+            <div class="brands-intro reveal">
+
+                <div>
+
+                    <p class="eyebrow">
+                        <span></span>
+                        THE BRANDS
+                    </p>
+
+                    <h2>
+                        Machines<br>
+                        <em>with identity.</em>
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    From everyday mobility to engineering
+                    icons, explore the marques currently
+                    represented inside the AutoVerse universe.
+
+                    Each brand below is populated directly
+                    from the live vehicle database.
+
+                </p>
+
+            </div>
+
+
+            <!-- =========================
+                 LOADING STATE
+            ========================== -->
+
+            <div
+                class="brands-status"
+                id="brandsStatus">
+
+                <div class="status-loader"></div>
+
+                <span>
+                    CONNECTING TO THE VERSE...
+                </span>
+
+            </div>
+
+
+            <!-- =========================
+                 BRANDS CONTAINER
+            ========================== -->
+
+            <div
+                class="brands-container"
+                id="brandsContainer">
+            </div>
+
+
+            <!-- =========================
+                 EMPTY / ERROR STATE
+            ========================== -->
+
+            <div
+                class="brands-empty"
+                id="brandsEmpty"
+                hidden>
+
+                <div class="empty-mark">
+                    AV
+                </div>
+
+                <p class="eyebrow">
+                    <span></span>
+                    CONNECTION UNAVAILABLE
+                </p>
+
+                <h3>
+                    The verse is<br>
+                    <em>quiet.</em>
+                </h3>
+
+                <p>
+                    We couldn't retrieve the vehicle
+                    collection right now.
+                </p>
+
+                <button
+                    id="retryBtn"
+                    class="solid-btn"
+                    type="button">
+                    RETRY CONNECTION
+                    <span>↻</span>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             FINAL CTA
+        ========================== -->
+
+        <section class="av-final">
+
+            <p class="eyebrow reveal">
+                <span></span>
+                YOUR JOURNEY STARTS HERE
+            </p>
+
+            <h2 class="reveal">
+                Enter the<br>
+                <em>Verse.</em>
+            </h2>
+
+            <p class="reveal">
+
+                Create your AutoVerse account to unlock
+                deeper vehicle intelligence, detailed
+                specifications and your personal automotive
+                experience.
+
+            </p>
+
+            <a
+                href="login.html"
+                class="solid-btn large reveal">
+
+                ENTER THE VERSE
+                <span>↗</span>
+
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="av-footer">
+
+        <strong>
+            AUTOVERSE
+        </strong>
+
+        <span>
+            AUTOMOTIVE INTELLIGENCE
+        </span>
+
+        <small>
+            © 2026 AUTOVERSE — ALL RIGHTS RESERVED
+        </small>
+
+    </footer>
+
+
+    <!-- =================================================
+         CAR INFORMATION MODAL
+    ================================================== -->
+
+    <div
+        class="car-modal"
+        id="carModal"
+        aria-hidden="true">
+
+        <div
+            class="modal-backdrop"
+            id="modalBackdrop">
+        </div>
+
+
+        <div
+            class="modal-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalCarName">
+
+            <button
+                class="modal-close"
+                id="modalClose"
+                type="button"
+                aria-label="Close">
+                ×
+            </button>
+
+
+            <div class="modal-image">
+
+                <img
+                    id="modalCarImage"
+                    src=""
+                    alt="">
+
+                <div class="modal-image-overlay"></div>
+
+                <span
+                    class="modal-image-label">
+                    AUTOVERSE / MACHINE
+                </span>
+
+            </div>
+
+
+            <div class="modal-content">
+
+                <p
+                    class="modal-brand"
+                    id="modalBrand">
+                    —
+                </p>
+
+                <h2 id="modalCarName">
+                    —
+                </h2>
+
+                <p
+                    class="modal-description"
+                    id="modalDescription">
+                    —
+                </p>
+
+
+                <!-- =========================
+                     QUICK SPECS
+                ========================== -->
+
+                <div class="modal-specs">
+
+                    <div>
+
+                        <span>
+                            PRICE
+                        </span>
+
+                        <strong id="modalPrice">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            TYPE
+                        </span>
+
+                        <strong id="modalType">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            FUEL
+                        </span>
+
+                        <strong id="modalFuel">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            TRANSMISSION
+                        </span>
+
+                        <strong id="modalTransmission">
+                            —
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-actions">
+
+                    <a
+                        href="login.html"
+                        class="solid-btn large">
+
+                        EXPLORE MORE
+                        <span>↗</span>
+
+                    </a>
+
+                    <span>
+                        LOGIN REQUIRED FOR
+                        FULL VEHICLE INTELLIGENCE
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         API CONFIG
+         MUST LOAD BEFORE BRANDS.JS
+    ========================== -->
+
+    <script>
+
+        window.API_BASE_URL =
+            window.location.hostname === "localhost" ||
+            window.location.hostname === "127.0.0.1"
+
+                ? "http://localhost:5000/api"
+
+                : "https://auto-verse-hcp5.onrender.com/api";
+
+    </script>
+
+
+    <!-- =========================
+         BRANDS JS
+    ========================== -->
+
+    <script
+        src="assets/js/brands.js">
+    </script>
+
+</body>
+
+</html>

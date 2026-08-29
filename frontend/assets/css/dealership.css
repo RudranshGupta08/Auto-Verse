@@ -1,0 +1,2384 @@
+/* =========================================================
+   AUTOVERSE — DEALERSHIP / B2B PARTNERSHIP
+   Same visual language as Platform / About
+========================================================= */
+
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root {
+
+    --av-bg: #050607;
+    --av-surface: #0a0c0d;
+    --av-surface-2: #101314;
+
+    --av-text: #e9ece8;
+    --av-muted: #89918c;
+    --av-soft: #aeb6b0;
+
+    --av-line: rgba(233, 236, 232, .13);
+
+    --av-accent: #d6a84f;
+
+    --av-ease: cubic-bezier(.22, .61, .36, 1);
+
+    --av-pad: clamp(20px, 4vw, 64px);
+
+    --max-width: 1640px;
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+
+    margin: 0;
+
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(214, 168, 79, .025),
+            transparent 28%
+        ),
+        var(--av-bg);
+
+    color: var(--av-text);
+
+    font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-weight: 300;
+
+    line-height: 1.6;
+
+    overflow-x: hidden;
+
+    cursor: none;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    font: inherit;
+    cursor: none;
+}
+
+::selection {
+
+    background:
+        rgba(214, 168, 79, .25);
+
+    color: #fff;
+}
+
+
+/* =========================================================
+   ATMOSPHERE
+========================================================= */
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: 1;
+
+    opacity: .035;
+
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+}
+
+body::after {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: 2;
+
+    background:
+        radial-gradient(
+            circle at 50% 42%,
+            transparent 34%,
+            rgba(0, 0, 0, .64) 100%
+        );
+}
+
+
+/* =========================================================
+   CURSOR
+========================================================= */
+
+.cursor-dot,
+.cursor-ring {
+
+    position: fixed;
+
+    left: 0;
+    top: 0;
+
+    pointer-events: none;
+
+    z-index: 9999;
+
+    opacity: 0;
+
+    transform:
+        translate(-50%, -50%);
+}
+
+body.cursor-ready .cursor-dot,
+body.cursor-ready .cursor-ring {
+    opacity: 1;
+}
+
+.cursor-dot {
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background:
+        var(--av-text);
+}
+
+.cursor-ring {
+
+    width: 34px;
+    height: 34px;
+
+    border:
+        1px solid
+        rgba(233, 236, 232, .58);
+
+    border-radius: 50%;
+
+    transition:
+        .3s var(--av-ease);
+}
+
+body.cursor-hover .cursor-ring {
+
+    width: 58px;
+    height: 58px;
+
+    border-color:
+        var(--av-accent);
+
+    background:
+        rgba(214, 168, 79, .06);
+}
+
+body.cursor-click .cursor-ring {
+
+    width: 26px;
+    height: 26px;
+}
+
+
+/* =========================================================
+   SCROLL PROGRESS
+========================================================= */
+
+.scroll-progress {
+
+    position: fixed;
+
+    z-index: 500;
+
+    right: 0;
+    top: 0;
+
+    width: 3px;
+    height: 100vh;
+
+    background:
+        rgba(255, 255, 255, .025);
+}
+
+.scroll-progress span {
+
+    display: block;
+
+    width: 100%;
+    height: 0;
+
+    background:
+        var(--av-accent);
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.dealer-nav {
+
+    position: fixed;
+
+    z-index: 900;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 82px;
+
+    padding:
+        0 var(--av-pad);
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 30px;
+
+    background:
+        linear-gradient(
+            rgba(5, 6, 7, .9),
+            transparent
+        );
+
+    transition:
+        .45s var(--av-ease);
+}
+
+.dealer-nav.scrolled {
+
+    background:
+        rgba(5, 6, 7, .82);
+
+    backdrop-filter:
+        blur(18px);
+
+    border-bottom:
+        1px solid var(--av-line);
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.app-brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    flex-shrink: 0;
+}
+
+.brand-mark {
+
+    display: grid;
+
+    place-items: center;
+
+    width: 35px;
+    height: 35px;
+
+    border:
+        1px solid var(--av-line);
+
+    color:
+        var(--av-text);
+
+    font-size: 10px;
+
+    letter-spacing: .05em;
+
+    transition:
+        border-color .35s var(--av-ease),
+        color .35s var(--av-ease);
+}
+
+.app-brand:hover .brand-mark {
+
+    border-color:
+        var(--av-accent);
+
+    color:
+        var(--av-accent);
+}
+
+.brand-copy {
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+}
+
+.brand-copy strong {
+
+    display: block;
+
+    color:
+        var(--av-text);
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    letter-spacing: .27em;
+
+    line-height: 1;
+}
+
+.brand-copy small {
+
+    display: block;
+
+    margin-top: 5px;
+
+    color:
+        var(--av-muted);
+
+    font-size: 7px;
+
+    letter-spacing: .24em;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   NAV LINKS
+========================================================= */
+
+.app-links {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 28px;
+
+    margin-left: auto;
+}
+
+.app-links a {
+
+    position: relative;
+
+    padding: 5px 0;
+
+    color:
+        var(--av-muted);
+
+    font-size: 9px;
+
+    font-weight: 400;
+
+    text-transform: uppercase;
+
+    letter-spacing: .19em;
+
+    transition:
+        color .35s var(--av-ease);
+}
+
+.app-links a::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 100%;
+
+    bottom: 0;
+
+    height: 1px;
+
+    background:
+        var(--av-accent);
+
+    transition:
+        .35s var(--av-ease);
+}
+
+.app-links a:hover,
+.app-links a.active {
+
+    color:
+        var(--av-text);
+}
+
+.app-links a:hover::after,
+.app-links a.active::after {
+
+    right: 0;
+}
+
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+.mobile-menu {
+
+    display: none;
+
+    margin-left: auto;
+
+    padding: 5px;
+
+    background: none;
+
+    border: 0;
+
+    width: 34px;
+    height: 34px;
+}
+
+.mobile-menu span {
+
+    display: block;
+
+    width: 24px;
+    height: 1px;
+
+    margin: 6px auto;
+
+    background:
+        var(--av-text);
+
+    transition:
+        transform .35s var(--av-ease),
+        opacity .35s var(--av-ease);
+}
+
+.mobile-menu.open span:first-child {
+
+    transform:
+        translateY(3.5px)
+        rotate(45deg);
+}
+
+.mobile-menu.open span:last-child {
+
+    transform:
+        translateY(-3.5px)
+        rotate(-45deg);
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+main {
+
+    position: relative;
+
+    z-index: 5;
+}
+
+section {
+
+    width:
+        min(
+            var(--max-width),
+            calc(100% - (var(--av-pad) * 2))
+        );
+
+    margin-inline: auto;
+}
+
+
+/* =========================================================
+   TYPOGRAPHY
+========================================================= */
+
+h1,
+h2,
+h3 {
+
+    margin: 0;
+
+    font-weight: 300;
+
+    line-height: .97;
+
+    letter-spacing: -.05em;
+}
+
+h1 {
+
+    font-size:
+        clamp(
+            58px,
+            8vw,
+            118px
+        );
+}
+
+h2 {
+
+    font-size:
+        clamp(
+            48px,
+            6.5vw,
+            92px
+        );
+}
+
+em {
+
+    font-style: normal;
+
+    color:
+        #9ca49f;
+}
+
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+.eyebrow {
+
+    display: flex;
+
+    align-items: center;
+
+    font-size: 9px;
+
+    letter-spacing: .25em;
+
+    color:
+        var(--av-muted);
+
+    text-transform: uppercase;
+}
+
+.eyebrow span {
+
+    display: inline-block;
+
+    width: 5px;
+    height: 5px;
+
+    margin-right: 9px;
+
+    background:
+        var(--av-accent);
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 12px
+        rgba(214, 168, 79, .7);
+}
+
+
+/* =========================================================
+   SECTION LINE
+========================================================= */
+
+.section-line {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+    color:
+        var(--av-muted);
+
+    font-size: 8px;
+
+    letter-spacing: .24em;
+
+    margin-bottom: 70px;
+}
+
+.section-line i {
+
+    flex: 1;
+
+    height: 1px;
+
+    background:
+        var(--av-line);
+}
+
+
+/* =========================================================
+   REVEAL
+========================================================= */
+
+.reveal {
+
+    opacity: 0;
+
+    transform:
+        translateY(30px);
+
+    transition:
+        opacity 1s var(--av-ease),
+        transform 1.1s var(--av-ease);
+}
+
+.reveal.in {
+
+    opacity: 1;
+
+    transform: none;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.dealer-hero {
+
+    min-height: 100svh;
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 7vw;
+
+    padding:
+        140px 0 100px;
+
+    overflow: hidden;
+}
+
+.dealer-hero::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 55vw;
+
+    aspect-ratio: 1;
+
+    right: -20%;
+
+    top: 0;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(214, 168, 79, .08),
+            transparent 65%
+        );
+
+    filter: blur(25px);
+
+    pointer-events: none;
+}
+
+.hero-copy {
+
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 1000px;
+}
+
+.hero-copy .eyebrow {
+
+    margin-bottom: 42px;
+}
+
+.hero-copy h1 {
+
+    font-size:
+        clamp(
+            55px,
+            8.4vw,
+            125px
+        );
+
+    line-height: .88;
+
+    letter-spacing: -.075em;
+}
+
+.hero-copy h1 em {
+
+    color:
+        rgba(233, 236, 232, .38);
+}
+
+.hero-description {
+
+    max-width: 650px;
+
+    margin-top: 45px;
+
+    color:
+        var(--av-muted);
+
+    font-size: 15px;
+
+    line-height: 1.9;
+}
+
+
+/* =========================================================
+   HERO ACTIONS
+========================================================= */
+
+.hero-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 30px;
+
+    margin-top: 42px;
+}
+
+.gold-btn {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 35px;
+
+    padding:
+        13px 20px;
+
+    border:
+        1px solid
+        rgba(214, 168, 79, .4);
+
+    color:
+        var(--av-text);
+
+    background:
+        transparent;
+
+    font-size: 9px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .19em;
+
+    transition:
+        .35s var(--av-ease);
+}
+
+.gold-btn span {
+
+    color:
+        var(--av-accent);
+
+    font-size: 15px;
+
+    transition:
+        transform .35s var(--av-ease);
+}
+
+.gold-btn:hover {
+
+    background:
+        rgba(214, 168, 79, .08);
+
+    border-color:
+        var(--av-accent);
+}
+
+.gold-btn:hover span {
+
+    transform:
+        translateX(6px);
+}
+
+.text-btn {
+
+    color:
+        var(--av-muted);
+
+    font-size: 9px;
+
+    letter-spacing: .19em;
+
+    transition:
+        color .3s var(--av-ease);
+}
+
+.text-btn span {
+
+    margin-left: 8px;
+
+    color:
+        var(--av-accent);
+}
+
+.text-btn:hover {
+
+    color:
+        var(--av-text);
+}
+
+
+/* =========================================================
+   HERO VISUAL
+========================================================= */
+
+.hero-visual {
+
+    position: relative;
+
+    flex-shrink: 0;
+
+    width: 330px;
+    height: 330px;
+
+    display: grid;
+
+    place-items: center;
+}
+
+.visual-ring {
+
+    position: absolute;
+
+    border:
+        1px solid
+        rgba(233, 236, 232, .08);
+
+    border-radius: 50%;
+}
+
+.ring-one {
+
+    width: 100%;
+    height: 100%;
+}
+
+.ring-two {
+
+    width: 70%;
+    height: 70%;
+
+    border-color:
+        rgba(214, 168, 79, .16);
+}
+
+.visual-core {
+
+    width: 145px;
+    height: 145px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border:
+        1px solid
+        rgba(214, 168, 79, .3);
+
+    transform:
+        rotate(45deg);
+}
+
+.visual-core span {
+
+    transform:
+        rotate(-45deg);
+
+    color:
+        rgba(233, 236, 232, .15);
+
+    font-size: 48px;
+
+    letter-spacing: .08em;
+}
+
+.visual-core small {
+
+    transform:
+        rotate(-45deg);
+
+    margin-top: 10px;
+
+    color:
+        var(--av-muted);
+
+    font-size: 7px;
+
+    line-height: 1.5;
+
+    text-align: center;
+
+    letter-spacing: .25em;
+}
+
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.dealer-intro {
+
+    padding:
+        150px 0 170px;
+}
+
+.intro-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        .9fr 1.1fr;
+
+    gap: 10vw;
+}
+
+.intro-heading h2 {
+
+    margin-top: 30px;
+
+    font-size:
+        clamp(
+            48px,
+            6vw,
+            92px
+        );
+
+    line-height: .94;
+}
+
+.intro-heading h2 em {
+
+    color:
+        rgba(233, 236, 232, .3);
+}
+
+.intro-content {
+
+    max-width: 680px;
+
+    padding-top: 15px;
+}
+
+.intro-content .lead {
+
+    margin-bottom: 32px;
+
+    color:
+        var(--av-text);
+
+    font-size:
+        clamp(
+            22px,
+            2.2vw,
+            31px
+        );
+
+    line-height: 1.25;
+}
+
+.intro-content p:not(.lead) {
+
+    margin-bottom: 24px;
+
+    color:
+        var(--av-muted);
+
+    font-size: 15px;
+
+    line-height: 1.9;
+}
+
+
+/* =========================================================
+   SERVICES
+========================================================= */
+
+.services-section {
+
+    padding-bottom:
+        170px;
+}
+
+.services-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    border-top:
+        1px solid var(--av-line);
+
+    border-left:
+        1px solid var(--av-line);
+}
+
+.service-card {
+
+    min-height: 340px;
+
+    padding: 38px;
+
+    display: grid;
+
+    grid-template-columns:
+        50px 1fr;
+
+    gap: 25px;
+
+    border-right:
+        1px solid var(--av-line);
+
+    border-bottom:
+        1px solid var(--av-line);
+
+    transition:
+        background .45s var(--av-ease),
+        transform .45s var(--av-ease);
+}
+
+.service-card:hover {
+
+    background:
+        rgba(255, 255, 255, .018);
+
+    transform:
+        translateY(-3px);
+}
+
+.service-number {
+
+    color:
+        var(--av-accent);
+
+    font-size: 8px;
+
+    letter-spacing: .18em;
+}
+
+.service-card small {
+
+    color:
+        var(--av-muted);
+
+    font-size: 8px;
+
+    letter-spacing: .24em;
+}
+
+.service-card h3 {
+
+    max-width: 500px;
+
+    margin-top: 25px;
+
+    color:
+        rgba(233, 236, 232, .82);
+
+    font-size:
+        clamp(
+            25px,
+            2.5vw,
+            38px
+        );
+
+    line-height: 1.08;
+}
+
+.service-card p {
+
+    max-width: 520px;
+
+    margin-top: 28px;
+
+    color:
+        var(--av-muted);
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   DATA SECTION
+========================================================= */
+
+.data-section {
+
+    padding:
+        150px 0 170px;
+}
+
+.data-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        .9fr 1.1fr;
+
+    gap: 10vw;
+}
+
+.data-heading h2 {
+
+    margin-top: 30px;
+
+    font-size:
+        clamp(
+            48px,
+            6vw,
+            92px
+        );
+
+    line-height: .94;
+}
+
+.data-heading h2 em {
+
+    color:
+        rgba(233, 236, 232, .3);
+}
+
+.data-content {
+
+    max-width: 680px;
+}
+
+.data-content .lead {
+
+    margin-bottom: 45px;
+
+    color:
+        var(--av-text);
+
+    font-size: 20px;
+
+    line-height: 1.5;
+}
+
+.data-list {
+
+    border-top:
+        1px solid var(--av-line);
+}
+
+.data-list div {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 25px;
+
+    min-height: 65px;
+
+    border-bottom:
+        1px solid var(--av-line);
+}
+
+.data-list span {
+
+    color:
+        var(--av-accent);
+
+    font-size: 8px;
+
+    letter-spacing: .2em;
+
+    width: 30px;
+}
+
+.data-list strong {
+
+    color:
+        rgba(233, 236, 232, .7);
+
+    font-size: 13px;
+
+    font-weight: 400;
+
+    letter-spacing: .03em;
+}
+
+
+/* =========================================================
+   PROCESS
+========================================================= */
+
+.process-section {
+
+    padding-bottom:
+        170px;
+}
+
+.process-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    border-top:
+        1px solid var(--av-line);
+
+    border-left:
+        1px solid var(--av-line);
+}
+
+.process-card {
+
+    min-height: 330px;
+
+    padding: 32px;
+
+    border-right:
+        1px solid var(--av-line);
+
+    border-bottom:
+        1px solid var(--av-line);
+
+    transition:
+        background .4s var(--av-ease);
+}
+
+.process-card:hover {
+
+    background:
+        rgba(255, 255, 255, .018);
+}
+
+.process-card > span {
+
+    display: block;
+
+    color:
+        var(--av-accent);
+
+    font-size: 8px;
+
+    letter-spacing: .2em;
+
+    margin-bottom: 70px;
+}
+
+.process-card small {
+
+    color:
+        var(--av-muted);
+
+    font-size: 8px;
+
+    letter-spacing: .23em;
+}
+
+.process-card h3 {
+
+    margin-top: 18px;
+
+    color:
+        rgba(233, 236, 232, .8);
+
+    font-size: 26px;
+
+    line-height: 1.05;
+}
+
+.process-card p {
+
+    margin-top: 25px;
+
+    color:
+        var(--av-muted);
+
+    font-size: 13px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   ELIGIBILITY
+========================================================= */
+
+.eligibility-section {
+
+    width: 100%;
+
+    padding:
+        150px var(--av-pad) 170px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(214, 168, 79, .018),
+            transparent
+        );
+
+    border-top:
+        1px solid rgba(233, 236, 232, .055);
+
+    border-bottom:
+        1px solid rgba(233, 236, 232, .055);
+}
+
+.eligibility-section .section-line {
+
+    width:
+        min(
+            var(--max-width),
+            100%
+        );
+
+    margin-inline: auto;
+}
+
+.eligibility-inner {
+
+    width:
+        min(
+            var(--max-width),
+            100%
+        );
+
+    margin-inline: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 10vw;
+}
+
+.eligibility-inner h2 {
+
+    margin-top: 30px;
+
+    font-size:
+        clamp(
+            48px,
+            6vw,
+            90px
+        );
+}
+
+.eligibility-inner h2 em {
+
+    color:
+        rgba(233, 236, 232, .3);
+}
+
+.eligibility-copy {
+
+    padding-top: 15px;
+}
+
+.eligibility-copy > p {
+
+    max-width: 620px;
+
+    color:
+        var(--av-muted);
+
+    font-size: 15px;
+
+    line-height: 1.9;
+}
+
+.partner-tags {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 35px;
+}
+
+.partner-tags span {
+
+    padding:
+        9px 13px;
+
+    border:
+        1px solid var(--av-line);
+
+    color:
+        var(--av-muted);
+
+    font-size: 7px;
+
+    letter-spacing: .18em;
+
+    transition:
+        border-color .3s var(--av-ease),
+        color .3s var(--av-ease);
+}
+
+.partner-tags span:hover {
+
+    color:
+        var(--av-text);
+
+    border-color:
+        rgba(214, 168, 79, .4);
+}
+
+
+/* =========================================================
+   PARTNER / CONTACT
+========================================================= */
+
+.partner-section {
+
+    padding:
+        170px 0 150px;
+}
+
+.partner-heading {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr .75fr;
+
+    gap: 10vw;
+
+    align-items: end;
+
+    margin-bottom: 85px;
+}
+
+.partner-heading h2 {
+
+    margin-top: 30px;
+
+    font-size:
+        clamp(
+            55px,
+            7vw,
+            110px
+        );
+
+    line-height: .9;
+}
+
+.partner-heading h2 em {
+
+    color:
+        rgba(233, 236, 232, .28);
+}
+
+.partner-heading > p {
+
+    max-width: 480px;
+
+    color:
+        var(--av-muted);
+
+    font-size: 14px;
+
+    line-height: 1.9;
+}
+
+
+/* =========================================================
+   CONTACT GRID
+========================================================= */
+
+.contact-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    border-top:
+        1px solid var(--av-line);
+
+    border-left:
+        1px solid var(--av-line);
+}
+
+.contact-card {
+
+    min-height: 260px;
+
+    padding: 34px;
+
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    border-right:
+        1px solid var(--av-line);
+
+    border-bottom:
+        1px solid var(--av-line);
+
+    transition:
+        background .4s var(--av-ease),
+        transform .4s var(--av-ease);
+}
+
+.contact-card:hover {
+
+    background:
+        rgba(255, 255, 255, .018);
+
+    transform:
+        translateY(-4px);
+}
+
+.contact-number {
+
+    color:
+        var(--av-accent);
+
+    font-size: 8px;
+
+    letter-spacing: .2em;
+}
+
+.contact-card small {
+
+    color:
+        var(--av-muted);
+
+    font-size: 8px;
+
+    letter-spacing: .24em;
+}
+
+.contact-card strong {
+
+    display: block;
+
+    margin-top: 12px;
+
+    color:
+        rgba(233, 236, 232, .82);
+
+    font-size:
+        clamp(
+            19px,
+            2vw,
+            28px
+        );
+
+    font-weight: 400;
+}
+
+.contact-card p {
+
+    margin-top: 10px;
+
+    color:
+        var(--av-muted);
+
+    font-size: 13px;
+
+    line-height: 1.8;
+}
+
+.contact-action {
+
+    color:
+        var(--av-muted);
+
+    font-size: 8px;
+
+    letter-spacing: .2em;
+
+    transition:
+        color .3s var(--av-ease);
+}
+
+.contact-card:hover .contact-action {
+
+    color:
+        var(--av-accent);
+}
+
+
+/* =========================================================
+   PARTNER BOTTOM
+========================================================= */
+
+.partner-bottom {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 10vw;
+
+    padding:
+        60px 0;
+
+    border-bottom:
+        1px solid var(--av-line);
+}
+
+.partner-bottom > div {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.partner-bottom small {
+
+    color:
+        var(--av-muted);
+
+    font-size: 8px;
+
+    letter-spacing: .22em;
+}
+
+.partner-bottom strong {
+
+    color:
+        rgba(233, 236, 232, .75);
+
+    font-size: 24px;
+
+    font-weight: 400;
+}
+
+.partner-bottom p {
+
+    margin: 0;
+
+    color:
+        var(--av-muted);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.dealer-cta {
+
+    width: 100%;
+
+    padding:
+        180px var(--av-pad);
+
+    position: relative;
+
+    overflow: hidden;
+
+    border-top:
+        1px solid rgba(233, 236, 232, .055);
+}
+
+.dealer-cta::after {
+
+    content:
+        "PARTNER";
+
+    position: absolute;
+
+    right: -7%;
+
+    bottom: -40px;
+
+    color:
+        rgba(233, 236, 232, .018);
+
+    font-size:
+        clamp(
+            100px,
+            19vw,
+            340px
+        );
+
+    font-weight: 700;
+
+    letter-spacing: -.08em;
+
+    pointer-events: none;
+}
+
+.cta-inner {
+
+    max-width: 1250px;
+
+    margin-inline: auto;
+
+    position: relative;
+
+    z-index: 2;
+}
+
+.cta-inner h2 {
+
+    margin-top: 35px;
+
+    font-size:
+        clamp(
+            65px,
+            9vw,
+            150px
+        );
+
+    line-height: .86;
+}
+
+.cta-inner h2 em {
+
+    color:
+        rgba(233, 236, 232, .28);
+}
+
+.cta-inner > p:not(.eyebrow) {
+
+    margin-top: 35px;
+
+    color:
+        var(--av-muted);
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.av-footer {
+
+    position: relative;
+
+    z-index: 5;
+
+    padding:
+        28px var(--av-pad);
+
+    border-top:
+        1px solid var(--av-line);
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 25px;
+
+    color:
+        var(--av-muted);
+
+    font-size: 8px;
+
+    letter-spacing: .16em;
+
+    text-transform: uppercase;
+}
+
+.av-footer strong {
+
+    color:
+        var(--av-text);
+
+    font-size: 11px;
+}
+
+.av-footer small {
+
+    margin-left: auto;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .dealer-nav {
+
+        padding-inline:
+            5vw;
+    }
+
+    .app-links {
+
+        gap: 22px;
+    }
+
+    .dealer-hero {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        padding-top: 150px;
+    }
+
+    .hero-visual {
+
+        width: 250px;
+        height: 250px;
+
+        margin-left: 30px;
+    }
+
+    .intro-grid,
+    .data-grid,
+    .eligibility-inner,
+    .partner-heading {
+
+        grid-template-columns: 1fr;
+
+        gap: 50px;
+    }
+
+    .process-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .service-card {
+
+        min-height: 310px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    body {
+
+        cursor: auto;
+    }
+
+    button {
+
+        cursor: pointer;
+    }
+
+    .cursor-dot,
+    .cursor-ring {
+
+        display: none;
+    }
+
+
+    /* NAV */
+
+    .dealer-nav {
+
+        height: 70px;
+
+        padding:
+            0 5vw;
+    }
+
+    .brand-copy strong {
+
+        font-size: 11px;
+    }
+
+    .brand-copy small {
+
+        display: none;
+    }
+
+
+    /* MOBILE NAV */
+
+    .app-links {
+
+        position: absolute;
+
+        top: 70px;
+
+        right: var(--av-pad);
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 0;
+
+        width:
+            min(
+                280px,
+                calc(100vw - 40px)
+            );
+
+        margin-left: 0;
+
+        padding: 10px 0;
+
+        background:
+            rgba(9, 11, 12, .96);
+
+        border:
+            1px solid var(--av-line);
+
+        backdrop-filter:
+            blur(18px);
+
+        opacity: 0;
+
+        visibility: hidden;
+
+        transform:
+            translateY(-10px);
+
+        transition:
+            .35s var(--av-ease);
+    }
+
+    .app-links.mobile-open {
+
+        opacity: 1;
+
+        visibility: visible;
+
+        transform:
+            translateY(0);
+    }
+
+    .app-links a {
+
+        display: block;
+
+        padding:
+            15px 20px;
+
+        border-bottom:
+            1px solid var(--av-line);
+    }
+
+    .app-links a:last-child {
+
+        border-bottom: 0;
+    }
+
+    .app-links a::after {
+
+        display: none;
+    }
+
+    .mobile-menu {
+
+        display: block;
+    }
+
+
+    /* GENERAL */
+
+    section {
+
+        width: 90vw;
+    }
+
+
+    /* HERO */
+
+    .dealer-hero {
+
+        min-height: auto;
+
+        padding:
+            125px 0 100px;
+    }
+
+    .hero-copy .eyebrow {
+
+        margin-bottom: 30px;
+    }
+
+    .hero-copy h1 {
+
+        font-size:
+            clamp(
+                48px,
+                14vw,
+                82px
+            );
+    }
+
+    .hero-description {
+
+        margin-top: 35px;
+
+        font-size: 13px;
+
+        line-height: 1.8;
+    }
+
+    .hero-actions {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 22px;
+    }
+
+    .hero-visual {
+
+        width: 190px;
+        height: 190px;
+
+        margin:
+            30px 0 0 20px;
+    }
+
+    .visual-core {
+
+        width: 90px;
+        height: 90px;
+    }
+
+    .visual-core span {
+
+        font-size: 28px;
+    }
+
+    .visual-core small {
+
+        font-size: 5px;
+    }
+
+
+    /* SECTIONS */
+
+    .dealer-intro,
+    .data-section,
+    .partner-section {
+
+        padding-top: 100px;
+
+        padding-bottom: 100px;
+    }
+
+    .services-section,
+    .process-section {
+
+        padding-bottom: 100px;
+    }
+
+    .section-line {
+
+        margin-bottom: 50px;
+
+        font-size: 7px;
+
+        gap: 12px;
+    }
+
+
+    /* INTRO */
+
+    .intro-heading h2,
+    .data-heading h2 {
+
+        font-size: 50px;
+    }
+
+    .intro-content .lead {
+
+        font-size: 22px;
+    }
+
+    .intro-content p:not(.lead) {
+
+        font-size: 13px;
+    }
+
+
+    /* SERVICES */
+
+    .services-grid,
+    .contact-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .service-card {
+
+        min-height: 290px;
+
+        padding: 28px;
+
+        grid-template-columns:
+            40px 1fr;
+
+        gap: 18px;
+    }
+
+    .service-card h3 {
+
+        font-size: 27px;
+    }
+
+
+    /* DATA */
+
+    .data-content .lead {
+
+        font-size: 18px;
+    }
+
+
+    /* PROCESS */
+
+    .process-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .process-card {
+
+        min-height: 280px;
+    }
+
+    .process-card > span {
+
+        margin-bottom: 55px;
+    }
+
+
+    /* ELIGIBILITY */
+
+    .eligibility-section {
+
+        padding:
+            100px 5vw;
+    }
+
+    .eligibility-inner h2 {
+
+        font-size: 50px;
+    }
+
+
+    /* CONTACT */
+
+    .partner-heading {
+
+        margin-bottom: 55px;
+    }
+
+    .partner-heading h2 {
+
+        font-size: 58px;
+    }
+
+    .partner-heading > p {
+
+        font-size: 13px;
+    }
+
+    .contact-card {
+
+        min-height: 230px;
+
+        padding: 28px;
+    }
+
+    .partner-bottom {
+
+        grid-template-columns: 1fr;
+
+        gap: 45px;
+    }
+
+
+    /* CTA */
+
+    .dealer-cta {
+
+        padding:
+            120px 5vw;
+    }
+
+    .cta-inner h2 {
+
+        font-size: 70px;
+    }
+
+
+    /* FOOTER */
+
+    .av-footer {
+
+        flex-wrap: wrap;
+
+        gap: 15px;
+    }
+
+    .av-footer small {
+
+        width: 100%;
+
+        margin-left: 0;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .dealer-nav {
+
+        padding-inline: 20px;
+    }
+
+    .brand-copy strong {
+
+        font-size: 10px;
+    }
+
+    .dealer-hero {
+
+        padding-top: 120px;
+    }
+
+    .hero-copy h1 {
+
+        font-size: 47px;
+    }
+
+    .intro-heading h2,
+    .data-heading h2 {
+
+        font-size: 44px;
+    }
+
+    .eligibility-inner h2 {
+
+        font-size: 44px;
+    }
+
+    .partner-heading h2 {
+
+        font-size: 52px;
+    }
+
+    .cta-inner h2 {
+
+        font-size: 60px;
+    }
+
+    .service-card {
+
+        padding: 23px;
+    }
+
+    .contact-card {
+
+        padding: 24px;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+
+        animation: none !important;
+
+        transition: none !important;
+    }
+
+    .reveal {
+
+        opacity: 1;
+
+        transform: none;
+    }
+}

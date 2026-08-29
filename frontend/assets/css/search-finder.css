@@ -502,3 +502,135 @@ body.cursor-hover .cursor-ring {
         transition: none
     }
 }
+
+/* =========================================================
+   AUTOVERSE — UNIVERSAL NAV SEARCH
+   ========================================================= */
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 22px;
+  flex-shrink: 0;
+}
+
+.search-box input {
+  width: 210px;
+  height: 38px;
+
+  padding: 0 14px;
+
+  background: rgba(10, 12, 12, 0.72);
+  color: #e9ece8;
+
+  border: 1px solid rgba(233, 236, 232, 0.16);
+  border-radius: 0;
+
+  outline: none;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  transition:
+    width 0.35s ease,
+    border-color 0.35s ease,
+    background 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.search-box input::placeholder {
+  color: rgba(233, 236, 232, 0.42);
+  opacity: 1;
+}
+
+.search-box input:hover {
+  border-color: rgba(233, 236, 232, 0.28);
+}
+
+.search-box input:focus {
+  width: 230px;
+  background: rgba(14, 16, 16, 0.92);
+  border-color: rgba(214, 168, 79, 0.55);
+
+  box-shadow:
+    0 0 0 1px rgba(214, 168, 79, 0.06),
+    0 8px 30px rgba(0, 0, 0, 0.28);
+}
+
+.search-box button {
+  width: 40px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  background: rgba(10, 12, 12, 0.72);
+  color: rgba(233, 236, 232, 0.72);
+
+  border: 1px solid rgba(233, 236, 232, 0.16);
+  border-radius: 0;
+
+  cursor: pointer;
+
+  font-size: 15px;
+  line-height: 1;
+
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease,
+    background 0.3s ease,
+    transform 0.3s ease;
+}
+
+.search-box button:hover {
+  color: #d6a84f;
+  background: rgba(214, 168, 79, 0.06);
+  border-color: rgba(214, 168, 79, 0.45);
+}
+
+.search-box button:active {
+  transform: scale(0.94);
+}
+
+/* Search box on smaller screens */
+
+@media (max-width: 1100px) {
+  .search-box {
+    margin-left: 12px;
+  }
+
+  .search-box input {
+    width: 170px;
+  }
+
+  .search-box input:focus {
+    width: 190px;
+  }
+}
+
+@media (max-width: 760px) {
+  .search-box {
+    margin-left: 0;
+    width: 100%;
+    margin-top: 14px;
+  }
+
+  .search-box input {
+    width: 100%;
+  }
+
+  .search-box input:focus {
+    width: 100%;
+  }
+
+  .search-box button {
+    flex-shrink: 0;
+  }
+}

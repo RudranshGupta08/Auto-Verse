@@ -1,201 +1,572 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<style>
-body {
-  background:
-    linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)),
-    url('https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg')
-    no-repeat center center fixed;
-  background-size: cover;
-  color: #e0e0e0;
-  font-family: 'Roboto', sans-serif;
-  margin: 0;
-  padding: 20px;
-}
+    <meta
+      name="description"
+      content="AutoVerse administrative management dashboard."
+    />
 
-h1 {
-  text-align: center;
-  color: #ffb300;
-}
+    <title>AutoVerse — Admin Panel</title>
 
-form {
-  max-width: 1000px;
-  margin: auto;
-  background: rgba(30,30,30,0.9);
-  padding: 20px;
-  border-radius: 10px;
+    <link rel="stylesheet" href="assets/css/admin.css" />
+  </head>
 
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
+  <body>
+    <!-- =========================
+       BACKGROUND
+  ========================== -->
 
-input, textarea {
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid rgba(255,179,0,0.4);
-  background: rgba(15,23,42,0.9);
-  color: white;
-}
+    <div class="page-noise"></div>
+    <div class="page-vignette"></div>
 
-textarea {
-  grid-column: span 2;
-  height: 120px;
-}
+    <!-- =========================
+       HEADER
+  ========================== -->
 
-button {
-  grid-column: span 2;
-  padding: 12px;
-  background: #ffb300;
-  color: black;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
+    <header class="admin-header">
+      <div class="admin-brand">
+        <div class="brand-mark">AV</div>
 
-button:hover {
-  background: #ffcc33;
-}
+        <div class="brand-copy">
+          <strong>AUTOVERSE</strong>
+          <small>ADMINISTRATIVE CONSOLE</small>
+        </div>
+      </div>
 
-/* IMAGE */
-#dropArea {
-  grid-column: span 2;
-  border: 2px dashed rgba(255,179,0,0.4);
-  padding: 10px;
-  text-align: center;
-  cursor: pointer;
-}
+      <div class="header-actions">
+        <span class="system-status">
+          <i></i>
+          SYSTEM ONLINE
+        </span>
 
-#preview {
-  grid-column: span 2;
-  display: flex;
-  flex-wrap: wrap;
-}
+        <button class="outline-btn" id="refreshAllBtn" type="button">
+          ↻ Refresh
+        </button>
 
-#preview div {
-  position: relative;
-  margin: 5px;
-}
+        <button class="logout-btn" id="logoutBtn" type="button">Logout</button>
+      </div>
+    </header>
 
-#preview img {
-  width: 80px;
-  border-radius: 6px;
-}
+    <!-- =========================
+       MAIN
+  ========================== -->
 
-#preview button {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  background: red;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  font-size: 10px;
-  cursor: pointer;
-}
+    <main class="admin-main">
+      <!-- =========================
+         PAGE INTRO
+    ========================== -->
 
-/* VARIANTS */
-.variant-box {
-  background: rgba(15,23,42,0.8);
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
+      <section class="page-intro">
+        <div>
+          <p class="eyebrow">
+            <span></span>
+            AUTOVERSE CONTROL CENTER
+          </p>
 
-.remove-variant {
-  grid-column: span 2;
-  background: red;
-}
+          <h1>
+            Manage the<br />
+            <em>automotive universe.</em>
+          </h1>
 
-/* LIST */
-#carsList {
-  max-width: 1000px;
-  margin: 40px auto;
-}
+          <p class="intro-copy">
+            Manage AutoVerse vehicle intelligence, inventory and dealership
+            partnerships from one centralized administrative console.
+          </p>
+        </div>
+      </section>
 
-.car-item {
-  background: rgba(30,30,30,0.9);
-  padding: 14px;
-  margin-bottom: 12px;
-  display: flex;
-  justify-content: space-between;
-  border-radius: 10px;
-}
+      <!-- =========================
+         DASHBOARD
+    ========================== -->
 
-.edit-btn {
-  background: #2563eb;
-  color: white;
-}
+      <section class="dashboard-grid">
+        <article class="stat-card">
+          <span class="stat-label"> TOTAL VEHICLES </span>
 
-.delete-btn {
-  background: #dc2626;
-  color: white;
-}
-</style>
-</head>
+          <strong id="totalCars"> 0 </strong>
 
-<body>
+          <small> Active inventory </small>
+        </article>
 
-<h1>🚗 AutoVerse Admin Panel</h1>
+        <article class="stat-card">
+          <span class="stat-label"> BRANDS </span>
 
-<form id="form">
+          <strong id="totalBrands"> 0 </strong>
 
-<input name="brand" placeholder="Brand">
-<input name="model" placeholder="Model">
-<input name="type" placeholder="Type">
-<input name="priceRange" placeholder="Price Range">
+          <small> Represented brands </small>
+        </article>
 
-<input name="engineOptions" placeholder="Engine Options">
-<input name="fuelType" placeholder="Fuel Type">
-<input name="transmission" placeholder="Transmission">
+        <article class="stat-card">
+          <span class="stat-label"> VARIANTS </span>
 
-<input name="mileage" placeholder="Mileage">
-<input name="seatingCapacity" placeholder="Seats">
-<input name="rating" placeholder="Rating">
-<input name="ncapRating" placeholder="NCAP">
+          <strong id="totalVariants"> 0 </strong>
 
-<input name="bestFor" placeholder="Best For">
+          <small> Configurations </small>
+        </article>
 
-<textarea name="description" placeholder="Description"></textarea>
-<textarea name="features" placeholder="Features"></textarea>
-<textarea name="pros" placeholder="Pros"></textarea>
-<textarea name="cons" placeholder="Cons"></textarea>
-<textarea name="verdict" placeholder="Verdict"></textarea>
+        <article class="stat-card dealership-stat">
+          <span class="stat-label"> DEALERSHIPS </span>
 
-<!-- IMAGE -->
-<div id="dropArea">📂 Upload Images</div>
-<input type="file" id="imageInput" multiple hidden>
-<div id="preview"></div>
+          <strong id="totalDealerships"> 0 </strong>
 
-<!-- VARIANTS -->
-<div style="grid-column: span 2;">
-<h3 style="color:#ffb300;">Variants</h3>
-<div id="variantContainer"></div>
-<button type="button" onclick="addVariant()">+ Add Variant</button>
-</div>
+          <small> Partnership network </small>
+        </article>
+      </section>
 
-<button type="submit">Save</button>
+      <!-- =========================
+         ADMIN TABS
+    ========================== -->
 
-</form>
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-section="inventory" type="button">
+          🚗 Vehicle Inventory
+        </button>
 
-<div id="carsList"></div>
+        <button class="admin-tab" data-section="dealerships" type="button">
+          🏢 Dealership Management
+        </button>
+      </div>
 
-<script>
-const API_BASE = API_BASE_URL;
-</script>
+      <!-- =====================================================
+         VEHICLE INVENTORY
+    ====================================================== -->
 
-<script src="assets/js/config.js"></script>    
-<script src="assets/js/admin.js"></script>
+      <section class="admin-section active" id="inventorySection">
+        <div class="section-heading">
+          <div>
+            <p class="section-number">01 — INVENTORY</p>
 
-</body>
+            <h2>Vehicle Management</h2>
+
+            <p>
+              Add, edit and maintain vehicles available throughout AutoVerse.
+            </p>
+          </div>
+
+          <button class="solid-btn" id="newCarBtn" type="button">
+            + Add Vehicle
+          </button>
+        </div>
+
+        <!-- =========================
+           INVENTORY SEARCH
+      ========================== -->
+
+        <div class="inventory-toolbar">
+          <div class="search-box">
+            <span>⌕</span>
+
+            <input
+              type="search"
+              id="carSearch"
+              placeholder="Search brand, model or type..."
+            />
+          </div>
+
+          <span class="result-count" id="resultCount"> 0 vehicles </span>
+        </div>
+
+        <!-- =========================
+           VEHICLE FORM
+      ========================== -->
+
+        <div class="management-card hidden" id="vehicleEditor">
+          <div class="card-heading">
+            <div>
+              <span class="section-number"> VEHICLE EDITOR </span>
+
+              <h3 id="editorTitle">Add Vehicle</h3>
+            </div>
+
+            <button class="close-editor" id="closeEditorBtn" type="button">
+              ×
+            </button>
+          </div>
+
+          <form id="vehicleForm">
+            <div class="form-grid">
+              <div class="field">
+                <label>Brand</label>
+                <input name="brand" required />
+              </div>
+
+              <div class="field">
+                <label>Model</label>
+                <input name="model" required />
+              </div>
+
+              <div class="field">
+                <label>Type</label>
+                <input name="type" placeholder="SUV / Sedan / Hatchback" />
+              </div>
+
+              <div class="field">
+                <label>Price Range</label>
+                <input name="priceRange" placeholder="₹10L - ₹15L" />
+              </div>
+
+              <div class="field">
+                <label>Engine Options</label>
+                <input name="engineOptions" />
+              </div>
+
+              <div class="field">
+                <label>Fuel Type</label>
+                <input name="fuelType" />
+              </div>
+
+              <div class="field">
+                <label>Transmission</label>
+                <input name="transmission" />
+              </div>
+
+              <div class="field">
+                <label>Mileage</label>
+                <input name="mileage" />
+              </div>
+
+              <div class="field">
+                <label>Seating Capacity</label>
+                <input name="seatingCapacity" />
+              </div>
+
+              <div class="field">
+                <label>Rating</label>
+                <input name="rating" />
+              </div>
+
+              <div class="field">
+                <label>NCAP Rating</label>
+                <input name="ncapRating" />
+              </div>
+
+              <div class="field">
+                <label>Best For</label>
+                <input name="bestFor" />
+              </div>
+            </div>
+
+            <div class="textarea-grid">
+              <div class="field">
+                <label>Description</label>
+                <textarea name="description"></textarea>
+              </div>
+
+              <div class="field">
+                <label>Features</label>
+                <textarea
+                  name="features"
+                  placeholder="Feature 1, Feature 2, Feature 3"
+                ></textarea>
+              </div>
+
+              <div class="field">
+                <label>Pros</label>
+                <textarea name="pros"></textarea>
+              </div>
+
+              <div class="field">
+                <label>Cons</label>
+                <textarea name="cons"></textarea>
+              </div>
+
+              <div class="field full">
+                <label>Verdict</label>
+                <textarea name="verdict"></textarea>
+              </div>
+            </div>
+
+            <!-- =========================
+               IMAGES
+          ========================== -->
+
+            <div class="media-section">
+              <div class="media-heading">
+                <div>
+                  <span class="section-number"> MEDIA </span>
+
+                  <h3>Vehicle Images</h3>
+                </div>
+
+                <span> JPG / PNG / WEBP </span>
+              </div>
+
+              <div class="drop-area" id="dropArea">
+                <strong> Drop vehicle images here </strong>
+
+                <span> or click to browse files </span>
+
+                <input
+                  type="file"
+                  id="imageInput"
+                  accept="image/*"
+                  multiple
+                  hidden
+                />
+              </div>
+
+              <div class="image-preview" id="preview"></div>
+            </div>
+
+            <!-- =========================
+               VARIANTS
+          ========================== -->
+
+            <div class="variants-section">
+              <div class="media-heading">
+                <div>
+                  <span class="section-number"> CONFIGURATION </span>
+
+                  <h3>Variants</h3>
+                </div>
+
+                <button type="button" class="small-btn" id="addVariantBtn">
+                  + Add Variant
+                </button>
+              </div>
+
+              <div id="variantContainer"></div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="cancel-btn" id="cancelVehicleBtn">
+                Cancel
+              </button>
+
+              <button type="submit" class="solid-btn" id="saveVehicleBtn">
+                Save Vehicle
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- =========================
+           CAR LIST
+      ========================== -->
+
+        <div class="inventory-list" id="carsList"></div>
+      </section>
+
+      <!-- =====================================================
+         DEALERSHIP MANAGEMENT
+    ====================================================== -->
+
+      <section class="admin-section" id="dealershipSection">
+        <div class="section-heading">
+          <div>
+            <p class="section-number">02 — BUSINESS NETWORK</p>
+
+            <h2>Dealership Management</h2>
+
+            <p>
+              Manage authorized dealers and automotive showroom partners
+              connected with AutoVerse.
+            </p>
+          </div>
+
+          <button class="solid-btn" id="addDealershipBtn" type="button">
+            + Add Dealership
+          </button>
+        </div>
+
+        <!-- =========================
+           FUTURE READY NOTICE
+      ========================== -->
+
+        <div class="future-notice">
+          <div class="notice-icon">B2B</div>
+
+          <div>
+            <strong> Dealership network is ready for integration. </strong>
+
+            <p>
+              The frontend management interface is prepared for the upcoming
+              dealership API. Once the backend is connected, dealership records,
+              inventory, contact details, verification status and showroom
+              information can be managed from this section.
+            </p>
+          </div>
+        </div>
+
+        <!-- =========================
+           DEALERSHIP EDITOR
+      ========================== -->
+
+        <div class="management-card hidden" id="dealershipEditor">
+          <div class="card-heading">
+            <div>
+              <span class="section-number"> DEALERSHIP PROFILE </span>
+
+              <h3>Partner Information</h3>
+            </div>
+
+            <button class="close-editor" id="closeDealershipBtn" type="button">
+              ×
+            </button>
+          </div>
+
+          <form id="dealershipForm">
+            <div class="form-grid">
+              <div class="field">
+                <label>Dealership Name</label>
+                <input
+                  name="dealershipName"
+                  placeholder="Rudransh Automobile Industry"
+                />
+              </div>
+
+              <div class="field">
+                <label>Dealer / Owner Name</label>
+                <input
+                  name="ownerName"
+                  placeholder="Owner / Authorized Representative"
+                />
+              </div>
+
+              <div class="field">
+                <label>Contact Number</label>
+                <input name="contactNumber" type="tel" />
+              </div>
+
+              <div class="field">
+                <label>Support Contact</label>
+                <input name="supportNumber" type="tel" />
+              </div>
+
+              <div class="field">
+                <label>Email</label>
+                <input name="email" type="email" />
+              </div>
+
+              <div class="field">
+                <label>Website</label>
+                <input name="website" type="url" />
+              </div>
+
+              <div class="field">
+                <label>City</label>
+                <input name="city" />
+              </div>
+
+              <div class="field">
+                <label>State</label>
+                <input name="state" />
+              </div>
+
+              <div class="field">
+                <label>PIN Code</label>
+                <input name="pincode" />
+              </div>
+
+              <div class="field">
+                <label>Business Type</label>
+
+                <select name="businessType">
+                  <option value="authorized-dealer">Authorized Dealer</option>
+
+                  <option value="car-showroom">Car Showroom</option>
+
+                  <option value="multi-brand">Multi-Brand Dealer</option>
+
+                  <option value="pre-owned">Pre-Owned Dealer</option>
+
+                  <option value="automotive-business">
+                    Automotive Business
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="textarea-grid">
+              <div class="field full">
+                <label> Complete Address </label>
+
+                <textarea
+                  name="address"
+                  placeholder="Full showroom / dealership address"
+                ></textarea>
+              </div>
+
+              <div class="field">
+                <label> Dealership Description </label>
+
+                <textarea
+                  name="description"
+                  placeholder="About the dealership..."
+                ></textarea>
+              </div>
+
+              <div class="field">
+                <label> Brands Represented </label>
+
+                <textarea
+                  name="brands"
+                  placeholder="Tata, Mahindra, Hyundai..."
+                ></textarea>
+              </div>
+            </div>
+
+            <!-- VERIFICATION -->
+
+            <div class="verification-box">
+              <div>
+                <strong> Verification Status </strong>
+
+                <span> Future backend field </span>
+              </div>
+
+              <select name="verificationStatus">
+                <option value="pending">Pending Verification</option>
+
+                <option value="verified">Verified</option>
+
+                <option value="rejected">Rejected</option>
+              </select>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="cancel-btn" id="cancelDealershipBtn">
+                Cancel
+              </button>
+
+              <button type="submit" class="solid-btn">Save Dealership</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- =========================
+           DEALERSHIP LIST
+      ========================== -->
+
+        <div class="dealership-grid" id="dealershipList">
+          <div class="empty-dealership">
+            <div>🏢</div>
+
+            <h3>Dealership Network</h3>
+
+            <p>
+              No dealership records are connected yet. Once the dealership
+              backend is available, verified partners will appear here.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- =========================
+       TOAST
+  ========================== -->
+
+    <div class="toast" id="toast"></div>
+
+    <!-- =========================
+       SCRIPTS
+  ========================== -->
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/admin.js"></script>
+  </body>
 </html>

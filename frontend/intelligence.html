@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Intelligence | AutoVerse</title>
+
+  <link rel="stylesheet" href="assets/css/intelligence.css">
+
+  <script src="assets/js/config.js"></script>
+</head>
+
+<body>
+
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+
+  <div class="scroll-progress">
+    <span id="scrollProgress"></span>
+  </div>
+
+  <!-- ================= NAVIGATION ================= -->
+
+  <header class="intel-nav" id="intelNav">
+
+    <a class="brand" href="discover.html">
+      <span class="brand-mark">AV</span>
+
+      <span>
+        <strong>AUTOVERSE</strong>
+        <small>AUTOMOTIVE INTELLIGENCE</small>
+      </span>
+    </a>
+
+    <nav class="app-links" aria-label="AutoVerse navigation">
+      <a href="discover.html">Discover</a>
+      <a href="vehicles.html">Vehicles</a>
+      <a href="compare.html">Compare</a>
+      <a href="search.html">Search</a>
+      <a class="active" href="intelligence.html">Intelligence</a>
+    </nav>
+
+  </header>
+
+
+  <main>
+
+    <!-- ================= HERO ================= -->
+
+    <section class="intel-hero">
+
+      <div class="hero-copy reveal">
+
+        <p class="eyebrow">
+          <span></span>
+          AUTOVERSE INTELLIGENCE
+        </p>
+
+        <h1>
+          Don't just search.<br>
+          <em>Tell us what you need.</em>
+        </h1>
+
+        <p class="hero-description">
+          Describe the kind of car you're looking for and AutoVerse
+          will turn your requirements into a focused shortlist.
+        </p>
+
+      </div>
+
+      <div class="hero-number reveal">
+        <span>01</span>
+        <small>REQUIREMENT<br>ENGINE</small>
+      </div>
+
+    </section>
+
+
+    <!-- ================= INTELLIGENCE WORKSPACE ================= -->
+
+    <section class="intelligence-workspace">
+
+      <div class="section-line reveal">
+        <span>01 — DEFINE YOUR DRIVE</span>
+        <i></i>
+      </div>
+
+
+      <div class="workspace-grid">
+
+        <!-- INPUT -->
+
+        <div class="requirement-panel reveal">
+
+          <p class="eyebrow">
+            <span></span>
+            YOUR REQUIREMENTS
+          </p>
+
+          <h2>
+            What should<br>
+            your next car do?
+          </h2>
+
+          <p class="panel-description">
+            Start with what matters to you. You don't need to know
+            automotive terminology.
+          </p>
+
+
+          <form id="intelligenceForm">
+
+            <div class="input-group">
+
+              <label for="requirementText">
+                DESCRIBE YOUR NEED
+              </label>
+
+              <textarea
+                id="requirementText"
+                rows="5"
+                placeholder="Example: I need a comfortable automatic SUV for my family, mostly for city driving, around ₹20 lakh."
+              ></textarea>
+
+            </div>
+
+
+            <div class="quick-preferences">
+
+              <label>
+                QUICK PRIORITIES
+              </label>
+
+              <div class="preference-grid">
+
+                <button type="button" class="preference" data-purpose="family">
+                  FAMILY
+                </button>
+
+                <button type="button" class="preference" data-purpose="city">
+                  CITY
+                </button>
+
+                <button type="button" class="preference" data-purpose="highway">
+                  HIGHWAY
+                </button>
+
+                <button type="button" class="preference" data-purpose="performance">
+                  PERFORMANCE
+                </button>
+
+                <button type="button" class="preference" data-purpose="luxury">
+                  LUXURY
+                </button>
+
+                <button type="button" class="preference" data-purpose="value">
+                  VALUE
+                </button>
+
+                <button type="button" class="preference" data-purpose="ev">
+                  ELECTRIC
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <button
+              class="analyse-btn"
+              id="analyseBtn"
+              type="submit"
+            >
+              ANALYSE MY REQUIREMENTS
+              <span>→</span>
+            </button>
+
+          </form>
+
+        </div>
+
+
+        <!-- UNDERSTANDING -->
+
+        <div class="understanding-panel reveal">
+
+          <div class="panel-top">
+
+            <div>
+              <p class="eyebrow">
+                <span></span>
+                REQUIREMENT MAP
+              </p>
+
+              <h3>What AutoVerse understands.</h3>
+            </div>
+
+            <span class="status-dot">
+              LIVE
+            </span>
+
+          </div>
+
+
+          <div class="requirement-map">
+
+            <div class="requirement-item">
+              <span>BODY TYPE</span>
+              <strong id="mapType">ANY</strong>
+            </div>
+
+            <div class="requirement-item">
+              <span>BUDGET</span>
+              <strong id="mapBudget">ANY</strong>
+            </div>
+
+            <div class="requirement-item">
+              <span>POWERTRAIN</span>
+              <strong id="mapFuel">ANY</strong>
+            </div>
+
+            <div class="requirement-item">
+              <span>TRANSMISSION</span>
+              <strong id="mapTransmission">ANY</strong>
+            </div>
+
+            <div class="requirement-item">
+              <span>USE CASE</span>
+              <strong id="mapPurpose">ANY</strong>
+            </div>
+
+            <div class="requirement-item">
+              <span>PRIORITY</span>
+              <strong id="mapPriority">BALANCED</strong>
+            </div>
+
+          </div>
+
+
+          <div class="understanding-note">
+
+            <span>i</span>
+
+            <p>
+              Your requirements are used to rank vehicles from the
+              AutoVerse catalogue. Specifications are taken from the
+              vehicle database.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= RESULTS ================= -->
+
+    <section class="results-section" id="resultsSection">
+
+      <div class="section-line reveal">
+        <span>02 — YOUR SHORTLIST</span>
+        <i></i>
+      </div>
+
+
+      <div class="results-heading reveal">
+
+        <div>
+
+          <p class="eyebrow">
+            <span></span>
+            MATCHED VEHICLES
+          </p>
+
+          <h2>
+            Cars that make<br>
+            <em>sense for you.</em>
+          </h2>
+
+        </div>
+
+        <p id="resultsMeta">
+          Define your requirements to generate your shortlist.
+        </p>
+
+      </div>
+
+
+      <div
+        class="recommendation-grid"
+        id="recommendationGrid"
+      >
+
+        <div class="empty-intelligence">
+
+          <span>02</span>
+
+          <h3>Your shortlist is waiting.</h3>
+
+          <p>
+            Tell AutoVerse what you need and we'll rank the
+            vehicles that best match your requirements.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= HOW IT WORKS ================= -->
+
+    <section class="method-section">
+
+      <div class="section-line reveal">
+        <span>03 — THE METHOD</span>
+        <i></i>
+      </div>
+
+
+      <div class="method-grid">
+
+        <article class="method-card reveal">
+
+          <span>01</span>
+
+          <h3>UNDERSTAND</h3>
+
+          <p>
+            Your natural-language requirement is interpreted into
+            practical vehicle preferences.
+          </p>
+
+        </article>
+
+
+        <article class="method-card reveal">
+
+          <span>02</span>
+
+          <h3>FILTER</h3>
+
+          <p>
+            Vehicles that don't fit your essential requirements
+            are removed from the shortlist.
+          </p>
+
+        </article>
+
+
+        <article class="method-card reveal">
+
+          <span>03</span>
+
+          <h3>RANK</h3>
+
+          <p>
+            Remaining vehicles are ranked using the information
+            available in the AutoVerse catalogue.
+          </p>
+
+        </article>
+
+
+        <article class="method-card reveal">
+
+          <span>04</span>
+
+          <h3>DECIDE</h3>
+
+          <p>
+            Explore the strongest matches, compare them and
+            make the final decision yourself.
+          </p>
+
+        </article>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <footer class="intel-footer">
+
+    <strong>AUTOVERSE</strong>
+
+    <span>Automotive Intelligence Platform</span>
+
+    <small>
+      Discover · Understand · Compare · Decide
+    </small>
+
+  </footer>
+
+
+  <script src="assets/js/intelligence.js"></script>
+
+</body>
+</html>

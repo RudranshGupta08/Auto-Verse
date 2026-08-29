@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="AutoVerse Showroom — Discover verified dealerships, explore available vehicles and connect directly with automotive dealers."
+  >
+
+  <title>AutoVerse — Showrooms</title>
+
+  <link rel="stylesheet" href="assets/css/showroom.css">
+</head>
+
+<body>
+
+  <!-- PAGE EFFECTS -->
+  <div class="page-noise"></div>
+  <div class="page-vignette"></div>
+
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+
+
+  <!-- =========================
+       NAVBAR
+  ========================== -->
+
+  <header class="av-nav" id="avNav">
+
+    <a href="index.html" class="av-brand">
+      <span class="brand-mark">AV</span>
+
+      <span class="brand-copy">
+        <strong>AUTOVERSE</strong>
+        <small>AUTOMOTIVE INTELLIGENCE</small>
+      </span>
+    </a>
+
+
+    <nav class="av-links">
+
+      <a href="discover.html">Discover</a>
+
+      <a href="brands.html">Brands</a>
+
+      <a href="showroom.html" class="active">
+        Showrooms
+      </a>
+
+    </nav>
+
+
+    <div class="nav-actions">
+
+      <span class="user-status">
+        AUTOVERSE MEMBER
+      </span>
+
+      <button
+        class="logout-btn"
+        id="logoutBtn"
+        type="button"
+      >
+        Logout
+      </button>
+
+    </div>
+
+
+    <button
+      class="mobile-menu"
+      id="mobileMenu"
+      aria-label="Open navigation"
+    >
+      <span></span>
+      <span></span>
+    </button>
+
+  </header>
+
+
+  <!-- =========================
+       HERO
+  ========================== -->
+
+  <main>
+
+    <section class="showroom-hero">
+
+      <div class="hero-grid"></div>
+
+      <div class="hero-content reveal">
+
+        <p class="eyebrow">
+          <span></span>
+          AUTOVERSE SHOWROOM NETWORK
+        </p>
+
+        <h1>
+          Find your next car<br>
+          <em>where it actually lives.</em>
+        </h1>
+
+        <p class="hero-description">
+          Explore dealerships and authorized automotive showrooms
+          connected with AutoVerse. Discover available vehicles,
+          compare specifications and connect directly with the
+          dealership before making your decision.
+        </p>
+
+        <div class="hero-stats">
+
+          <div>
+            <strong id="dealerCount">—</strong>
+            <span>DEALERSHIPS</span>
+          </div>
+
+          <div>
+            <strong id="vehicleCount">—</strong>
+            <span>VEHICLES</span>
+          </div>
+
+          <div>
+            <strong>INDIA</strong>
+            <span>NETWORK</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         SEARCH / FILTER
+    ========================== -->
+
+    <section class="directory-section">
+
+      <div class="section-heading reveal">
+
+        <div>
+
+          <p class="eyebrow">
+            <span></span>
+            DEALERSHIP DIRECTORY
+          </p>
+
+          <h2>
+            Explore the<br>
+            <em>AutoVerse network.</em>
+          </h2>
+
+        </div>
+
+        <p>
+          Find participating dealerships, explore their inventory
+          and connect with them directly.
+        </p>
+
+      </div>
+
+
+      <div class="filter-bar reveal">
+
+        <div class="search-box">
+
+          <span>⌕</span>
+
+          <input
+            type="search"
+            id="dealerSearch"
+            placeholder="Search dealership, city or brand..."
+          >
+
+        </div>
+
+
+        <select id="cityFilter">
+
+          <option value="all">
+            All Cities
+          </option>
+
+        </select>
+
+
+        <select id="typeFilter">
+
+          <option value="all">
+            All Dealerships
+          </option>
+
+          <option value="authorized">
+            Authorized Showroom
+          </option>
+
+          <option value="dealer">
+            Car Dealer
+          </option>
+
+          <option value="multi-brand">
+            Multi-Brand Dealer
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- DEALERSHIPS -->
+
+      <div
+        class="dealer-grid"
+        id="dealerGrid"
+      ></div>
+
+
+      <div
+        class="empty-state"
+        id="emptyState"
+        hidden
+      >
+
+        <span>⌕</span>
+
+        <h3>
+          No dealerships found
+        </h3>
+
+        <p>
+          Try another city, dealership or brand.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         DEALER CTA
+    ========================== -->
+
+    <section class="dealer-cta">
+
+      <div class="cta-line"></div>
+
+      <div class="cta-content reveal">
+
+        <p class="eyebrow">
+          <span></span>
+          FOR DEALERS & SHOWROOM OWNERS
+        </p>
+
+        <h2>
+          Want your dealership<br>
+          <em>inside AutoVerse?</em>
+        </h2>
+
+        <p>
+          AutoVerse is open to authorized showrooms, independent
+          dealers, pre-owned car dealers and automotive businesses
+          looking to reach customers through a trusted digital
+          automotive platform.
+        </p>
+
+        <div class="cta-points">
+
+          <span>01 — DIGITAL PRESENCE</span>
+          <span>02 — INVENTORY LISTING</span>
+          <span>03 — CUSTOMER DISCOVERY</span>
+          <span>04 — DIRECT CONNECTION</span>
+
+        </div>
+
+
+        <div class="cta-actions">
+
+          <a
+            href="mailto:autoverse.official@gmail.com?subject=AutoVerse Dealership Partnership"
+            class="primary-btn"
+          >
+            Connect With AutoVerse
+            <span>↗</span>
+          </a>
+
+          <a
+            href="tel:+919999999999"
+            class="secondary-btn"
+          >
+            Call Partnership Team
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <footer class="av-footer">
+
+    <div>
+
+      <strong>AUTOVERSE</strong>
+
+      <span>
+        Automotive Intelligence Platform
+      </span>
+
+    </div>
+
+    <div>
+
+      <span>
+        Dealership Network
+      </span>
+
+      <small>
+        © 2026 AutoVerse
+      </small>
+
+    </div>
+
+  </footer>
+
+
+  <!-- =========================
+       DEALER DETAILS MODAL
+  ========================== -->
+
+  <div
+    class="dealer-modal"
+    id="dealerModal"
+    aria-hidden="true"
+  >
+
+    <div class="modal-panel">
+
+      <button
+        class="modal-close"
+        id="modalClose"
+        type="button"
+      >
+        ×
+      </button>
+
+      <div id="dealerDetails"></div>
+
+    </div>
+
+  </div>
+
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/showroom.js"></script>
+
+</body>
+</html>

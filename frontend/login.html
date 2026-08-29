@@ -3,58 +3,181 @@
 
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>AutoVerse Login</title>
+  <meta name="description"
+    content="Sign in or create your AutoVerse account and enter the automotive intelligence platform.">
 
-  <!-- 🔥 LINK YOUR CSS -->
+  <title>AutoVerse — Enter the Verse</title>
+
   <link rel="stylesheet" href="assets/css/login.css">
+
+  <script src="assets/js/config.js"></script>
 </head>
 
 <body>
 
-  <!-- 🔥 LOGO -->
-  <header>
-    <div class="logo">
-      <img src="assets/images/Autoverselogo.png" alt="AutoVerse Logo" class="logo-img">
-      <span>AutoVerse</span>
-    </div>
+  <!-- BACKGROUND -->
+  <div class="page-noise"></div>
+  <div class="page-vignette"></div>
+
+  <!-- LOGO -->
+  <header class="auth-header">
+    <a href="landing.html" class="brand">
+      <img
+        src="assets/images/Autoverselogo.png"
+        alt="AutoVerse Logo"
+        class="logo-img"
+      >
+
+      <div class="brand-copy">
+        <strong>AUTOVERSE</strong>
+        <span>AUTOMOTIVE INTELLIGENCE</span>
+      </div>
+    </a>
   </header>
 
-  <!-- 🔥 LOGIN BOX -->
-  <div class="login-box">
-    <h2>User Login</h2>
 
-    <form id="loginForm" class="login-form">
+  <!-- AUTH CONTAINER -->
+  <main class="auth-page">
 
-      <div class="form-group">
-        <label>Username</label>
-        <input type="text" id="username" placeholder="Enter username" required>
+    <section class="auth-card">
+
+      <div class="auth-intro">
+
+        <p class="eyebrow">
+          <span></span>
+          AUTOVERSE ACCESS
+        </p>
+
+        <h1 id="authTitle">
+          Welcome<br>
+          <em>back.</em>
+        </h1>
+
+        <p id="authDescription">
+          Sign in to continue into the AutoVerse automotive intelligence platform.
+        </p>
+
       </div>
 
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" id="password" placeholder="Enter password" required>
+
+      <!-- LOGIN / SIGNUP SWITCH -->
+      <div class="auth-switch">
+
+        <button
+          type="button"
+          class="switch-btn active"
+          id="loginTab"
+          data-mode="login"
+        >
+          Sign In
+        </button>
+
+        <button
+          type="button"
+          class="switch-btn"
+          id="signupTab"
+          data-mode="signup"
+        >
+          Create Account
+        </button>
+
       </div>
 
-      <button type="submit" class="btn">Login</button>
 
-      <p class="signup-link">
-        Don’t have an account?
-        <a href="signup.html">Signup</a>
+      <!-- FORM -->
+      <form id="authForm" class="auth-form" novalidate>
+
+        <div class="form-group">
+
+          <label for="username">
+            Username
+          </label>
+
+          <input
+            type="text"
+            id="username"
+            name="username"
+            autocomplete="username"
+            placeholder="Enter your username"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="password">
+            Password
+          </label>
+
+          <div class="password-wrapper">
+
+            <input
+              type="password"
+              id="password"
+              name="password"
+              autocomplete="current-password"
+              placeholder="Enter your password"
+              required
+            >
+
+            <button
+              type="button"
+              class="password-toggle"
+              id="passwordToggle"
+              aria-label="Show password"
+            >
+              SHOW
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- ERROR / SUCCESS MESSAGE -->
+        <p
+          id="authMessage"
+          class="auth-message"
+          role="alert"
+        ></p>
+
+
+        <!-- SUBMIT -->
+        <button
+          type="submit"
+          class="auth-submit"
+          id="authSubmit"
+        >
+          <span id="submitText">Sign In</span>
+          <b>↗</b>
+        </button>
+
+      </form>
+
+
+      <!-- BOTTOM TEXT -->
+      <p class="auth-footer-text" id="authFooterText">
+        New to AutoVerse?
+        <button type="button" id="footerSwitch">
+          Create an account
+        </button>
       </p>
 
-    </form>
-  </div>
 
-  <!-- 🔥 JS -->
+      <div class="security-note">
+        <span>●</span>
+        Secure AutoVerse authentication
+      </div>
 
-  <script>
-    const API_BASE = API_BASE_URL;
-  </script>
-  
-  <script src="assets/js/config.js"></script>
+    </section>
+
+  </main>
+
+
   <script src="assets/js/login.js"></script>
 
 </body>

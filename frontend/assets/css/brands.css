@@ -1,0 +1,2467 @@
+/* =========================================================
+   AUTOVERSE — BRANDS
+   Premium Dark Automotive Interface
+========================================================= */
+
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root {
+
+    --av-bg: #050607;
+    --av-surface: #0a0c0d;
+    --av-surface-2: #101314;
+
+    --av-text: #e9ece8;
+    --av-muted: #89918c;
+
+    --av-line: rgba(233, 236, 232, .13);
+
+    --av-accent: #d6a84f;
+
+    --av-ease:
+        cubic-bezier(.22, .61, .36, 1);
+
+    --av-pad:
+        clamp(20px, 4vw, 64px);
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+
+    margin: 0;
+
+    background:
+        var(--av-bg);
+
+    color:
+        var(--av-text);
+
+    font-family:
+        Inter,
+        Arial,
+        sans-serif;
+
+    font-weight: 300;
+
+    line-height: 1.6;
+
+    overflow-x: hidden;
+
+    cursor: none;
+}
+
+
+button,
+a,
+input {
+    font: inherit;
+}
+
+
+button {
+    cursor: none;
+}
+
+
+a {
+
+    color: inherit;
+
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   ATMOSPHERE
+========================================================= */
+
+.page-noise {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 150;
+
+    pointer-events: none;
+
+    opacity: .045;
+
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+}
+
+
+.page-vignette {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 140;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at 50% 42%,
+            transparent 34%,
+            rgba(0, 0, 0, .64) 100%
+        );
+}
+
+
+/* =========================================================
+   CURSOR
+========================================================= */
+
+.cursor-dot,
+.cursor-ring {
+
+    position: fixed;
+
+    left: 0;
+    top: 0;
+
+    pointer-events: none;
+
+    z-index: 300;
+
+    opacity: 0;
+
+    transform:
+        translate(-50%, -50%);
+
+    transition:
+        opacity .25s ease,
+        transform .18s ease;
+}
+
+
+body.cursor-ready
+.cursor-dot,
+body.cursor-ready
+.cursor-ring {
+
+    opacity: 1;
+}
+
+
+.cursor-dot {
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background:
+        var(--av-text);
+}
+
+
+.cursor-ring {
+
+    width: 34px;
+    height: 34px;
+
+    border:
+        1px solid
+        rgba(233, 236, 232, .58);
+
+    border-radius: 50%;
+
+    transition:
+        width .3s var(--av-ease),
+        height .3s var(--av-ease),
+        border-color .3s ease,
+        background .3s ease;
+}
+
+
+body.cursor-hover
+.cursor-ring {
+
+    width: 58px;
+    height: 58px;
+
+    border-color:
+        var(--av-accent);
+
+    background:
+        rgba(214, 168, 79, .06);
+}
+
+
+body.cursor-click
+.cursor-ring {
+
+    width: 24px;
+    height: 24px;
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.av-nav {
+
+    position: fixed;
+
+    z-index: 120;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+
+    height: 82px;
+
+    padding:
+        0 var(--av-pad);
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 30px;
+
+    background:
+        linear-gradient(
+            rgba(5, 6, 7, .82),
+            transparent
+        );
+
+    transition:
+        .45s var(--av-ease);
+}
+
+
+.av-nav.scrolled {
+
+    background:
+        rgba(5, 6, 7, .78);
+
+    backdrop-filter:
+        blur(18px);
+
+    border-bottom:
+        1px solid
+        var(--av-line);
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.av-brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+}
+
+
+.brand-mark {
+
+    display: grid;
+
+    place-items: center;
+
+    width: 35px;
+    height: 35px;
+
+    border:
+        1px solid
+        var(--av-line);
+
+    font-size: 10px;
+
+    letter-spacing: .08em;
+}
+
+
+.brand-copy strong {
+
+    display: block;
+
+    font-size: 12px;
+
+    letter-spacing: .27em;
+
+    font-weight: 500;
+}
+
+
+.brand-copy small {
+
+    display: block;
+
+    color:
+        var(--av-muted);
+
+    font-size: 7px;
+
+    letter-spacing: .24em;
+
+    margin-top: 2px;
+}
+
+
+/* =========================================================
+   NAV LINKS
+========================================================= */
+
+.av-links {
+
+    display: flex;
+
+    gap: 30px;
+
+    margin-left: auto;
+}
+
+
+.av-links a,
+.ghost-btn {
+
+    font-size: 9px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .2em;
+
+    color:
+        var(--av-muted);
+
+    background: none;
+
+    border: 0;
+
+    transition:
+        .3s ease;
+}
+
+
+.av-links a:hover,
+.av-links a.active,
+.ghost-btn:hover {
+
+    color:
+        var(--av-text);
+}
+
+
+.av-links a.active {
+
+    position: relative;
+}
+
+
+.av-links a.active::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    bottom: -8px;
+
+    height: 1px;
+
+    background:
+        var(--av-accent);
+}
+
+
+/* =========================================================
+   NAV ACTIONS
+========================================================= */
+
+.av-nav-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.solid-btn {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px solid
+        var(--av-text);
+
+    background:
+        var(--av-text);
+
+    color:
+        #080909;
+
+    padding:
+        13px 20px;
+
+    font-size: 9px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .19em;
+
+    transition:
+        .35s var(--av-ease);
+}
+
+
+.solid-btn span {
+
+    margin-left: 16px;
+}
+
+
+.solid-btn:hover {
+
+    background:
+        var(--av-accent);
+
+    border-color:
+        var(--av-accent);
+
+    transform:
+        translateY(-2px);
+}
+
+
+.solid-btn.large {
+
+    padding:
+        16px 24px;
+}
+
+
+.text-btn {
+
+    font-size: 9px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .19em;
+
+    color:
+        var(--av-muted);
+
+    transition:
+        .3s ease;
+}
+
+
+.text-btn span {
+
+    margin-left: 12px;
+}
+
+
+.text-btn:hover {
+
+    color:
+        var(--av-text);
+}
+
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+.mobile-menu {
+
+    display: none;
+
+    margin-left: auto;
+
+    background: none;
+
+    border: 0;
+}
+
+
+.mobile-menu span {
+
+    display: block;
+
+    width: 24px;
+    height: 1px;
+
+    background:
+        var(--av-text);
+
+    margin: 6px;
+
+    transition:
+        .3s ease;
+}
+
+
+/* =========================================================
+   SCROLL PROGRESS
+========================================================= */
+
+.scroll-progress {
+
+    position: fixed;
+
+    z-index: 121;
+
+    right: 0;
+    top: 0;
+
+    width: 3px;
+
+    height: 100vh;
+
+    background:
+        transparent;
+}
+
+
+.scroll-progress {
+
+    display: block;
+}
+
+
+.scroll-progress::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    right: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    background:
+        rgba(255, 255, 255, .03);
+}
+
+
+.scroll-progress {
+
+    overflow: hidden;
+}
+
+
+.scroll-progress span {
+
+    display: block;
+
+    width: 100%;
+
+    height: 0;
+
+    background:
+        var(--av-accent);
+}
+
+
+/* =========================================================
+   TYPOGRAPHY
+========================================================= */
+
+.eyebrow {
+
+    font-size: 9px;
+
+    letter-spacing: .25em;
+
+    color:
+        var(--av-muted);
+
+    text-transform: uppercase;
+}
+
+
+.eyebrow span {
+
+    display: inline-block;
+
+    width: 5px;
+    height: 5px;
+
+    background:
+        var(--av-accent);
+
+    border-radius: 50%;
+
+    margin-right: 9px;
+
+    box-shadow:
+        0 0 12px
+        rgba(214, 168, 79, .7);
+}
+
+
+h1,
+h2,
+h3 {
+
+    font-weight: 300;
+
+    line-height: .97;
+
+    letter-spacing: -.05em;
+
+    margin: 18px 0;
+}
+
+
+h1 {
+
+    font-size:
+        clamp(58px, 8.5vw, 126px);
+}
+
+
+h2 {
+
+    font-size:
+        clamp(50px, 7vw, 96px);
+}
+
+
+em {
+
+    font-style: normal;
+
+    color:
+        #9ca49f;
+}
+
+
+/* =========================================================
+   REVEAL
+========================================================= */
+
+.reveal {
+
+    opacity: 0;
+
+    transform:
+        translateY(30px);
+
+    transition:
+        opacity 1s var(--av-ease),
+        transform 1.1s var(--av-ease);
+}
+
+
+.reveal.in {
+
+    opacity: 1;
+
+    transform: none;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.brands-hero {
+
+    min-height: 100svh;
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    padding:
+        120px var(--av-pad) 70px;
+
+    overflow: hidden;
+}
+
+
+.hero-atmosphere {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            ellipse at 72% 46%,
+            #262824 0%,
+            #111416 28%,
+            #050607 67%
+        );
+}
+
+
+.hero-orbit {
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    filter:
+        blur(70px);
+
+    opacity: .2;
+}
+
+
+.hero-orbit-a {
+
+    width: 38vw;
+    height: 38vw;
+
+    right: 0;
+    top: 10%;
+
+    background:
+        #8b682e;
+}
+
+
+.hero-orbit-b {
+
+    width: 25vw;
+    height: 25vw;
+
+    left: 0;
+    bottom: 5%;
+
+    background:
+        #34424a;
+}
+
+
+.brands-hero::after {
+
+    content: "";
+
+    position: absolute;
+
+    width:
+        min(720px, 65vw);
+
+    aspect-ratio: 1;
+
+    right: 3%;
+    top: 18%;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(214, 168, 79, .13),
+            rgba(214, 168, 79, .035) 32%,
+            transparent 68%
+        );
+
+    filter:
+        blur(18px);
+}
+
+
+.brands-hero-content {
+
+    position: relative;
+
+    z-index: 3;
+
+    max-width: 760px;
+
+    width: 70%;
+}
+
+
+.hero-description {
+
+    max-width: 560px;
+
+    color:
+        #aeb6b0;
+
+    font-size: 15px;
+
+    line-height: 1.85;
+}
+
+
+.hero-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 24px;
+
+    margin-top: 34px;
+}
+
+
+.hero-bottom {
+
+    position: absolute;
+
+    z-index: 3;
+
+    left:
+        var(--av-pad);
+
+    right:
+        var(--av-pad);
+
+    bottom: 30px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    color:
+        var(--av-muted);
+
+    font-size: 8px;
+
+    letter-spacing: .22em;
+}
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.av-section {
+
+    position: relative;
+
+    padding:
+        clamp(110px, 16vh, 210px)
+        var(--av-pad);
+}
+
+
+.section-line {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+    color:
+        var(--av-muted);
+
+    font-size: 8px;
+
+    letter-spacing: .24em;
+
+    margin-bottom: 70px;
+}
+
+
+.section-line i {
+
+    height: 1px;
+
+    background:
+        var(--av-line);
+
+    flex: 1;
+}
+
+
+/* =========================================================
+   BRANDS SECTION
+========================================================= */
+
+.brands-directory {
+
+    background:
+        #080a0b;
+}
+
+
+.brands-intro {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: end;
+
+    gap: 40px;
+
+    margin-bottom: 100px;
+}
+
+
+.brands-intro > p {
+
+    max-width: 390px;
+
+    color:
+        var(--av-muted);
+
+    font-size: 13px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.brands-status {
+
+    min-height: 180px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 20px;
+
+    color:
+        var(--av-muted);
+
+    font-size: 8px;
+
+    letter-spacing: .22em;
+}
+
+
+.status-loader {
+
+    width: 32px;
+    height: 32px;
+
+    border:
+        1px solid
+        rgba(233, 236, 232, .15);
+
+    border-top-color:
+        var(--av-accent);
+
+    border-radius: 50%;
+
+    animation:
+        loaderSpin 1s linear infinite;
+}
+
+
+@keyframes loaderSpin {
+
+    to {
+        transform:
+            rotate(360deg);
+    }
+
+}
+
+
+/* =========================================================
+   BRAND BLOCK
+========================================================= */
+
+.brand-block {
+
+    position: relative;
+
+    border-top:
+        1px solid
+        var(--av-line);
+
+    padding:
+        65px 0 55px;
+
+    transition:
+        .5s var(--av-ease);
+}
+
+
+.brand-block:last-child {
+
+    border-bottom:
+        1px solid
+        var(--av-line);
+}
+
+
+/* =========================================================
+   BRAND HEADER
+========================================================= */
+
+.brand-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 40px;
+}
+
+
+.brand-identity {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+}
+
+
+.brand-logo {
+
+    width: 70px;
+    height: 70px;
+
+    display: grid;
+
+    place-items: center;
+
+    border:
+        1px solid
+        var(--av-line);
+
+    background:
+        rgba(255,255,255,.025);
+
+    position: relative;
+
+    overflow: hidden;
+
+    transition:
+        .4s var(--av-ease);
+}
+
+
+.brand-logo::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(214,168,79,.12),
+            transparent 65%
+        );
+
+    opacity: 0;
+
+    transition:
+        .4s ease;
+}
+
+
+.brand-logo img {
+
+    width: 75%;
+    height: 75%;
+
+    object-fit: contain;
+
+    position: relative;
+
+    z-index: 2;
+}
+
+
+.brand-logo span {
+
+    font-size: 14px;
+
+    letter-spacing: .1em;
+
+    color:
+        var(--av-accent);
+
+    position: relative;
+
+    z-index: 2;
+}
+
+
+.brand-block:hover
+.brand-logo {
+
+    border-color:
+        rgba(214,168,79,.5);
+
+    transform:
+        translateY(-3px);
+}
+
+
+.brand-block:hover
+.brand-logo::before {
+
+    opacity: 1;
+}
+
+
+.brand-name {
+
+    margin: 0;
+
+    font-size:
+        clamp(25px, 3vw, 42px);
+
+    letter-spacing:
+        -.035em;
+}
+
+
+.brand-meta {
+
+    display: block;
+
+    margin-top: 8px;
+
+    color:
+        var(--av-muted);
+
+    font-size: 8px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .2em;
+}
+
+
+.brand-number {
+
+    font-size: 10px;
+
+    color:
+        var(--av-accent);
+
+    letter-spacing: .2em;
+}
+
+
+/* =========================================================
+   CAR GRID
+========================================================= */
+
+.brand-cars {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 22px;
+}
+
+
+/* =========================================================
+   CAR CARD
+========================================================= */
+
+.car-card {
+
+    position: relative;
+
+    border:
+        1px solid
+        var(--av-line);
+
+    background:
+        #0b0e0f;
+
+    overflow: hidden;
+
+    transition:
+        border-color .4s ease,
+        background .4s ease,
+        box-shadow .4s ease;
+}
+
+
+.car-card:hover {
+
+    border-color:
+        rgba(214,168,79,.42);
+
+    background:
+        #0e1112;
+
+    box-shadow:
+        0 30px 80px
+        rgba(0,0,0,.35);
+}
+
+
+.car-image {
+
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio:
+        16 / 9;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #202522,
+            #090b0c 75%
+        );
+}
+
+
+.car-image img {
+
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition:
+        transform .8s var(--av-ease),
+        opacity .4s ease;
+}
+
+
+.car-card:hover
+.car-image img {
+
+    transform:
+        scale(1.045);
+}
+
+
+.car-image-overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,.05),
+            transparent 50%,
+            rgba(0,0,0,.7)
+        );
+
+    pointer-events: none;
+}
+
+
+.car-tag {
+
+    position: absolute;
+
+    top: 17px;
+    left: 17px;
+
+    padding:
+        7px 10px;
+
+    border:
+        1px solid
+        rgba(233,236,232,.18);
+
+    background:
+        rgba(5,6,7,.6);
+
+    backdrop-filter:
+        blur(10px);
+
+    font-size: 7px;
+
+    letter-spacing: .16em;
+
+    text-transform: uppercase;
+
+    color:
+        #c2c8c3;
+}
+
+
+.image-fallback {
+
+    height: 100%;
+
+    display: grid;
+
+    place-items: center;
+
+    font-size:
+        clamp(20px, 4vw, 45px);
+
+    letter-spacing: .16em;
+
+    color:
+        rgba(233,236,232,.15);
+
+    text-transform: uppercase;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(214,168,79,.08),
+            transparent 60%
+        );
+}
+
+
+/* =========================================================
+   CAR INFO
+========================================================= */
+
+.car-info {
+
+    padding:
+        22px 24px 25px;
+}
+
+
+.car-info small {
+
+    color:
+        var(--av-muted);
+
+    font-size: 7px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .2em;
+}
+
+
+.car-info h3 {
+
+    margin:
+        8px 0 20px;
+
+    font-size:
+        clamp(21px, 2.2vw, 30px);
+
+    letter-spacing:
+        -.035em;
+}
+
+
+.car-info-bottom {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding-top: 17px;
+
+    border-top:
+        1px solid
+        var(--av-line);
+}
+
+
+.car-price {
+
+    font-size: 11px;
+
+    color:
+        #c6ccc7;
+}
+
+
+.car-view {
+
+    font-size: 7px;
+
+    color:
+        var(--av-accent);
+
+    letter-spacing: .16em;
+
+    transition:
+        .3s ease;
+}
+
+
+.car-card:hover
+.car-view {
+
+    letter-spacing: .2em;
+}
+
+
+/* =========================================================
+   BRAND EXPLORE
+========================================================= */
+
+.brand-explore {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-top: 30px;
+}
+
+
+.explore-more {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 17px;
+
+    padding:
+        15px 20px;
+
+    border:
+        1px solid
+        var(--av-line);
+
+    color:
+        var(--av-muted);
+
+    font-size: 8px;
+
+    letter-spacing: .18em;
+
+    text-transform: uppercase;
+
+    transition:
+        .35s var(--av-ease);
+}
+
+
+.explore-more span {
+
+    color:
+        var(--av-accent);
+
+    font-size: 14px;
+
+    transition:
+        .35s ease;
+}
+
+
+.explore-more:hover {
+
+    color:
+        var(--av-text);
+
+    border-color:
+        rgba(214,168,79,.6);
+
+    background:
+        rgba(214,168,79,.04);
+}
+
+
+.explore-more:hover span {
+
+    transform:
+        translateX(5px);
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.brands-empty {
+
+    min-height: 430px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+}
+
+
+.empty-mark {
+
+    width: 70px;
+    height: 70px;
+
+    display: grid;
+
+    place-items: center;
+
+    border:
+        1px solid
+        var(--av-line);
+
+    color:
+        var(--av-accent);
+
+    font-size: 13px;
+
+    margin-bottom: 30px;
+}
+
+
+.brands-empty h3 {
+
+    font-size:
+        clamp(42px, 6vw, 75px);
+}
+
+
+.brands-empty > p:not(.eyebrow) {
+
+    color:
+        var(--av-muted);
+
+    font-size: 12px;
+
+    margin:
+        0 0 30px;
+}
+
+
+/* =========================================================
+   FINAL CTA
+========================================================= */
+
+.av-final {
+
+    min-height: 90vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    padding:
+        100px var(--av-pad);
+
+    background:
+        radial-gradient(
+            circle,
+            #141716,
+            #050607 60%
+        );
+}
+
+
+.av-final h2 {
+
+    font-size:
+        clamp(60px, 9vw, 140px);
+}
+
+
+.av-final > p:not(.eyebrow) {
+
+    max-width: 560px;
+
+    color:
+        var(--av-muted);
+
+    margin:
+        0 0 32px;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.av-footer {
+
+    padding:
+        28px var(--av-pad);
+
+    border-top:
+        1px solid
+        var(--av-line);
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 25px;
+
+    color:
+        var(--av-muted);
+
+    font-size: 8px;
+
+    letter-spacing: .16em;
+
+    text-transform: uppercase;
+}
+
+
+.av-footer strong {
+
+    color:
+        var(--av-text);
+
+    font-size: 11px;
+}
+
+
+.av-footer small {
+
+    margin-left: auto;
+}
+
+
+/* =========================================================
+   CAR MODAL
+========================================================= */
+
+.car-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 210;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 25px;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition:
+        .4s var(--av-ease);
+}
+
+
+.car-modal.open {
+
+    opacity: 1;
+
+    visibility: visible;
+}
+
+
+.modal-backdrop {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        rgba(0,0,0,.78);
+
+    backdrop-filter:
+        blur(16px);
+}
+
+
+.modal-panel {
+
+    position: relative;
+
+    z-index: 2;
+
+    width:
+        min(960px, 100%);
+
+    max-height:
+        calc(100vh - 50px);
+
+    overflow-y: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        1.05fr .95fr;
+
+    background:
+        #090b0c;
+
+    border:
+        1px solid
+        var(--av-line);
+
+    box-shadow:
+        0 50px 150px
+        rgba(0,0,0,.7);
+
+    transform:
+        translateY(30px)
+        scale(.98);
+
+    transition:
+        .5s var(--av-ease);
+}
+
+
+.car-modal.open
+.modal-panel {
+
+    transform: none;
+}
+
+
+/* =========================================================
+   MODAL CLOSE
+========================================================= */
+
+.modal-close {
+
+    position: absolute;
+
+    z-index: 10;
+
+    top: 14px;
+    right: 16px;
+
+    width: 40px;
+    height: 40px;
+
+    display: grid;
+
+    place-items: center;
+
+    border:
+        1px solid
+        rgba(233,236,232,.15);
+
+    background:
+        rgba(5,6,7,.65);
+
+    color:
+        var(--av-muted);
+
+    font-size: 24px;
+
+    transition:
+        .3s ease;
+}
+
+
+.modal-close:hover {
+
+    color:
+        var(--av-text);
+
+    border-color:
+        var(--av-accent);
+}
+
+
+/* =========================================================
+   MODAL IMAGE
+========================================================= */
+
+.modal-image {
+
+    min-height: 500px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #242824,
+            #080a0b 75%
+        );
+}
+
+
+.modal-image img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    min-height: 500px;
+}
+
+
+.modal-image-overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            transparent 45%,
+            rgba(0,0,0,.75)
+        );
+}
+
+
+.modal-image-label {
+
+    position: absolute;
+
+    bottom: 22px;
+    left: 22px;
+
+    font-size: 7px;
+
+    color:
+        #a2aaa5;
+
+    letter-spacing: .2em;
+}
+
+
+/* =========================================================
+   MODAL CONTENT
+========================================================= */
+
+.modal-content {
+
+    padding:
+        55px 42px 42px;
+}
+
+
+.modal-brand {
+
+    color:
+        var(--av-accent);
+
+    font-size: 8px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .22em;
+
+    margin: 0 0 12px;
+}
+
+
+.modal-content h2 {
+
+    font-size:
+        clamp(42px, 5vw, 68px);
+
+    margin:
+        0 0 20px;
+}
+
+
+.modal-description {
+
+    color:
+        var(--av-muted);
+
+    font-size: 12px;
+
+    line-height: 1.8;
+
+    margin:
+        0 0 35px;
+}
+
+
+/* =========================================================
+   MODAL SPECS
+========================================================= */
+
+.modal-specs {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    border-top:
+        1px solid
+        var(--av-line);
+
+    margin-bottom: 35px;
+}
+
+
+.modal-specs div {
+
+    padding:
+        17px 0;
+
+    border-bottom:
+        1px solid
+        var(--av-line);
+}
+
+
+.modal-specs div:nth-child(odd) {
+
+    padding-right: 15px;
+
+    border-right:
+        1px solid
+        var(--av-line);
+}
+
+
+.modal-specs div:nth-child(even) {
+
+    padding-left: 15px;
+}
+
+
+.modal-specs span {
+
+    display: block;
+
+    color:
+        var(--av-muted);
+
+    font-size: 7px;
+
+    letter-spacing: .17em;
+
+    margin-bottom: 6px;
+}
+
+
+.modal-specs strong {
+
+    display: block;
+
+    color:
+        var(--av-text);
+
+    font-size: 11px;
+
+    font-weight: 400;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   MODAL ACTIONS
+========================================================= */
+
+.modal-actions {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 15px;
+}
+
+
+.modal-actions > span {
+
+    color:
+        #626a65;
+
+    font-size: 7px;
+
+    letter-spacing: .13em;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   BODY MODAL STATE
+========================================================= */
+
+body.modal-open {
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   MOBILE NAV
+========================================================= */
+
+@media(max-width: 900px) {
+
+    .av-links {
+
+        display: none;
+    }
+
+
+    .av-nav-actions
+    .ghost-btn {
+
+        display: none;
+    }
+
+
+    .mobile-menu {
+
+        display: block;
+    }
+
+
+    .av-links.mobile-open {
+
+        display: flex;
+
+        position: absolute;
+
+        top: 70px;
+
+        right:
+            var(--av-pad);
+
+        flex-direction: column;
+
+        gap: 0;
+
+        width:
+            min(
+                280px,
+                calc(100vw - 40px)
+            );
+
+        padding:
+            10px 0;
+
+        background:
+            rgba(9,11,12,.96);
+
+        border:
+            1px solid
+            var(--av-line);
+
+        backdrop-filter:
+            blur(18px);
+    }
+
+
+    .av-links.mobile-open a {
+
+        padding:
+            15px 20px;
+
+        border-bottom:
+            1px solid
+            var(--av-line);
+    }
+
+
+    .av-links.mobile-open a:last-child {
+
+        border-bottom: 0;
+    }
+
+
+    .av-links.mobile-open a.active::after {
+
+        display: none;
+    }
+
+
+    .brands-hero-content {
+
+        width: 100%;
+    }
+
+
+    .brands-intro {
+
+        display: block;
+    }
+
+
+    .brands-intro > p {
+
+        margin-top: 25px;
+    }
+
+
+    .brand-cars {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .modal-panel {
+
+        grid-template-columns: 1fr;
+
+        max-height:
+            calc(100vh - 30px);
+    }
+
+
+    .modal-image,
+    .modal-image img {
+
+        min-height: 300px;
+
+        height: 300px;
+    }
+
+
+    .modal-content {
+
+        padding:
+            35px 28px 30px;
+    }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media(max-width: 700px) {
+
+    .hero-actions {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+
+    .brand-header {
+
+        align-items: flex-start;
+    }
+
+
+    .brand-number {
+
+        margin-top: 8px;
+    }
+
+
+    .brand-logo {
+
+        width: 58px;
+        height: 58px;
+    }
+
+
+    .car-info {
+
+        padding:
+            19px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width: 560px) {
+
+    body {
+
+        cursor: auto;
+    }
+
+
+    .cursor-dot,
+    .cursor-ring {
+
+        display: none;
+    }
+
+
+    .av-nav {
+
+        height: 70px;
+    }
+
+
+    .brand-copy small {
+
+        display: none;
+    }
+
+
+    .av-nav-actions {
+
+        display: none;
+    }
+
+
+    .brands-hero {
+
+        padding:
+            110px var(--av-pad) 80px;
+    }
+
+
+    .hero-description {
+
+        font-size: 13px;
+    }
+
+
+    .av-section {
+
+        padding:
+            90px var(--av-pad);
+    }
+
+
+    .section-line {
+
+        margin-bottom: 45px;
+    }
+
+
+    .brand-block {
+
+        padding:
+            50px 0;
+    }
+
+
+    .brand-header {
+
+        gap: 15px;
+    }
+
+
+    .brand-identity {
+
+        gap: 13px;
+    }
+
+
+    .brand-logo {
+
+        width: 52px;
+        height: 52px;
+    }
+
+
+    .brand-name {
+
+        font-size: 25px;
+    }
+
+
+    .brand-meta {
+
+        font-size: 7px;
+    }
+
+
+    .brand-number {
+
+        font-size: 8px;
+    }
+
+
+    .car-info-bottom {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 8px;
+    }
+
+
+    .brand-explore {
+
+        justify-content: flex-start;
+    }
+
+
+    .explore-more {
+
+        width: 100%;
+
+        justify-content: space-between;
+    }
+
+
+    .modal-panel {
+
+        width: 100%;
+    }
+
+
+    .modal-image,
+    .modal-image img {
+
+        min-height: 220px;
+
+        height: 220px;
+    }
+
+
+    .modal-content {
+
+        padding:
+            30px 22px 25px;
+    }
+
+
+    .modal-content h2 {
+
+        font-size: 42px;
+    }
+
+
+    .modal-specs {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .modal-specs div:nth-child(odd) {
+
+        border-right: 0;
+
+        padding-right: 0;
+    }
+
+
+    .modal-specs div:nth-child(even) {
+
+        padding-left: 0;
+    }
+
+
+    .modal-actions .solid-btn {
+
+        width: 100%;
+    }
+
+
+    .av-footer {
+
+        flex-wrap: wrap;
+    }
+
+
+    .av-footer small {
+
+        width: 100%;
+
+        margin-left: 0;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion: reduce) {
+
+    html {
+
+        scroll-behavior: auto;
+    }
+
+
+    .reveal {
+
+        opacity: 1;
+
+        transform: none;
+    }
+
+
+    .status-loader {
+
+        animation: none;
+    }
+
+
+    .car-image img {
+
+        transition: none;
+    }
+
+}
