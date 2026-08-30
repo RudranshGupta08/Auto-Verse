@@ -222,60 +222,64 @@ The architecture is also being prepared for future dealership management functio
                  │   Database  │ │ OpenAI / GenAI│
                  └─────────────┘ └───────────────┘
 
-Authentication
+```
+### Authentication
 
 AutoVerse provides user authentication through backend APIs.
 
 Current authentication flow includes:
 
-User registration
-User login
-Credential validation
-Token generation
-Client-side token storage
-Authenticated access to the main platform
+1.User registration
+2.User login
+3.Credential validation
+4.Token generation
+5.Client-side token storage
+6.Authenticated access to the main platform
 
 Authentication is designed to provide a foundation for future role-based access control.
 
-Performance & Scalability
+### Performance & Scalability
 
 The architecture is designed to support future expansion through:
 
-RESTful API architecture
-Modular backend services
-MongoDB-based document storage
-Structured vehicle schemas
-Separate frontend and backend deployment
-Service-based AI architecture
-Scalable dealership and inventory management
-Future Development
+*RESTful API architecture
+*Modular backend services
+*MongoDB-based document storage
+*Structured vehicle schemas
+*Separate frontend and backend deployment
+*Service-based AI architecture
+*Scalable dealership and inventory management
+
+
+### Future Development
 
 Planned development areas include:
 
-Dealer registration and onboarding
-Dealership verification
-Dealer dashboards
-Dealership inventory management
-Dealer-specific vehicle listings
-Customer-to-dealer enquiries
-Test-drive requests
-Vehicle purchase enquiries
-Advanced recommendation systems
-User profiles
-Role-based access control
-Analytics dashboards
-Automotive marketplace functionality
-Project Objective
+*Dealer registration and onboarding
+*Dealership verification
+*Dealer dashboards
+*Dealership inventory management
+*Dealer-specific vehicle listings
+*Customer-to-dealer enquiries
+*Test-drive requests
+*Vehicle purchase enquiries
+*Advanced recommendation systems
+*User profiles
+*Role-based access control
+*Analytics dashboards
+*Automotive marketplace functionality
+
+### Project Objective
 
 The primary objective of AutoVerse is to build a centralized automotive technology platform that connects vehicle information, intelligent decision support, consumers, and automotive businesses.
 
 The long-term vision is to develop AutoVerse into a scalable automotive ecosystem where users can discover vehicles, understand their specifications, compare alternatives, receive intelligent recommendations, and connect directly with dealerships.
 
-Author
+### Author
 
-Rudransh Gupta
+### Rudransh Gupta
 
-B.Tech Computer Science & Engineering — IoT
+### B.Tech Computer Science & Engineering — IoT
 
 Interested in:
 
@@ -286,18 +290,13 @@ Artificial Intelligence
 Machine Learning
 IoT
 Automotive Technology
-License
 
-This project is currently developed as a personal/project-based application.
-
-All rights reserved unless otherwise specified.
-
-AutoVerse
-
-Discover. Understand. Compare. Decide.
-
-An automotive intelligence platform built to make the journey from discovering a vehicle to connecting with the right automotive business simpler, smarter, and more informed.
+### License
+### This project is currently developed as a personal/project-based application.
+### All rights reserved unless otherwise specified.
 
 
-
+### AutoVerse
+### Discover. Understand. Compare. Decide.
+### An automotive intelligence platform built to make the journey from discovering a vehicle to connecting with the right automotive business simpler, smarter, and more informed.
 
