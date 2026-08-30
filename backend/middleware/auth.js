@@ -1,17 +1,46 @@
+import "dotenv/config";
 import jwt from "jsonwebtoken";
 
-const SECRET = "autoverse_secret";
+const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_ISSUER = process.env.JWT_ISSUER || "autoverse-api";
+const JWT_AUDIENCE = process.env.JWT_AUDIENCE || "autoverse-client";
 
-export default function (req, res, next) {
-  const token = req.headers.authorization;
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not configured in environment variables.");
+}
 
-  if (!token) return res.status(401).json({ message: "No token" });
-
+export default function auth(req, res, next) {
   try {
-    const decoded = jwt.verify(token, SECRET);
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+      return res.status(401).json({
+        message: "Authentication required."
+      });
+    }
+
+    const [scheme, token] = authHeader.split(" ");
+
+    if (scheme !== "Bearer" || !token) {
+      return res.status(401).json({
+        message: "Invalid authorization format."
+      });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET, {
+      issuer: JWT_ISSUER,
+      audience: JWT_AUDIENCE
+    });
+
     req.user = decoded;
+
     next();
-  } catch {
-    res.status(401).json({ message: "Invalid token" });
+
+  } catch (error) {
+    console.error("Authentication error:", error.message);
+
+    return res.status(401).json({
+      message: "Invalid or expired authentication token."
+    });
   }
 }

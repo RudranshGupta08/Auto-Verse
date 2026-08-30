@@ -1,55 +1,147 @@
+import "dotenv/config";
 import express from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+
 import User from "../models/user.js";
 
 const router = express.Router();
+const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
+const JWT_ISSUER = process.env.JWT_ISSUER || "autoverse-api";
+const JWT_AUDIENCE = process.env.JWT_AUDIENCE || "autoverse-client";
 
-const SECRET = "autoverse_secret";
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not configured in environment variables.");
+}
 
-// =========================
-// SIGNUP
-// =========================
+/* =========================================================
+   SIGNUP
+========================================================= */
+
 router.post("/signup", async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    const hashed = await bcrypt.hash(password, 10);
+    if (!username || !password) {
+      return res.status(400).json({
+        message: "Username and password are required."
+      });
+    }
+
+    const cleanUsername = username.trim();
+
+    if (cleanUsername.length < 3) {
+      return res.status(400).json({
+        message: "Username must contain at least 3 characters."
+      });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({
+        message: "Password must contain at least 6 characters."
+      });
+    }
+
+    const existingUser = await User.findOne({
+      username: cleanUsername
+    });
+
+    if (existingUser) {
+      return res.status(409).json({
+        message: "Username already exists."
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = new User({
-      username,
-      password: hashed
+      username: cleanUsername,
+      password: hashedPassword
     });
 
     await user.save();
 
-    res.json({ message: "Signup successful" });
+    return res.status(201).json({
+      message: "Signup successful"
+    });
 
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (error) {
+    console.error("Signup error:", error);
+
+    return res.status(500).json({
+      message: "Unable to create account."
+    });
   }
 });
 
-// =========================
-// LOGIN
-// =========================
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
 router.post("/login", async (req, res) => {
   try {
-    const user = await User.findOne({ username: req.body.username });
+    const { username, password } = req.body;
 
-    if (!user) return res.status(400).json({ message: "User not found" });
+    if (!username || !password) {
+      return res.status(400).json({
+        message: "Username and password are required."
+      });
+    }
 
-    const valid = await bcrypt.compare(req.body.password, user.password);
+    const cleanUsername = username.trim();
 
-    if (!valid) return res.status(400).json({ message: "Wrong password" });
+    const user = await User.findOne({
+      username: cleanUsername
+    });
 
-    const token = jwt.sign({ id: user._id }, SECRET);
+    if (!user) {
+      return res.status(401).json({
+        message: "Invalid username or password."
+      });
+    }
 
-    res.json({ token });
+    const passwordValid = await bcrypt.compare(
+      password,
+      user.password
+    );
 
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    if (!passwordValid) {
+      return res.status(401).json({
+        message: "Invalid username or password."
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        id: user._id.toString(),
+        username: user.username
+      },
+      JWT_SECRET,
+      {
+        expiresIn: JWT_EXPIRES_IN,
+        issuer: JWT_ISSUER,
+        audience: JWT_AUDIENCE
+      }
+    );
+
+    return res.status(200).json({
+      token,
+      user: {
+        id: user._id,
+        username: user.username
+      }
+    });
+
+  } catch (error) {
+    console.error("Login error:", error);
+
+    return res.status(500).json({
+      message: "Unable to login."
+    });
   }
 });
+
 
 export default router;
