@@ -2,12 +2,12 @@
 
   "use strict";
 
-
   /* =========================================================
      ELEMENTS
   ========================================================= */
 
-  const form = document.getElementById("authForm");
+  const form =
+    document.getElementById("authForm");
 
   const usernameInput =
     document.getElementById("username");
@@ -45,91 +45,247 @@
   const passwordToggle =
     document.getElementById("passwordToggle");
 
+  /* =========================================================
+     API
+  ========================================================= */
+
+  const API =
+    typeof API_BASE_URL !== "undefined"
+      ? String(API_BASE_URL).replace(/\/+$/, "")
+      : "http://localhost:5000/api";
 
   /* =========================================================
-     AUTH MODE
+     STATE
   ========================================================= */
 
   let authMode = "login";
-
+  let csrfToken = null;
 
   /* =========================================================
-     UPDATE AUTH UI
+     CSRF
   ========================================================= */
+
+  async function ensureCsrfToken() {
+
+    if (csrfToken) {
+      return csrfToken;
+    }
+
+    try {
+
+      const response =
+        await fetch(
+          `${API}/auth/csrf`,
+          {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              Accept: "application/json"
+            }
+          }
+        );
+
+      if (!response.ok) {
+
+        console.warn(
+          "CSRF request failed:",
+          response.status
+        );
+
+        return null;
+      }
+
+      const data =
+        await response.json();
+
+      csrfToken =
+        data.csrfToken ||
+        data.token ||
+        null;
+
+      return csrfToken;
+
+    } catch (error) {
+
+      console.warn(
+        "CSRF initialization failed:",
+        error
+      );
+
+      return null;
+    }
+  }
+
+  /* =========================================================
+     API REQUEST
+  ========================================================= */
+
+  async function apiRequest(
+    endpoint,
+    options = {}
+  ) {
+
+    const headers = {
+      Accept:
+        "application/json",
+      ...(options.headers || {})
+    };
+
+    if (
+      options.body &&
+      !(options.body instanceof FormData)
+    ) {
+
+      headers["Content-Type"] =
+        "application/json";
+    }
+
+    if (csrfToken) {
+
+      headers["X-CSRF-Token"] =
+        csrfToken;
+    }
+
+    return fetch(
+      `${API}${endpoint}`,
+      {
+        ...options,
+
+        credentials:
+          "include",
+
+        headers
+      }
+    );
+  }
+
+  /* =========================================================
+     UI
+  ========================================================= */
+
+  function clearMessage() {
+
+    if (!authMessage) {
+      return;
+    }
+
+    authMessage.textContent = "";
+
+    authMessage.classList.remove(
+      "success"
+    );
+  }
+
+  function showError(message) {
+
+    if (!authMessage) {
+      return;
+    }
+
+    authMessage.textContent =
+      message;
+
+    authMessage.classList.remove(
+      "success"
+    );
+  }
+
+  function showSuccess(message) {
+
+    if (!authMessage) {
+      return;
+    }
+
+    authMessage.textContent =
+      message;
+
+    authMessage.classList.add(
+      "success"
+    );
+  }
 
   function updateAuthUI() {
 
     const isLogin =
       authMode === "login";
 
-
-    loginTab.classList.toggle(
+    loginTab?.classList.toggle(
       "active",
       isLogin
     );
 
-
-    signupTab.classList.toggle(
+    signupTab?.classList.toggle(
       "active",
       !isLogin
     );
 
-
     if (isLogin) {
 
-      authTitle.innerHTML =
-        "Welcome<br><em>back.</em>";
+      if (authTitle) {
 
+        authTitle.innerHTML =
+          "Welcome<br><em>back.</em>";
+      }
 
-      authDescription.textContent =
-        "Sign in to continue into the AutoVerse automotive intelligence platform.";
+      if (authDescription) {
 
+        authDescription.textContent =
+          "Sign in to continue into the AutoVerse automotive intelligence platform.";
+      }
 
-      submitText.textContent =
-        "Sign In";
+      if (submitText) {
 
+        submitText.textContent =
+          "Sign In";
+      }
 
-      footerText.childNodes[0].textContent =
-        "New to AutoVerse? ";
+      if (footerText?.firstChild) {
 
+        footerText.firstChild.textContent =
+          "New to AutoVerse? ";
+      }
 
-      footerSwitch.textContent =
-        "Create an account";
+      if (footerSwitch) {
+
+        footerSwitch.textContent =
+          "Create an account";
+      }
 
     } else {
 
-      authTitle.innerHTML =
-        "Enter the<br><em>Verse.</em>";
+      if (authTitle) {
 
+        authTitle.innerHTML =
+          "Enter the<br><em>Verse.</em>";
+      }
 
-      authDescription.textContent =
-        "Create your AutoVerse account and unlock the full automotive intelligence experience.";
+      if (authDescription) {
 
+        authDescription.textContent =
+          "Create your AutoVerse account and unlock the full automotive intelligence experience.";
+      }
 
-      submitText.textContent =
-        "Create Account";
+      if (submitText) {
 
+        submitText.textContent =
+          "Create Account";
+      }
 
-      footerText.childNodes[0].textContent =
-        "Already have an account? ";
+      if (footerText?.firstChild) {
 
+        footerText.firstChild.textContent =
+          "Already have an account? ";
+      }
 
-      footerSwitch.textContent =
-        "Sign in";
+      if (footerSwitch) {
 
+        footerSwitch.textContent =
+          "Sign in";
+      }
     }
 
-
     clearMessage();
-
-    usernameInput.focus();
-
   }
-
-
-  /* =========================================================
-     MODE SWITCH
-  ========================================================= */
 
   function setMode(mode) {
 
@@ -140,22 +296,24 @@
 
     updateAuthUI();
 
+    usernameInput?.focus();
   }
 
+  /* =========================================================
+     MODE EVENTS
+  ========================================================= */
 
-  loginTab.addEventListener(
+  loginTab?.addEventListener(
     "click",
     () => setMode("login")
   );
 
-
-  signupTab.addEventListener(
+  signupTab?.addEventListener(
     "click",
     () => setMode("signup")
   );
 
-
-  footerSwitch.addEventListener(
+  footerSwitch?.addEventListener(
     "click",
     () => {
 
@@ -164,34 +322,33 @@
           ? "signup"
           : "login"
       );
-
     }
   );
-
 
   /* =========================================================
      PASSWORD VISIBILITY
   ========================================================= */
 
-  passwordToggle.addEventListener(
+  passwordToggle?.addEventListener(
     "click",
     () => {
 
+      if (!passwordInput) {
+        return;
+      }
+
       const isPassword =
         passwordInput.type === "password";
-
 
       passwordInput.type =
         isPassword
           ? "text"
           : "password";
 
-
       passwordToggle.textContent =
         isPassword
           ? "HIDE"
           : "SHOW";
-
 
       passwordToggle.setAttribute(
         "aria-label",
@@ -199,75 +356,225 @@
           ? "Hide password"
           : "Show password"
       );
-
     }
   );
 
-
   /* =========================================================
-     MESSAGE
+     GET CURRENT USER
   ========================================================= */
 
-  function clearMessage() {
+  async function getCurrentUser() {
 
-    authMessage.textContent = "";
+    const response =
+      await apiRequest(
+        "/auth/me",
+        {
+          method: "GET"
+        }
+      );
 
-    authMessage.classList.remove(
-      "success"
+    let data = {};
+
+    try {
+
+      data =
+        await response.json();
+
+    } catch {
+
+      data = {};
+    }
+
+    console.log(
+      "Auth /me response:",
+      response.status,
+      data
     );
 
+    if (!response.ok) {
+
+      throw new Error(
+        data.message ||
+        "Unable to verify authentication session."
+      );
+    }
+
+    if (
+      !data.success ||
+      !data.user
+    ) {
+
+      throw new Error(
+        "Authentication session could not be verified."
+      );
+    }
+
+    return data.user;
   }
 
+  /* =========================================================
+     ADMIN VERIFICATION
+  ========================================================= */
 
-  function showError(message) {
+  async function verifyAdmin() {
 
-    authMessage.textContent =
-      message;
+    try {
 
-    authMessage.classList.remove(
-      "success"
+      const response =
+        await apiRequest(
+          "/admin/dashboard",
+          {
+            method: "GET"
+          }
+        );
+
+      console.log(
+        "Admin verification:",
+        response.status
+      );
+
+      return response.ok;
+
+    } catch (error) {
+
+      console.error(
+        "Admin verification error:",
+        error
+      );
+
+      return false;
+    }
+  }
+
+  /* =========================================================
+     STORE USER
+  ========================================================= */
+
+  function storeUser(user) {
+
+    try {
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify(user)
+      );
+
+    } catch (error) {
+
+      console.warn(
+        "Unable to store user:",
+        error
+      );
+    }
+  }
+
+  /* =========================================================
+     REDIRECT
+  ========================================================= */
+
+  async function redirectAfterLogin() {
+
+    console.log(
+      "Login successful. Verifying session..."
     );
 
-  }
+    /*
+     * The JWT is inside the HttpOnly cookie.
+     *
+     * We deliberately do NOT look for data.token.
+     */
 
+    const user =
+      await getCurrentUser();
 
-  function showSuccess(message) {
-
-    authMessage.textContent =
-      message;
-
-    authMessage.classList.add(
-      "success"
+    console.log(
+      "Authenticated user:",
+      user
     );
 
-  }
+    storeUser(user);
 
+    const role =
+      String(
+        user.role || "user"
+      ).toLowerCase();
+
+    console.log(
+      "Authenticated role:",
+      role
+    );
+
+    /* -------------------------------------------------------
+       ADMIN
+    ------------------------------------------------------- */
+
+    if (role === "admin") {
+
+      const isAdmin =
+        await verifyAdmin();
+
+      if (!isAdmin) {
+
+        throw new Error(
+          "Administrator session could not be verified."
+        );
+      }
+
+      showSuccess(
+        "Administrator authenticated. Opening secure console..."
+      );
+
+      setTimeout(
+        () => {
+
+          window.location.replace(
+            "admin.html"
+          );
+
+        },
+        500
+      );
+
+      return;
+    }
+
+    /* -------------------------------------------------------
+       NORMAL USER
+    ------------------------------------------------------- */
+
+    showSuccess(
+      "Login successful. Entering AutoVerse..."
+    );
+
+    setTimeout(
+      () => {
+
+        window.location.replace(
+          "discover.html"
+        );
+
+      },
+      500
+    );
+  }
 
   /* =========================================================
      SUBMIT
   ========================================================= */
 
-  form.addEventListener(
+  form?.addEventListener(
     "submit",
-    async (event) => {
+    async event => {
 
       event.preventDefault();
 
-
       clearMessage();
 
-
       const username =
-        usernameInput.value.trim();
-
+        usernameInput?.value?.trim() || "";
 
       const password =
-        passwordInput.value;
-
-
-      /* ---------------------------------------------
-         BASIC VALIDATION
-      --------------------------------------------- */
+        passwordInput?.value || "";
 
       if (!username || !password) {
 
@@ -276,9 +583,7 @@
         );
 
         return;
-
       }
-
 
       if (username.length < 3) {
 
@@ -287,9 +592,7 @@
         );
 
         return;
-
       }
-
 
       if (password.length < 6) {
 
@@ -298,52 +601,52 @@
         );
 
         return;
-
       }
-
-
-      /* ---------------------------------------------
-         API ENDPOINT
-      --------------------------------------------- */
 
       const endpoint =
         authMode === "login"
-          ? `${API_BASE_URL}/auth/login`
-          : `${API_BASE_URL}/auth/signup`;
+          ? "/auth/login"
+          : "/auth/signup";
 
+      if (submitButton) {
 
-      /* ---------------------------------------------
-         LOADING STATE
-      --------------------------------------------- */
+        submitButton.disabled =
+          true;
+      }
 
-      submitButton.disabled = true;
+      if (submitText) {
 
-      submitText.textContent =
-        authMode === "login"
-          ? "Signing In..."
-          : "Creating Account...";
-
+        submitText.textContent =
+          authMode === "login"
+            ? "Signing In..."
+            : "Creating Account...";
+      }
 
       try {
 
+        /* ---------------------------------------------------
+           CSRF
+        --------------------------------------------------- */
+
+        await ensureCsrfToken();
+
+        /* ---------------------------------------------------
+           REQUEST
+        --------------------------------------------------- */
+
         const response =
-          await fetch(
+          await apiRequest(
             endpoint,
             {
               method: "POST",
 
-              headers: {
-                "Content-Type":
-                  "application/json"
-              },
-
-              body: JSON.stringify({
-                username,
-                password
-              })
+              body:
+                JSON.stringify({
+                  username,
+                  password
+                })
             }
           );
-
 
         let data = {};
 
@@ -355,13 +658,17 @@
         } catch {
 
           data = {};
-
         }
 
+        console.log(
+          "Authentication response:",
+          response.status,
+          data
+        );
 
-        /* ---------------------------------------------
-           SERVER ERROR
-        --------------------------------------------- */
+        /* ---------------------------------------------------
+           ERROR
+        --------------------------------------------------- */
 
         if (!response.ok) {
 
@@ -373,89 +680,61 @@
                 : "Unable to create account."
             )
           );
-
         }
 
+        /* ===================================================
+           LOGIN
+        =================================================== */
 
-        /* =================================================
-           LOGIN SUCCESS
-        ================================================= */
+        if (
+          authMode === "login"
+        ) {
 
-        if (authMode === "login") {
+          /*
+           * IMPORTANT:
+           *
+           * Backend does NOT return JWT.
+           *
+           * Browser has received:
+           *
+           * autoverse_session=JWT
+           *
+           * as HttpOnly cookie.
+           *
+           * Now verify that cookie using /auth/me.
+           */
 
-          if (!data.token) {
-
-            throw new Error(
-              "Login succeeded but no authentication token was received."
-            );
-
-          }
-
-
-          localStorage.setItem(
-            "token",
-            data.token
-          );
-
-
-          if (data.user) {
-
-            localStorage.setItem(
-              "user",
-              JSON.stringify(data.user)
-            );
-
-          }
-
-
-          showSuccess(
-            "Login successful. Entering AutoVerse..."
-          );
-
-
-          setTimeout(
-            () => {
-
-              window.location.href =
-                "discover.html";
-
-            },
-            700
-          );
-
+          await redirectAfterLogin();
 
           return;
-
         }
 
-
-        /* =================================================
-           SIGNUP SUCCESS
-        ================================================= */
+        /* ===================================================
+           SIGNUP
+        =================================================== */
 
         showSuccess(
           data.message ||
           "Account created successfully. Please sign in."
         );
 
+        if (passwordInput) {
 
-        passwordInput.value = "";
-
-
-        /*
-         * Automatically switch back to Login
-         * after successful account creation.
-         */
+          passwordInput.value = "";
+        }
 
         setTimeout(
           () => {
 
             setMode("login");
 
-            usernameInput.value =
-              username;
+            if (usernameInput) {
 
-            passwordInput.focus();
+              usernameInput.value =
+                username;
+            }
+
+            passwordInput?.focus();
 
             showSuccess(
               "Account created. Sign in to continue."
@@ -465,7 +744,6 @@
           900
         );
 
-
       } catch (error) {
 
         console.error(
@@ -473,6 +751,14 @@
           error
         );
 
+        if (
+          authMode === "login"
+        ) {
+
+          localStorage.removeItem(
+            "user"
+          );
+        }
 
         showError(
           error.message ||
@@ -481,45 +767,31 @@
 
       } finally {
 
-        submitButton.disabled =
-          false;
+        if (submitButton) {
 
-
-        if (
-          authMode === "login"
-        ) {
-
-          submitText.textContent =
-            "Sign In";
-
-        } else {
-
-          submitText.textContent =
-            "Create Account";
-
+          submitButton.disabled =
+            false;
         }
 
-      }
+        if (submitText) {
 
+          submitText.textContent =
+            authMode === "login"
+              ? "Sign In"
+              : "Create Account";
+        }
+      }
     }
   );
 
-
   /* =========================================================
      URL MODE
-     
-     login.html
-        → Login
-
-     login.html?mode=signup
-        → Signup
   ========================================================= */
 
   const params =
     new URLSearchParams(
       window.location.search
     );
-
 
   if (
     params.get("mode") === "signup"
@@ -530,8 +802,6 @@
   } else {
 
     setMode("login");
-
   }
-
 
 })();

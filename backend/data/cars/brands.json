@@ -1,0 +1,224 @@
+[
+  {
+    "id": "maruti-suzuki",
+    "name": "Maruti Suzuki",
+    "aliases": ["Maruti", "Maruti Suzuki"],
+    "active": true
+  },
+  {
+    "id": "hyundai",
+    "name": "Hyundai",
+    "aliases": ["Hyundai"],
+    "active": true
+  },
+  {
+    "id": "tata",
+    "name": "Tata",
+    "aliases": ["Tata", "Tata Motors"],
+    "active": true
+  },
+  {
+    "id": "mahindra",
+    "name": "Mahindra",
+    "aliases": ["Mahindra"],
+    "active": true
+  },
+  {
+    "id": "toyota",
+    "name": "Toyota",
+    "aliases": ["Toyota"],
+    "active": true
+  },
+  {
+    "id": "kia",
+    "name": "Kia",
+    "aliases": ["Kia"],
+    "active": true
+  },
+  {
+    "id": "honda",
+    "name": "Honda",
+    "aliases": ["Honda"],
+    "active": true
+  },
+  {
+    "id": "mg",
+    "name": "MG",
+    "aliases": ["MG", "MG Motor", "Morris Garages"],
+    "active": true
+  },
+  {
+    "id": "skoda",
+    "name": "Skoda",
+    "aliases": ["Skoda", "Škoda"],
+    "active": true
+  },
+  {
+    "id": "volkswagen",
+    "name": "Volkswagen",
+    "aliases": ["Volkswagen", "VW"],
+    "active": true
+  },
+  {
+    "id": "renault",
+    "name": "Renault",
+    "aliases": ["Renault"],
+    "active": true
+  },
+  {
+    "id": "nissan",
+    "name": "Nissan",
+    "aliases": ["Nissan"],
+    "active": true
+  },
+  {
+    "id": "citroen",
+    "name": "Citroen",
+    "aliases": ["Citroen", "Citroën"],
+    "active": true
+  },
+  {
+    "id": "jeep",
+    "name": "Jeep",
+    "aliases": ["Jeep"],
+    "active": true
+  },
+  {
+    "id": "isuzu",
+    "name": "Isuzu",
+    "aliases": ["Isuzu"],
+    "active": true
+  },
+  {
+    "id": "audi",
+    "name": "Audi",
+    "aliases": ["Audi"],
+    "active": true
+  },
+  {
+    "id": "bmw",
+    "name": "BMW",
+    "aliases": ["BMW"],
+    "active": true
+  },
+  {
+    "id": "mercedes-benz",
+    "name": "Mercedes-Benz",
+    "aliases": ["Mercedes", "Mercedes-Benz"],
+    "active": true
+  },
+  {
+    "id": "volvo",
+    "name": "Volvo",
+    "aliases": ["Volvo"],
+    "active": true
+  },
+  {
+    "id": "lexus",
+    "name": "Lexus",
+    "aliases": ["Lexus"],
+    "active": true
+  },
+  {
+    "id": "jaguar",
+    "name": "Jaguar",
+    "aliases": ["Jaguar"],
+    "active": true
+  },
+  {
+    "id": "land-rover",
+    "name": "Land Rover",
+    "aliases": ["Land Rover"],
+    "active": true
+  },
+  {
+    "id": "porsche",
+    "name": "Porsche",
+    "aliases": ["Porsche"],
+    "active": true
+  },
+  {
+    "id": "mini",
+    "name": "MINI",
+    "aliases": ["MINI", "Mini"],
+    "active": true
+  },
+  {
+    "id": "bentley",
+    "name": "Bentley",
+    "aliases": ["Bentley"],
+    "active": true
+  },
+  {
+    "id": "aston-martin",
+    "name": "Aston Martin",
+    "aliases": ["Aston Martin"],
+    "active": true
+  },
+  {
+    "id": "lamborghini",
+    "name": "Lamborghini",
+    "aliases": ["Lamborghini"],
+    "active": true
+  },
+  {
+    "id": "ferrari",
+    "name": "Ferrari",
+    "aliases": ["Ferrari"],
+    "active": true
+  },
+  {
+    "id": "maserati",
+    "name": "Maserati",
+    "aliases": ["Maserati"],
+    "active": true
+  },
+  {
+    "id": "mclaren",
+    "name": "McLaren",
+    "aliases": ["McLaren"],
+    "active": true
+  },
+  {
+    "id": "rolls-royce",
+    "name": "Rolls-Royce",
+    "aliases": ["Rolls Royce", "Rolls-Royce"],
+    "active": true
+  },
+  {
+    "id": "lotus",
+    "name": "Lotus",
+    "aliases": ["Lotus"],
+    "active": true
+  },
+  {
+    "id": "byd",
+    "name": "BYD",
+    "aliases": ["BYD"],
+    "active": true
+  },
+  {
+    "id": "vinfast",
+    "name": "VinFast",
+    "aliases": ["VinFast"],
+    "active": true
+  },
+  {
+    "id": "tesla",
+    "name": "Tesla",
+    "aliases": ["Tesla"],
+    "active": true
+  },
+  {
+    "id": "force",
+    "name": "Force",
+    "aliases": ["Force", "Force Motors"],
+    "active": true
+  },
+  {
+    "id": "bajaj",
+    "name": "Bajaj",
+    "aliases": ["Bajaj"],
+    "active": true
+  }
+]

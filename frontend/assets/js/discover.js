@@ -1,4 +1,4 @@
-(() => {
+(async () => {
   const body = document.body;
   const nav = document.getElementById('appNav');
   const progress = document.getElementById('scrollProgress');
@@ -43,7 +43,7 @@
           <div class="vehicle-price">${escapeHTML(car.priceRange || 'Price on request')}</div>
           <div class="vehicle-stats">
             <span>TYPE<b>${type}</b></span>
-            <span>RATING<b>${'★'.repeat(rating)}${'☆'.repeat(5-rating)}</b></span>
+            <span>RATING<b>${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}</b></span>
             ${car.seatingCapacity ? `<span>SEATS<b>${escapeHTML(car.seatingCapacity)}</b></span>` : ''}
           </div>
         </div>
@@ -65,7 +65,17 @@
   };
 
   // Guard: the discover page is part of the authenticated experience.
-  if (!localStorage.getItem('token')) {
+  try {
+    const authResponse = await fetch(`${API_BASE_URL}/auth/me`, {
+      credentials: 'include',
+      headers: { Accept: 'application/json' },
+      cache: 'no-store'
+    });
+    if (!authResponse.ok) {
+      window.location.replace('index.html');
+      return;
+    }
+  } catch {
     window.location.replace('index.html');
     return;
   }
@@ -83,7 +93,7 @@
     }, { passive: true });
 
     const tick = () => {
-      rx += (mx-rx)*.18; ry += (my-ry)*.18;
+      rx += (mx - rx) * .18; ry += (my - ry) * .18;
       ring.style.left = `${rx}px`; ring.style.top = `${ry}px`;
       requestAnimationFrame(tick);
     };
@@ -141,7 +151,7 @@
       const cars = await response.json();
 
       const ranked = [...cars]
-        .sort((a,b) => (Number(b.rating)||0) - (Number(a.rating)||0) || priceValue(a)-priceValue(b))
+        .sort((a, b) => (Number(b.rating) || 0) - (Number(a.rating) || 0) || priceValue(a) - priceValue(b))
         .slice(0, 8);
 
       popularCars.innerHTML = ranked.length
@@ -168,39 +178,49 @@
 
   // Finder translates the user's choices into the existing search API's query language.
   finder.addEventListener('submit', e => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const type =
-    document.getElementById('finderType').value.trim().toLowerCase();
+    const type =
+      document.getElementById('finderType').value.trim().toLowerCase();
 
-  const budget =
-    document.getElementById('finderBudget').value.trim();
+    const budget =
+      document.getElementById('finderBudget').value.trim();
 
-  const fuel =
-    document.getElementById('finderFuel').value.trim().toLowerCase();
+    const fuel =
+      document.getElementById('finderFuel').value.trim().toLowerCase();
 
-  const purpose =
-    document.getElementById('finderPurpose').value.trim().toLowerCase();
+    const purpose =
+      document.getElementById('finderPurpose').value.trim().toLowerCase();
 
-  const params = new URLSearchParams();
+    const params = new URLSearchParams();
 
-  if (type) params.set('type', type);
-  if (budget) params.set('budget', budget);
-  if (fuel) params.set('fuel', fuel);
-  if (purpose) params.set('purpose', purpose);
+    if (type) params.set('type', type);
+    if (budget) params.set('budget', budget);
+    if (fuel) params.set('fuel', fuel);
+    if (purpose) params.set('purpose', purpose);
 
-  // If the user selected nothing, show the normal catalogue.
-  if (!params.toString()) {
-    params.set('query', 'cars');
-  }
+    // If the user selected nothing, show the normal catalogue.
+    if (!params.toString()) {
+      params.set('query', 'cars');
+    }
 
-  window.location.href =
-    `search.html?${params.toString()}`;
-});
+    window.location.href =
+      `search.html?${params.toString()}`;
+  });
 
-  logoutBtn.addEventListener('click', () => {
-    localStorage.removeItem('token');
-    window.location.replace('index.html');
+  logoutBtn.addEventListener('click', async () => {
+    try {
+      const csrf = await fetch(`${API_BASE_URL}/auth/csrf`, {
+        credentials: 'include', headers: { Accept: 'application/json' }, cache: 'no-store'
+      });
+      const csrfData = await csrf.json().catch(() => ({}));
+      await fetch(`${API_BASE_URL}/auth/logout`, {
+        method: 'POST', credentials: 'include',
+        headers: { Accept: 'application/json', 'X-CSRF-Token': csrfData.csrfToken || '' }
+      });
+    } finally {
+      window.location.replace('index.html');
+    }
   });
 
   mobileMenu.addEventListener('click', () => {

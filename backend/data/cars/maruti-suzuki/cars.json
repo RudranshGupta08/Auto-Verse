@@ -1,0 +1,136 @@
+[
+  {
+    "brand": "Maruti Suzuki",
+    "model": "Brezza",
+    "type": "SUV",
+    "bodyType": "SUV",
+    "priceRange": "₹8.5L - ₹14L",
+    "engineOptions": [
+      "1.5L Petrol"
+    ],
+    "mileage": "17-19 kmpl",
+    "fuelType": [
+      "Petrol",
+      "CNG"
+    ],
+    "transmission": [
+      "Manual",
+      "Automatic"
+    ],
+    "seatingCapacity": 5,
+    "images": [
+      "brezza/brezza1.jpg"
+    ],
+    "rating": 4,
+    "ncapRating": "5 Star",
+    "features": [
+      "Touchscreen Infotainment",
+      "LED Headlamps",
+      "Cruise Control"
+    ],
+    "bestFor": [
+      "Family",
+      "City Driving"
+    ],
+    "pros": [
+      "Good mileage",
+      "Practical cabin"
+    ],
+    "cons": [
+      "Average performance"
+    ],
+    "description": "A practical compact SUV focused on efficiency and everyday usability.",
+    "variants": [
+      {
+        "name": "LXI",
+        "price": "₹8.5L",
+        "fuelType": "Petrol",
+        "transmission": "Manual",
+        "mileage": "17 kmpl",
+        "features": [
+          "Dual Airbags"
+        ],
+        "isBestValue": false
+      },
+      {
+        "name": "VXI",
+        "price": "₹10L",
+        "fuelType": "Petrol",
+        "transmission": "Manual",
+        "mileage": "18 kmpl",
+        "features": [
+          "Touchscreen",
+          "Steering Controls"
+        ],
+        "isBestValue": true
+      }
+    ]
+  },
+
+  {
+    "brand": "Maruti Suzuki",
+    "model": "Fronx",
+    "type": "SUV",
+    "bodyType": "SUV",
+    "priceRange": "₹7.5L - ₹13L",
+    "engineOptions": [
+      "1.2L Petrol",
+      "1.0L Turbo Petrol"
+    ],
+    "mileage": "20-22 kmpl",
+    "fuelType": [
+      "Petrol"
+    ],
+    "transmission": [
+      "Manual",
+      "Automatic"
+    ],
+    "seatingCapacity": 5,
+    "images": [
+      "fronx/fronx1.jpg"
+    ],
+    "rating": 4,
+    "bestFor": [
+      "City Driving",
+      "Young Buyers"
+    ],
+    "features": [
+      "Touchscreen",
+      "LED Lighting"
+    ]
+  },
+
+  {
+    "brand": "Maruti Suzuki",
+    "model": "Grand Vitara",
+    "type": "SUV",
+    "bodyType": "SUV",
+    "priceRange": "₹11L - ₹20L",
+    "engineOptions": [
+      "1.5L Petrol",
+      "1.5L Hybrid"
+    ],
+    "mileage": "20-27 kmpl",
+    "fuelType": [
+      "Petrol",
+      "Hybrid"
+    ],
+    "transmission": [
+      "Manual",
+      "Automatic"
+    ],
+    "seatingCapacity": 5,
+    "images": [
+      "grand-vitara/grand-vitara1.jpg"
+    ],
+    "rating": 4,
+    "bestFor": [
+      "Family",
+      "Long Drives"
+    ],
+    "features": [
+      "Panoramic Sunroof",
+      "Connected Car Technology"
+    ]
+  }
+]

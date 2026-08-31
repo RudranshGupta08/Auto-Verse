@@ -67,6 +67,9 @@
           id="password"
           name="password"
           placeholder="Enter password"
+          minlength="8"
+          maxlength="72"
+          autocomplete="new-password"
           required
         >
 
@@ -101,93 +104,104 @@
   ========================== -->
 
   <script>
+    (() => {
+      "use strict";
 
-    const signupForm =
-      document.getElementById("signupForm");
+      const form = document.getElementById("signupForm");
+      const usernameInput = document.getElementById("username");
+      const passwordInput = document.getElementById("password");
+      const button = form?.querySelector("button[type=submit]");
+      const API = String(API_BASE_URL || "").replace(/\/+$/, "");
 
+      let csrfToken = null;
 
-    signupForm.addEventListener(
-      "submit",
-      async (event) => {
+      async function getCsrfToken(force = false) {
+        if (csrfToken && !force) return csrfToken;
 
-        event.preventDefault();
+        const response = await fetch(`${API}/auth/csrf`, {
+          credentials: "include",
+          headers: { Accept: "application/json" },
+          cache: "no-store"
+        });
 
+        const data = await response.json().catch(() => ({}));
 
-        const username =
-          document
-            .getElementById("username")
-            .value
-            .trim();
-
-
-        const password =
-          document
-            .getElementById("password")
-            .value;
-
-
-        try {
-
-          const response =
-            await fetch(
-              `${API_BASE_URL}/auth/signup`,
-              {
-                method: "POST",
-
-                headers: {
-                  "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-                  username,
-                  password
-                })
-              }
-            );
-
-
-          const data =
-            await response.json();
-
-
-          if (!response.ok) {
-
-            throw new Error(
-              data.message ||
-              "Signup failed"
-            );
-
-          }
-
-
-          alert(
-            data.message ||
-            "Signup successful!"
-          );
-
-
-          window.location.href =
-            "login.html";
-
-
-        } catch (error) {
-
-          console.error(
-            "Signup Error:",
-            error
-          );
-
-
-          alert(
-            error.message ||
-            "Unable to create account. Please try again."
-          );
-
+        if (!response.ok || typeof data.csrfToken !== "string") {
+          throw new Error("Unable to establish a secure signup session.");
         }
 
+        csrfToken = data.csrfToken;
+        return csrfToken;
       }
-    );
 
+      async function signup() {
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value;
+
+        if (username.length < 3 || username.length > 50) {
+          throw new Error("Username must contain 3–50 characters.");
+        }
+
+        if (password.length < 8 || password.length > 72) {
+          throw new Error("Password must contain 8–72 characters.");
+        }
+
+        const token = await getCsrfToken();
+
+        const response = await fetch(`${API}/auth/signup`, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "X-CSRF-Token": token
+          },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (response.status === 403 && /security token|origin/i.test(String(data.message || ""))) {
+          csrfToken = null;
+          const fresh = await getCsrfToken(true);
+          return fetch(`${API}/auth/signup`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              "X-CSRF-Token": fresh
+            },
+            body: JSON.stringify({ username, password })
+          }).then(async retry => ({ response: retry, data: await retry.json().catch(() => ({})) }));
+        }
+
+        return { response, data };
+      }
+
+      getCsrfToken().catch(error => console.warn("CSRF initialization failed:", error));
+
+      form?.addEventListener("submit", async event => {
+        event.preventDefault();
+        if (button) button.disabled = true;
+
+        try {
+          const result = await signup();
+
+          if (!result.response.ok) {
+            throw new Error(result.data.message || "Signup failed.");
+          }
+
+          alert(result.data.message || "Signup successful!");
+          window.location.replace("login.html");
+        } catch (error) {
+          console.error("Signup error:", error);
+          alert(error.message || "Unable to create account. Please try again.");
+        } finally {
+          if (button) button.disabled = false;
+        }
+      });
+    })();
   </script>
 
 </body>

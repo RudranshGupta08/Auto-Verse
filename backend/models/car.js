@@ -58,6 +58,14 @@ const carSchema = new mongoose.Schema({
     index: true
   },
 
+  carKey: {
+    type: String,
+    unique: true,
+    sparse: true,
+    index: true,
+    trim: true
+  },
+
   type: {
     type: String,
     default: ""

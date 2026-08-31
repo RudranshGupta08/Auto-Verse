@@ -292,28 +292,24 @@
      INITIALIZATION
   ===================================================== */
 
-  function init() {
+  async function init() {
 
-    /*
-      Login protection.
+    /* Authentication is verified by the backend session. */
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/me`, {
+        credentials: "include",
+        headers: { Accept: "application/json" },
+        cache: "no-store"
+      });
 
-      If your login system stores a JWT token,
-      this prevents users from opening the showroom
-      without authentication.
-    */
-
-    const token =
-      localStorage.getItem("token");
-
-    if (!token) {
-
-      window.location.href =
-        "login.html";
-
+      if (!response.ok) {
+        window.location.replace("login.html");
+        return;
+      }
+    } catch {
+      window.location.replace("login.html");
       return;
-
     }
-
 
     updateStatistics();
 
@@ -844,15 +840,25 @@
 
     logoutBtn.addEventListener(
       "click",
-      () => {
-
-        localStorage.removeItem(
-          "token"
-        );
-
-        window.location.href =
-          "login.html";
-
+      async () => {
+        try {
+          const csrf = await fetch(`${API_BASE_URL}/auth/csrf`, {
+            credentials: "include",
+            headers: { Accept: "application/json" },
+            cache: "no-store"
+          });
+          const data = await csrf.json().catch(() => ({}));
+          await fetch(`${API_BASE_URL}/auth/logout`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              Accept: "application/json",
+              "X-CSRF-Token": data.csrfToken || ""
+            }
+          });
+        } finally {
+          window.location.replace("login.html");
+        }
       }
     );
 

@@ -1,4 +1,4 @@
-(() => {
+(async () => {
 
   const body = document.body;
 
@@ -28,10 +28,27 @@
      AUTH
      ======================================================= */
 
-  if (!localStorage.getItem("token")) {
-    window.location.replace("index.html");
-    return;
+  async function requireAuthentication() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/me`, {
+        credentials: "include",
+        headers: { Accept: "application/json" },
+        cache: "no-store"
+      });
+
+      if (!response.ok) {
+        window.location.replace("index.html");
+        return false;
+      }
+
+      return true;
+    } catch {
+      window.location.replace("index.html");
+      return false;
+    }
   }
+
+  if (!(await requireAuthentication())) return;
 
 
   /* =======================================================
