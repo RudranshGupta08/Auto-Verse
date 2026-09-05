@@ -38,6 +38,42 @@ function cleanJsonFile(content) {
 
 
 /* =========================================================
+   HTML CLEANER
+   Removes HTML tags from text values
+   Example:
+   "<span>City Driving</span>"
+   → "City Driving"
+========================================================= */
+
+function stripHtmlTags(value) {
+  return String(value ?? "")
+    .replace(/<[^>]*>/g, "")
+    .trim();
+}
+
+
+/* =========================================================
+   CLEAN BEST FOR
+   Keeps bestFor as a clean string array
+========================================================= */
+
+function cleanBestFor(value) {
+
+  if (!value) {
+    return [];
+  }
+
+  const items = Array.isArray(value)
+    ? value
+    : String(value).split(",");
+
+  return items
+    .map(stripHtmlTags)
+    .filter(Boolean);
+}
+
+
+/* =========================================================
    LOAD MANUFACTURER FILES
 ========================================================= */
 
@@ -76,8 +112,11 @@ async function loadManufacturerFiles() {
     --------------------------------------------- */
 
     try {
+
       await fs.access(filePath);
+
     } catch {
+
       console.log(
         `⚠️ ${brandFolder}: cars.json not found`
       );
@@ -186,8 +225,6 @@ async function loadManufacturerFiles() {
       /* -------------------------------------------
          IMPORTANT:
          Validate brand folder vs car brand
-
-         This prevents accidental mismatch.
       ------------------------------------------- */
 
       const validCars = [];
@@ -271,13 +308,29 @@ async function loadManufacturerFiles() {
         }
 
 
+        /* -------------------------------------------
+           CLEAN bestFor
+           
+           Example:
+           <span>Budget-conscious city driving</span>
+
+           becomes:
+
+           Budget-conscious city driving
+        ------------------------------------------- */
+
+        car.bestFor = cleanBestFor(
+          car.bestFor
+        );
+
+
         validCars.push(car);
       }
 
 
-      /* -------------------------------------------
+      /* ---------------------------------------------
          No valid cars
-      ------------------------------------------- */
+      --------------------------------------------- */
 
       if (validCars.length === 0) {
 
@@ -289,9 +342,9 @@ async function loadManufacturerFiles() {
       }
 
 
-      /* -------------------------------------------
+      /* ---------------------------------------------
          Add cars to universal dataset
-      ------------------------------------------- */
+      --------------------------------------------- */
 
       console.log(
         `📦 ${brandFolder}: ${validCars.length} valid cars`
@@ -329,6 +382,7 @@ async function main() {
   try {
 
     console.log("");
+
     console.log(
       "🚗 AutoVerse Universal Data Hub"
     );
@@ -375,6 +429,7 @@ async function main() {
     --------------------------------------------- */
 
     console.log("");
+
     console.log(
       "────────────────────────────────"
     );
@@ -395,6 +450,7 @@ async function main() {
     if (allCars.length === 0) {
 
       console.log("");
+
       console.log(
         "⚠️ No cars available for import."
       );
@@ -420,6 +476,7 @@ async function main() {
     --------------------------------------------- */
 
     console.log("");
+
     console.log(
       "================================"
     );
@@ -459,6 +516,7 @@ async function main() {
     ) {
 
       console.log("");
+
       console.log(
         "❌ IMPORT ERRORS"
       );
@@ -507,6 +565,7 @@ async function main() {
   } catch (error) {
 
     console.error("");
+
     console.error(
       "❌ IMPORT PROCESS FAILED"
     );
@@ -530,6 +589,7 @@ async function main() {
       await mongoose.connection.close();
 
       console.log("");
+
       console.log(
         "🔌 MongoDB connection closed."
       );

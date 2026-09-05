@@ -9,10 +9,10 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
      SECURITY MODEL
 
      1. Backend is the authority for admin access.
-     2. JWT is sent through Authorization: Bearer.
+     2. JWT is stored in an HttpOnly session cookie.
      3. localStorage role/user data is NEVER trusted.
      4. 401/403 immediately terminates the admin UI.
-     5. GET requests use the authenticated JWT.
+     5. GET requests use the authenticated session cookie.
      6. State-changing requests can use CSRF when the
         backend exposes /auth/csrf.
      7. If /auth/csrf is unavailable, Bearer-token
@@ -84,22 +84,6 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
   /* =====================================================
      SESSION MANAGEMENT
   ====================================================== */
-
-  function getToken() {
-    const token =
-      localStorage.getItem("token");
-
-    if (
-      !token ||
-      typeof token !== "string" ||
-      token.trim() === ""
-    ) {
-      return null;
-    }
-
-    return token.trim();
-  }
-
 
   function clearSession() {
     csrfToken = null;
@@ -275,161 +259,82 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
     endpoint,
     options = {}
   ) {
-
-    const token =
-      getToken();
-
-
-    /*
-     * Every admin request requires authentication.
-     */
-    if (!token) {
-
-      redirectToLogin(
-        "Administrator authentication required."
-      );
-
-      throw new Error(
-        "Authentication required."
-      );
-    }
-
-
-    const method =
-      String(
-        options.method || "GET"
-      ).toUpperCase();
-
+    const method = String(
+      options.method || "GET"
+    ).toUpperCase();
 
     const headers = {
       ...(options.headers || {})
     };
 
-
-    /*
-     * Never manually assign Content-Type for FormData.
-     */
     if (
       options.body &&
       !(options.body instanceof FormData)
     ) {
-
-      headers[
-        "Content-Type"
-      ] =
-        "application/json";
+      headers["Content-Type"] = "application/json";
     }
 
-
     /*
-     * Current AutoVerse backend authentication:
+     * AutoVerse authentication now uses the
+     * HttpOnly session cookie.
      *
-     * Authorization: Bearer <JWT>
-     */
-    headers.Authorization =
-      `Bearer ${token}`;
-
-
-    /*
-     * If the backend exposes CSRF protection,
-     * attach its token to state-changing requests.
-     *
-     * This is deliberately optional because the
-     * currently deployed Render API returns 404
-     * for /auth/csrf.
+     * Do NOT read JWT from localStorage.
+     * Do NOT manually attach Authorization: Bearer.
      */
     if (
       method !== "GET" &&
       method !== "HEAD" &&
       method !== "OPTIONS"
     ) {
-
       const tokenForCsrf =
         await ensureCsrfToken();
 
-
       if (tokenForCsrf) {
-
-        headers[
-          "X-CSRF-Token"
-        ] =
+        headers["X-CSRF-Token"] =
           tokenForCsrf;
       }
     }
 
-
     let response;
 
-
     try {
-
-      response =
-        await fetch(
-          `${API}${endpoint}`,
-          {
-            ...options,
-
-            method,
-
-            headers,
-
-            /*
-             * Safe for current JWT authentication
-             * and future cookie-based authentication.
-             */
-            credentials:
-              "include",
-
-            cache:
-              options.cache ||
-              "no-store"
-          }
-        );
-
+      response = await fetch(
+        `${API}${endpoint}`,
+        {
+          ...options,
+          method,
+          headers,
+          credentials: "include",
+          cache: options.cache || "no-store"
+        }
+      );
     } catch (error) {
-
       console.error(
         "❌ API connection failed:",
         error
       );
-
       throw new Error(
         "Unable to connect to the AutoVerse server."
       );
     }
 
-
-    /* =================================================
-       AUTHORIZATION FAILURE
-    ================================================= */
-
-    if (
-      response.status === 401
-    ) {
-
+    if (response.status === 401) {
       redirectToLogin(
         "Administrator session expired."
       );
-
       throw new Error(
         "Administrator session expired."
       );
     }
 
-
-    if (
-      response.status === 403
-    ) {
-
+    if (response.status === 403) {
       redirectToLogin(
         "Administrator access denied."
       );
-
       throw new Error(
         "Administrator access denied."
       );
     }
-
 
     return response;
   }
@@ -1317,6 +1222,67 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
 
 
   /* =====================================================
+     VARIANT MANAGER
+  ====================================================== */
+
+  const variantContainer =
+    document.getElementById("variantContainer");
+
+  function escapeAttributeValue(value) {
+    return escapeAttribute(value ?? "");
+  }
+
+  function createVariantRow(variant = {}) {
+    if (!variantContainer) return;
+
+    const row = document.createElement("div");
+    row.className = "variant-editor-row";
+    row.innerHTML = `
+      <div class="variant-editor-grid">
+        <div class="field"><label>Variant Name</label><input class="variant-name" placeholder="e.g. ZXi MT" value="${escapeAttributeValue(variant.name)}"></div>
+        <div class="field"><label>Price</label><input class="variant-price" placeholder="₹8,00,000" value="${escapeAttributeValue(variant.price)}"></div>
+        <div class="field"><label>Fuel Type</label><input class="variant-fuel" placeholder="Petrol / CNG / EV" value="${escapeAttributeValue(variant.fuelType)}"></div>
+        <div class="field"><label>Transmission</label><input class="variant-transmission" placeholder="5MT / 6AT / e-CVT" value="${escapeAttributeValue(variant.transmission)}"></div>
+        <div class="field"><label>Mileage / Range</label><input class="variant-mileage" placeholder="24.8 km/l" value="${escapeAttributeValue(variant.mileage)}"></div>
+        <div class="field full"><label>Variant Features</label><textarea class="variant-features" placeholder="Feature 1, Feature 2, Feature 3">${escapeHtml(Array.isArray(variant.features) ? variant.features.join(", ") : (variant.features || ""))}</textarea></div>
+      </div>
+      <div class="variant-editor-actions">
+        <label class="variant-best-value"><input type="checkbox" class="variant-best" ${variant.isBestValue ? "checked" : ""}> Best Value</label>
+        <button type="button" class="cancel-btn remove-variant-btn">Remove Variant</button>
+      </div>
+    `;
+
+    row.querySelector(".remove-variant-btn")?.addEventListener("click", () => row.remove());
+    variantContainer.appendChild(row);
+  }
+
+  function renderVariants(variants) {
+    if (!variantContainer) return;
+    variantContainer.innerHTML = "";
+    if (Array.isArray(variants) && variants.length) {
+      variants.forEach(createVariantRow);
+    }
+  }
+
+  function collectVariants() {
+    if (!variantContainer) return [];
+    return Array.from(variantContainer.querySelectorAll(".variant-editor-row"))
+      .map(row => ({
+        name: row.querySelector(".variant-name")?.value.trim() || "",
+        price: row.querySelector(".variant-price")?.value.trim() || "",
+        fuelType: row.querySelector(".variant-fuel")?.value.trim() || "",
+        transmission: row.querySelector(".variant-transmission")?.value.trim() || "",
+        mileage: row.querySelector(".variant-mileage")?.value.trim() || "",
+        features: (row.querySelector(".variant-features")?.value || "")
+          .split(",").map(v => v.trim()).filter(Boolean),
+        isBestValue: Boolean(row.querySelector(".variant-best")?.checked)
+      }))
+      .filter(v => v.name || v.price || v.fuelType || v.transmission || v.mileage || v.features.length);
+  }
+
+  document.getElementById("addVariantBtn")?.addEventListener("click", () => createVariantRow());
+
+  /* =====================================================
      VEHICLE EDITOR
   ====================================================== */
 
@@ -1435,6 +1401,8 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
     );
 
 
+    renderVariants(Array.isArray(car.variants) ? car.variants : []);
+
     form.dataset.editId =
       String(
         car._id
@@ -1539,6 +1507,8 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
             ) || 3;
 
 
+          data.variants = collectVariants();
+
           const editId =
             vehicleForm.dataset.editId;
 
@@ -1592,6 +1562,7 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
 
 
           vehicleForm.reset();
+          renderVariants([]);
 
 
           delete vehicleForm
@@ -1821,49 +1792,23 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
 
         try {
 
-          /*
-           * Logout endpoint is optional.
-           *
-           * Even if the backend doesn't implement
-           * logout yet, the local JWT is removed.
-           */
-          const token =
-            getToken();
-
-
-          if (token) {
-
-            try {
-
-              await fetch(
-                `${API}/auth/logout`,
-                {
-                  method:
-                    "POST",
-
-                  credentials:
-                    "include",
-
-                  headers: {
-                    Authorization:
-                      `Bearer ${token}`,
-
-                    Accept:
-                      "application/json"
-                  },
-
-                  cache:
-                    "no-store"
-                }
-              );
-
-            } catch (error) {
-
-              console.warn(
-                "Logout request failed:",
-                error
-              );
-            }
+          try {
+            await fetch(
+              `${API}/auth/logout`,
+              {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                  Accept: "application/json"
+                },
+                cache: "no-store"
+              }
+            );
+          } catch (error) {
+            console.warn(
+              "Logout request failed:",
+              error
+            );
           }
 
         } finally {
@@ -2777,70 +2722,34 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
   ====================================================== */
 
   async function verifyAdminAccess() {
-
-    const token =
-      getToken();
-
-
-    if (!token) {
-
-      redirectToLogin(
-        "No administrator session found."
-      );
-
-      return false;
-    }
-
-
     try {
-
       /*
-       * IMPORTANT:
-       *
-       * Do NOT call /auth/csrf here.
-       *
-       * Your deployed Render API currently returns
-       * 404 for that endpoint.
-       *
-       * Authentication is verified directly against
-       * the protected admin endpoint.
+       * The browser sends the HttpOnly session cookie.
+       * Do NOT check localStorage.
        */
       const response =
         await apiRequest(
           "/admin/dashboard"
         );
 
-
       if (
-        response.status ===
-          401 ||
-        response.status ===
-          403
+        response.status === 401 ||
+        response.status === 403
       ) {
-
         redirectToLogin(
           "Administrator access denied."
         );
-
         return false;
       }
 
-
-      if (
-        !response.ok
-      ) {
-
+      if (!response.ok) {
         const result =
-          await safeJson(
-            response
-          );
-
+          await safeJson(response);
 
         console.error(
           "Admin verification failed:",
           result
         );
-
 
         throw new Error(
           result.message ||
@@ -2848,40 +2757,27 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
         );
       }
 
-
-      /*
-       * The backend has now accepted the JWT
-       * for an administrator-protected endpoint.
-       */
-      isAuthenticated =
-        true;
-
+      isAuthenticated = true;
 
       console.log(
         "✅ Administrator access verified by backend."
       );
 
-
       return true;
-
-
     } catch (error) {
-
       console.error(
         "❌ Admin verification failed:",
         error
       );
 
+      isAuthenticated = false;
 
-      isAuthenticated =
-        false;
-
-
-      redirectToLogin(
-        error.message ||
-        "Administrator verification failed."
-      );
-
+      if (!isRedirecting) {
+        redirectToLogin(
+          error.message ||
+          "Administrator verification failed."
+        );
+      }
 
       return false;
     }
