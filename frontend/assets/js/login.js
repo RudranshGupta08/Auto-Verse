@@ -524,16 +524,7 @@
         "Administrator authenticated. Opening secure console..."
       );
 
-      setTimeout(
-        () => {
-
-          window.location.replace(
-            "admin.html"
-          );
-
-        },
-        500
-      );
+      window.location.replace("admin.html");
 
       return;
     }
