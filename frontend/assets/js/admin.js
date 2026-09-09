@@ -1222,67 +1222,6 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
 
 
   /* =====================================================
-     VARIANT MANAGER
-  ====================================================== */
-
-  const variantContainer =
-    document.getElementById("variantContainer");
-
-  function escapeAttributeValue(value) {
-    return escapeAttribute(value ?? "");
-  }
-
-  function createVariantRow(variant = {}) {
-    if (!variantContainer) return;
-
-    const row = document.createElement("div");
-    row.className = "variant-editor-row";
-    row.innerHTML = `
-      <div class="variant-editor-grid">
-        <div class="field"><label>Variant Name</label><input class="variant-name" placeholder="e.g. ZXi MT" value="${escapeAttributeValue(variant.name)}"></div>
-        <div class="field"><label>Price</label><input class="variant-price" placeholder="₹8,00,000" value="${escapeAttributeValue(variant.price)}"></div>
-        <div class="field"><label>Fuel Type</label><input class="variant-fuel" placeholder="Petrol / CNG / EV" value="${escapeAttributeValue(variant.fuelType)}"></div>
-        <div class="field"><label>Transmission</label><input class="variant-transmission" placeholder="5MT / 6AT / e-CVT" value="${escapeAttributeValue(variant.transmission)}"></div>
-        <div class="field"><label>Mileage / Range</label><input class="variant-mileage" placeholder="24.8 km/l" value="${escapeAttributeValue(variant.mileage)}"></div>
-        <div class="field full"><label>Variant Features</label><textarea class="variant-features" placeholder="Feature 1, Feature 2, Feature 3">${escapeHtml(Array.isArray(variant.features) ? variant.features.join(", ") : (variant.features || ""))}</textarea></div>
-      </div>
-      <div class="variant-editor-actions">
-        <label class="variant-best-value"><input type="checkbox" class="variant-best" ${variant.isBestValue ? "checked" : ""}> Best Value</label>
-        <button type="button" class="cancel-btn remove-variant-btn">Remove Variant</button>
-      </div>
-    `;
-
-    row.querySelector(".remove-variant-btn")?.addEventListener("click", () => row.remove());
-    variantContainer.appendChild(row);
-  }
-
-  function renderVariants(variants) {
-    if (!variantContainer) return;
-    variantContainer.innerHTML = "";
-    if (Array.isArray(variants) && variants.length) {
-      variants.forEach(createVariantRow);
-    }
-  }
-
-  function collectVariants() {
-    if (!variantContainer) return [];
-    return Array.from(variantContainer.querySelectorAll(".variant-editor-row"))
-      .map(row => ({
-        name: row.querySelector(".variant-name")?.value.trim() || "",
-        price: row.querySelector(".variant-price")?.value.trim() || "",
-        fuelType: row.querySelector(".variant-fuel")?.value.trim() || "",
-        transmission: row.querySelector(".variant-transmission")?.value.trim() || "",
-        mileage: row.querySelector(".variant-mileage")?.value.trim() || "",
-        features: (row.querySelector(".variant-features")?.value || "")
-          .split(",").map(v => v.trim()).filter(Boolean),
-        isBestValue: Boolean(row.querySelector(".variant-best")?.checked)
-      }))
-      .filter(v => v.name || v.price || v.fuelType || v.transmission || v.mileage || v.features.length);
-  }
-
-  document.getElementById("addVariantBtn")?.addEventListener("click", () => createVariantRow());
-
-  /* =====================================================
      VEHICLE EDITOR
   ====================================================== */
 
@@ -1401,8 +1340,6 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
     );
 
 
-    renderVariants(Array.isArray(car.variants) ? car.variants : []);
-
     form.dataset.editId =
       String(
         car._id
@@ -1507,8 +1444,6 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
             ) || 3;
 
 
-          data.variants = collectVariants();
-
           const editId =
             vehicleForm.dataset.editId;
 
@@ -1562,7 +1497,6 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
 
 
           vehicleForm.reset();
-          renderVariants([]);
 
 
           delete vehicleForm
