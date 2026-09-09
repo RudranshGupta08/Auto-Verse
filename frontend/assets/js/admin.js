@@ -1345,6 +1345,8 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
         car._id
       );
 
+    clearSelectedImages();
+    setExistingImages(car.images);
 
     editor.scrollIntoView({
       behavior:
@@ -1447,6 +1449,13 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
           const editId =
             vehicleForm.dataset.editId;
 
+          /* Preserve existing image paths while editing.
+           * This also persists cover-image ordering and removals.
+           */
+          if (editId || existingImagePaths.length) {
+            data.images = [...existingImagePaths];
+          }
+
 
           const endpoint =
             editId
@@ -1490,13 +1499,33 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
           }
 
 
+          const savedCarId =
+            result?.data?._id ||
+            editId;
+
+          let imageMessage = "";
+
+          if (savedCarId && selectedImageFiles.length) {
+            const uploadResult = await uploadSelectedImages(savedCarId);
+            imageMessage = `${Number(uploadResult?.uploaded?.length || 0)} image(s) uploaded.`;
+          }
+
+          if (savedCarId && removedExistingImagePaths.length) {
+            for (const imagePath of removedExistingImagePaths) {
+              await deleteExistingImage(savedCarId, imagePath);
+            }
+            imageMessage += `${imageMessage ? " " : ""}${removedExistingImagePaths.length} image(s) deleted.`;
+          }
+
           showToast(
-            result.message ||
-            "Vehicle saved successfully."
+            [result.message || "Vehicle saved successfully.", imageMessage]
+              .filter(Boolean)
+              .join(" ")
           );
 
 
           vehicleForm.reset();
+          clearAllImageState();
 
 
           delete vehicleForm
@@ -1562,6 +1591,7 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
       () => {
 
         vehicleForm?.reset();
+        clearAllImageState();
 
 
         if (
@@ -1616,6 +1646,7 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
           () => {
 
             vehicleForm?.reset();
+            clearAllImageState();
 
 
             if (
@@ -1755,6 +1786,442 @@ console.log("🔥 AUTOVERSE ADMIN CONSOLE LOADED");
         }
       }
     );
+
+
+  /* =====================================================
+     VEHICLE IMAGE PICKER
+     -----------------------------------------------------
+     Supports:
+       - Click to browse from local computer
+       - Drag & drop
+       - Multiple JPG / JPEG / PNG / WEBP files
+       - Instant local previews
+       - Remove selected files
+       - Existing remote image previews when editing
+
+     IMPORTANT:
+       Browser File objects are kept locally for preview.
+       They are NOT uploaded to the server until a backend
+       multipart image-upload endpoint is connected.
+  ====================================================== */
+
+  const dropArea = document.getElementById("dropArea");
+  const imageInput = document.getElementById("imageInput");
+  const imagePreview = document.getElementById("preview");
+
+  let selectedImageFiles = [];
+  let existingImagePaths = [];
+  let removedExistingImagePaths = [];
+  const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
+  const ALLOWED_IMAGE_TYPES = new Set([
+    "image/jpeg",
+    "image/png",
+    "image/webp"
+  ]);
+  const ALLOWED_IMAGE_EXTENSIONS = /\.(jpe?g|png|webp)$/i;
+
+  if (!document.getElementById("autoverse-image-manager-styles")) {
+    const style = document.createElement("style");
+    style.id = "autoverse-image-manager-styles";
+    style.textContent = `
+      .image-preview-item { position: relative; overflow: hidden; }
+      .image-preview-item img { display: block; width: 100%; height: 180px; object-fit: cover; }
+      .image-preview-meta { display: flex; flex-direction: column; gap: 6px; padding: 8px; }
+      .image-preview-meta small { word-break: break-all; opacity: .72; font-size: 11px; }
+      .image-preview-actions { display: flex; align-items: center; gap: 6px; }
+      .image-action-btn { cursor: pointer; }
+      .image-action-btn:disabled { cursor: default; opacity: .55; }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function getImageFileKey(file) {
+    return [
+      file.name,
+      file.size,
+      file.lastModified,
+      file.type
+    ].join("::");
+  }
+
+  function isValidImageFile(file) {
+    if (!file || !(file instanceof File)) {
+      return false;
+    }
+
+    const validType =
+      ALLOWED_IMAGE_TYPES.has(file.type) ||
+      (!file.type && ALLOWED_IMAGE_EXTENSIONS.test(file.name));
+
+    return validType && file.size <= MAX_IMAGE_SIZE;
+  }
+
+  function revokePreviewUrl(file) {
+    if (file?._autoversePreviewUrl) {
+      URL.revokeObjectURL(file._autoversePreviewUrl);
+      delete file._autoversePreviewUrl;
+    }
+  }
+
+  function renderImagePreviews() {
+    if (!imagePreview) {
+      return;
+    }
+
+    imagePreview.innerHTML = "";
+
+    if (!existingImagePaths.length && !selectedImageFiles.length) {
+      return;
+    }
+
+    existingImagePaths.forEach((path, index) => {
+      const card = document.createElement("div");
+      card.className = "image-preview-item existing-image";
+      card.dataset.imageType = "existing";
+      card.dataset.imageIndex = String(index);
+
+      const image = document.createElement("img");
+      image.src = getImagePathForPreview(path);
+      image.alt = `Existing vehicle image ${index + 1}`;
+      image.loading = "lazy";
+      image.title = "Click to open full image";
+      image.style.cursor = "pointer";
+      image.addEventListener("click", () => {
+        const url = getImagePathForPreview(path);
+        if (url) window.open(url, "_blank", "noopener,noreferrer");
+      });
+
+      const meta = document.createElement("div");
+      meta.className = "image-preview-meta";
+
+      const label = document.createElement("span");
+      label.textContent = index === 0 ? "Existing • Cover" : "Existing";
+
+      const pathText = document.createElement("small");
+      pathText.textContent = `backend/public/images/${path}`;
+      pathText.title = `Web: ${getImagePathForPreview(path)}`;
+
+      const actions = document.createElement("div");
+      actions.className = "image-preview-actions";
+
+      const coverButton = document.createElement("button");
+      coverButton.type = "button";
+      coverButton.className = "image-action-btn";
+      coverButton.textContent = index === 0 ? "Cover" : "Set cover";
+      coverButton.disabled = index === 0;
+      coverButton.addEventListener("click", event => {
+        event.preventDefault();
+        event.stopPropagation();
+        const [selected] = existingImagePaths.splice(index, 1);
+        existingImagePaths.unshift(selected);
+        renderImagePreviews();
+      });
+
+      const removeButton = document.createElement("button");
+      removeButton.type = "button";
+      removeButton.className = "image-remove-btn";
+      removeButton.setAttribute("aria-label", `Remove existing image ${index + 1}`);
+      removeButton.textContent = "×";
+      removeButton.addEventListener("click", event => {
+        event.preventDefault();
+        event.stopPropagation();
+        const removed = existingImagePaths.splice(index, 1)[0];
+        if (removed) {
+          removedExistingImagePaths.push(removed);
+        }
+        renderImagePreviews();
+      });
+
+      actions.appendChild(coverButton);
+      actions.appendChild(removeButton);
+      meta.appendChild(label);
+      meta.appendChild(pathText);
+      meta.appendChild(actions);
+
+      card.appendChild(image);
+      card.appendChild(meta);
+      imagePreview.appendChild(card);
+    });
+
+    selectedImageFiles.forEach((file, index) => {
+      const card = document.createElement("div");
+      card.className = "image-preview-item selected-image";
+      card.dataset.imageType = "selected";
+      card.dataset.imageIndex = String(index);
+
+      const image = document.createElement("img");
+      image.alt = file.name;
+
+      if (!file._autoversePreviewUrl) {
+        file._autoversePreviewUrl = URL.createObjectURL(file);
+      }
+
+      image.src = file._autoversePreviewUrl;
+
+      const meta = document.createElement("div");
+      meta.className = "image-preview-meta";
+
+      const name = document.createElement("span");
+      name.textContent = file.name;
+
+      const size = document.createElement("small");
+      size.textContent = formatImageSize(file.size);
+
+      const removeButton = document.createElement("button");
+      removeButton.type = "button";
+      removeButton.className = "image-remove-btn";
+      removeButton.dataset.removeImageIndex = String(index);
+      removeButton.setAttribute("aria-label", `Remove ${file.name}`);
+      removeButton.textContent = "×";
+
+      removeButton.addEventListener("click", event => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const removed = selectedImageFiles.splice(index, 1)[0];
+        revokePreviewUrl(removed);
+        syncImageInput();
+        renderImagePreviews();
+      });
+
+      meta.appendChild(name);
+      meta.appendChild(size);
+      meta.appendChild(removeButton);
+
+      card.appendChild(image);
+      card.appendChild(meta);
+      imagePreview.appendChild(card);
+    });
+  }
+
+  function formatImageSize(bytes) {
+    const size = Number(bytes) || 0;
+
+    if (size < 1024 * 1024) {
+      return `${Math.max(1, Math.round(size / 1024))} KB`;
+    }
+
+    return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+  }
+
+  function getImagePathForPreview(path) {
+    const value = String(path || "").trim();
+
+    if (!value) {
+      return "";
+    }
+
+    if (/^https?:\/\//i.test(value)) {
+      return value;
+    }
+
+    const base = API.replace(/\/api$/, "");
+    return `${base}/images/${value.replace(/^\/+/, "")}`;
+  }
+
+  function syncImageInput() {
+    if (!imageInput) {
+      return;
+    }
+
+    try {
+      const dataTransfer = new DataTransfer();
+
+      selectedImageFiles.forEach(file => {
+        dataTransfer.items.add(file);
+      });
+
+      imageInput.files = dataTransfer.files;
+    } catch (error) {
+      /*
+       * Some older browsers do not allow assigning files.
+       * The application still keeps selectedImageFiles as the
+       * source of truth for the local preview.
+       */
+      console.warn("Could not synchronize image input:", error);
+    }
+  }
+
+  function addImageFiles(fileList) {
+    const incoming = Array.from(fileList || []);
+
+    if (!incoming.length) {
+      return;
+    }
+
+    const existingKeys = new Set(
+      selectedImageFiles.map(getImageFileKey)
+    );
+
+    let added = 0;
+    let rejected = 0;
+    let duplicate = 0;
+
+    incoming.forEach(file => {
+      if (!isValidImageFile(file)) {
+        rejected++;
+        return;
+      }
+
+      const key = getImageFileKey(file);
+
+      if (existingKeys.has(key)) {
+        duplicate++;
+        return;
+      }
+
+      existingKeys.add(key);
+      selectedImageFiles.push(file);
+      added++;
+    });
+
+    syncImageInput();
+    renderImagePreviews();
+
+    if (rejected > 0) {
+      showToast(
+        `${rejected} image(s) rejected. Use JPG, PNG or WEBP under 10 MB each.`
+      );
+    } else if (duplicate > 0) {
+      showToast(
+        `${added} image(s) added. ${duplicate} duplicate(s) ignored.`
+      );
+    } else if (added > 0) {
+      showToast(
+        `${added} image${added === 1 ? "" : "s"} selected.`
+      );
+    }
+  }
+
+  function clearSelectedImages() {
+    selectedImageFiles.forEach(revokePreviewUrl);
+    selectedImageFiles = [];
+
+    if (imageInput) {
+      imageInput.value = "";
+    }
+
+    renderImagePreviews();
+  }
+
+  function setExistingImages(images) {
+    existingImagePaths = Array.isArray(images)
+      ? images
+          .map(value => String(value || "").trim())
+          .filter(Boolean)
+      : [];
+    removedExistingImagePaths = [];
+    renderImagePreviews();
+  }
+
+  function clearAllImageState() {
+    clearSelectedImages();
+    existingImagePaths = [];
+    removedExistingImagePaths = [];
+    renderImagePreviews();
+  }
+
+  async function uploadSelectedImages(carId) {
+    if (!carId || !selectedImageFiles.length) {
+      return { success: true, images: [] };
+    }
+
+    const formData = new FormData();
+    selectedImageFiles.forEach(file => formData.append("images", file));
+
+    const response = await apiRequest(
+      `/admin/cars/${encodeURIComponent(carId)}/images`,
+      { method: "POST", body: formData }
+    );
+
+    const result = await safeJson(response);
+    if (!response.ok) {
+      throw new Error(result.message || "Image upload failed.");
+    }
+    return result;
+  }
+
+  async function deleteExistingImage(carId, imagePath) {
+    if (!carId || !imagePath) return;
+
+    const response = await apiRequest(
+      `/admin/cars/${encodeURIComponent(carId)}/images`,
+      {
+        method: "DELETE",
+        body: JSON.stringify({ path: imagePath })
+      }
+    );
+
+    const result = await safeJson(response);
+    if (!response.ok) {
+      throw new Error(result.message || `Unable to delete ${imagePath}`);
+    }
+    return result;
+  }
+
+  if (dropArea && imageInput) {
+    /*
+     * Click anywhere in the drop zone to open the native
+     * Windows/macOS file picker.
+     */
+    dropArea.addEventListener("click", event => {
+      if (event.target.closest(".image-remove-btn")) {
+        return;
+      }
+
+      imageInput.click();
+    });
+
+    /*
+     * Keyboard accessibility: Enter / Space opens file picker.
+     */
+    dropArea.setAttribute("role", "button");
+    dropArea.setAttribute("tabindex", "0");
+
+    dropArea.addEventListener("keydown", event => {
+      if (
+        event.key === "Enter" ||
+        event.key === " "
+      ) {
+        event.preventDefault();
+        imageInput.click();
+      }
+    });
+
+    /*
+     * Native browse-file selection.
+     */
+    imageInput.addEventListener("change", () => {
+      addImageFiles(imageInput.files);
+    });
+
+    /*
+     * Prevent the browser from opening dropped files itself.
+     */
+    ["dragenter", "dragover"].forEach(eventName => {
+      dropArea.addEventListener(eventName, event => {
+        event.preventDefault();
+        event.stopPropagation();
+        dropArea.classList.add("drag-over");
+      });
+    });
+
+    ["dragleave", "dragend"].forEach(eventName => {
+      dropArea.addEventListener(eventName, event => {
+        event.preventDefault();
+        event.stopPropagation();
+        dropArea.classList.remove("drag-over");
+      });
+    });
+
+    dropArea.addEventListener("drop", event => {
+      event.preventDefault();
+      event.stopPropagation();
+      dropArea.classList.remove("drag-over");
+
+      addImageFiles(event.dataTransfer?.files);
+    });
+  }
 
 
   /* =====================================================

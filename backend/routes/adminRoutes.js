@@ -1,5 +1,7 @@
 import express from "express";
 import multer from "multer";
+import fs from "fs";
+import path from "path";
 
 import Car from "../models/car.js";
 import mongoose from "mongoose";
@@ -380,6 +382,206 @@ router.get("/cars/:id", async (req, res) => {
   }
 });
 
+
+/* =========================================================
+   VEHICLE IMAGE STORAGE
+========================================================= */
+
+const IMAGE_ROOT = path.resolve(
+  process.cwd(),
+  "public",
+  "images"
+);
+
+function safeFolderName(value) {
+  return String(value || "unknown")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "") || "unknown";
+}
+
+function safeImageName(value) {
+  return String(value || "image")
+    .replace(/[^a-zA-Z0-9._-]/g, "_")
+    .slice(-180);
+}
+
+function resolveStoredImage(relativePath) {
+  const normalized = String(relativePath || "")
+    .replace(/\\/g, "/")
+    .replace(/^\/+/, "");
+
+  if (!normalized || normalized.includes("..")) {
+    return null;
+  }
+
+  const absolute = path.resolve(IMAGE_ROOT, normalized);
+  const root = path.resolve(IMAGE_ROOT) + path.sep;
+
+  if (!absolute.startsWith(root)) {
+    return null;
+  }
+
+  return absolute;
+}
+
+const imageUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10 * 1024 * 1024,
+    files: 20
+  },
+  fileFilter: (req, file, cb) => {
+    const allowed = new Set([
+      "image/jpeg",
+      "image/png",
+      "image/webp"
+    ]);
+    cb(null, allowed.has(file.mimetype));
+  }
+});
+
+router.post(
+  "/cars/:id/images",
+  imageUpload.array("images", 20),
+  async (req, res) => {
+    try {
+      if (!isValidObjectId(req.params.id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid vehicle ID."
+        });
+      }
+
+      const car = await Car.findById(req.params.id);
+      if (!car) {
+        return res.status(404).json({
+          success: false,
+          message: "Vehicle not found."
+        });
+      }
+
+      if (!req.files?.length) {
+        return res.status(400).json({
+          success: false,
+          message: "No valid images were uploaded."
+        });
+      }
+
+      const folder = safeFolderName(car.model || car.carKey);
+      const destination = path.join(IMAGE_ROOT, folder);
+      fs.mkdirSync(destination, { recursive: true });
+
+      const uploaded = [];
+      const writtenFiles = [];
+
+      try {
+        for (const file of req.files) {
+          const ext = path.extname(file.originalname || "").toLowerCase();
+          const base = path.basename(file.originalname || "image", ext);
+          const filename = `${Date.now()}-${safeImageName(base)}${ext}`;
+          const absolute = path.join(destination, filename);
+          fs.writeFileSync(absolute, file.buffer);
+          writtenFiles.push(absolute);
+          uploaded.push(`${folder}/${filename}`);
+        }
+
+        car.images = [
+          ...(Array.isArray(car.images) ? car.images : []),
+          ...uploaded
+        ];
+        await car.save();
+      } catch (writeError) {
+        for (const filePath of writtenFiles) {
+          try {
+            if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+          } catch {}
+        }
+        throw writeError;
+      }
+
+      return res.status(201).json({
+        success: true,
+        message: `${uploaded.length} image(s) uploaded successfully.`,
+        uploaded,
+        data: car
+      });
+    } catch (error) {
+      console.error("Vehicle image upload error:", error);
+      return res.status(500).json({
+        success: false,
+        message: error.message || "Unable to upload vehicle images."
+      });
+    }
+  }
+);
+
+router.delete(
+  "/cars/:id/images",
+  async (req, res) => {
+    try {
+      if (!isValidObjectId(req.params.id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid vehicle ID."
+        });
+      }
+
+      const requestedPath = String(req.body?.path || "").trim();
+      const filePath = resolveStoredImage(requestedPath);
+
+      if (!filePath) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid image path."
+        });
+      }
+
+      const car = await Car.findById(req.params.id);
+      if (!car) {
+        return res.status(404).json({
+          success: false,
+          message: "Vehicle not found."
+        });
+      }
+
+      const folder = safeFolderName(car.model || car.carKey);
+      if (!requestedPath.startsWith(`${folder}/`)) {
+        return res.status(403).json({
+          success: false,
+          message: "Image does not belong to this vehicle."
+        });
+      }
+
+      const before = Array.isArray(car.images) ? car.images : [];
+      car.images = before.filter(image => String(image) !== requestedPath);
+      await car.save();
+
+      let fileDeleted = false;
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+        fileDeleted = true;
+      }
+
+      return res.json({
+        success: true,
+        message: fileDeleted
+          ? "Image deleted successfully."
+          : "Image removed from vehicle. The file was already missing.",
+        path: requestedPath,
+        fileDeleted,
+        data: car
+      });
+    } catch (error) {
+      console.error("Vehicle image delete error:", error);
+      return res.status(500).json({
+        success: false,
+        message: error.message || "Unable to delete vehicle image."
+      });
+    }
+  }
+);
 
 /* =========================================================
    CREATE / UPDATE SINGLE CAR
