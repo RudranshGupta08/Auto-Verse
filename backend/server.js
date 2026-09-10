@@ -310,6 +310,24 @@ app.use(cookieParser());
 // GLOBAL RATE LIMIT
 // =========================================================
 
+/*
+ * AutoVerse has several read-heavy pages.
+ *
+ * The frontend can legitimately request:
+ *
+ * - /api/auth/me
+ * - /api/cars
+ * - /api/cars/:id
+ * - /api/ai/*
+ * - admin resources
+ *
+ * The old 300 requests / 15 minutes global limit
+ * could be exhausted during repeated development
+ * navigation and page refreshes.
+ *
+ * We therefore use a more generous global limit.
+ */
+
 const globalLimiter =
   rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -318,7 +336,27 @@ const globalLimiter =
      * General API protection.
      */
 
-    limit: 300,
+    limit: 1000,
+
+    /*
+     * Normal catalogue reads should not consume
+     * the general API budget.
+     *
+     * This specifically protects:
+     *
+     * GET /api/cars
+     * GET /api/cars/:id
+     *
+     * while POST/PUT/PATCH/DELETE requests remain
+     * protected by the global limiter.
+     */
+
+    skip: (req) => {
+      return (
+        req.method === "GET" &&
+        req.path.startsWith(`${API_PREFIX}/cars`)
+      );
+    },
 
     standardHeaders: "draft-8",
 
@@ -340,17 +378,15 @@ app.use(globalLimiter);
 /*
  * Authentication/session endpoints share this limiter.
  *
- * Increased from 30 → 100 requests per 15 minutes
- * because the frontend can legitimately make multiple
- * requests for:
+ * Protected endpoints:
  *
- * - CSRF token
- * - login
- * - current user
- * - logout
- * - signup
+ * GET  /api/auth/csrf
+ * POST /api/auth/login
+ * POST /api/auth/signup
+ * GET  /api/auth/me
+ * POST /api/auth/logout
  *
- * Successful requests are skipped so normal successful
+ * Successful requests are skipped so normal
  * authentication flows do not unnecessarily consume
  * the rate-limit budget.
  */
@@ -359,7 +395,18 @@ const authLimiter =
   rateLimit({
     windowMs: 15 * 60 * 1000,
 
-    limit: 100,
+    /*
+     * Increased to provide enough room for normal
+     * frontend authentication/session checks while
+     * still protecting the endpoints from abuse.
+     */
+
+    limit: 200,
+
+    /*
+     * Successful authentication/session requests
+     * do not consume the rate-limit budget.
+     */
 
     skipSuccessfulRequests: true,
 
@@ -719,6 +766,18 @@ async function startServer() {
               `   ✓ ${origin}`
             );
           }
+        );
+
+        console.log(
+          "🛡️ Global API limit: 1000 requests / 15 minutes"
+        );
+
+        console.log(
+          "🔐 Auth limit: 200 failed requests / 15 minutes"
+        );
+
+        console.log(
+          "🚗 Catalogue GET requests: rate-limit exempt"
         );
 
         console.log(
