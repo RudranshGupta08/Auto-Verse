@@ -1003,8 +1003,8 @@ em {
 }
 
 /* =========================================================
-   VARIANTS & PRICING
-========================================================= */
+   VARIANTS & PRICING — AUTOVERSE DARK THEME
+   ========================================================= */
 
 .variants-section {
   position: relative;
@@ -1012,216 +1012,436 @@ em {
 
 .variants-layout {
   display: grid;
-  grid-template-columns: minmax(260px, 0.75fr) minmax(0, 1.5fr);
+  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.65fr);
   gap: 70px;
   align-items: start;
 }
 
+
+/* ---------------------------------------------------------
+   LEFT CONTENT
+   --------------------------------------------------------- */
+
 .variants-intro {
   max-width: 430px;
-  margin-top: 22px;
+  margin-top: 24px;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 14px;
   line-height: 1.8;
-  opacity: 0.7;
 }
+
+
+/* ---------------------------------------------------------
+   VARIANT GRID
+   --------------------------------------------------------- */
 
 .variants-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px;
+  gap: 18px;
 }
+
+
+/* ---------------------------------------------------------
+   VARIANT CARD
+   --------------------------------------------------------- */
 
 .variant-card {
   position: relative;
+  min-width: 0;
+
   padding: 30px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  background: rgba(255, 255, 255, 0.65);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.045),
+      rgba(255, 255, 255, 0.018)
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.11);
+
+  color: #ffffff;
+
   transition:
-    transform 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    background 0.35s ease,
+    box-shadow 0.35s ease;
 }
+
+
+/* subtle top line */
+
+.variant-card::before {
+  content: "";
+  position: absolute;
+
+  top: 0;
+  left: 30px;
+  right: 30px;
+
+  height: 1px;
+
+  background: rgba(255, 255, 255, 0.08);
+}
+
+
+/* hover */
 
 .variant-card:hover {
   transform: translateY(-5px);
-  border-color: rgba(0, 0, 0, 0.28);
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+
+  border-color: rgba(255, 255, 255, 0.24);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.075),
+      rgba(255, 255, 255, 0.025)
+    );
+
+  box-shadow:
+    0 20px 55px rgba(0, 0, 0, 0.35);
 }
 
+
+/* ---------------------------------------------------------
+   BEST VALUE CARD
+   --------------------------------------------------------- */
+
 .variant-card.is-best-value {
-  border-color: rgba(0, 0, 0, 0.35);
+  border-color: rgba(190, 157, 74, 0.45);
 }
+
+.variant-card.is-best-value::before {
+  background: rgba(190, 157, 74, 0.75);
+}
+
+
+/* ---------------------------------------------------------
+   CARD HEADER
+   --------------------------------------------------------- */
 
 .variant-card-top {
   display: flex;
+
   align-items: flex-start;
   justify-content: space-between;
-  gap: 15px;
-  margin-bottom: 28px;
+
+  gap: 20px;
+
+  margin-bottom: 30px;
 }
+
 
 .variant-number {
   display: block;
-  margin-bottom: 8px;
-  font-size: 11px;
-  letter-spacing: 0.15em;
-  opacity: 0.5;
+
+  margin-bottom: 9px;
+
+  color: rgba(255, 255, 255, 0.34);
+
+  font-size: 10px;
+
+  letter-spacing: 0.18em;
+
+  line-height: 1;
 }
+
 
 .variant-card h3 {
   margin: 0;
+
+  color: rgba(255, 255, 255, 0.94);
+
   font-size: 21px;
-  line-height: 1.2;
+
+  font-weight: 400;
+
+  line-height: 1.25;
+
+  letter-spacing: -0.02em;
 }
+
+
+/* ---------------------------------------------------------
+   BEST VALUE BADGE
+   --------------------------------------------------------- */
 
 .best-value-badge {
   flex-shrink: 0;
-  padding: 7px 10px;
+
+  padding: 8px 11px;
+
+  border: 1px solid rgba(190, 157, 74, 0.55);
+
+  color: rgba(220, 190, 110, 0.95);
+
+  background: rgba(190, 157, 74, 0.055);
+
   font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  border: 1px solid currentColor;
+
+  font-weight: 600;
+
+  letter-spacing: 0.12em;
+
   white-space: nowrap;
 }
 
+
+/* ---------------------------------------------------------
+   PRICE
+   --------------------------------------------------------- */
+
 .variant-price {
   display: flex;
+
   flex-direction: column;
-  gap: 6px;
+
+  gap: 8px;
+
   padding-bottom: 24px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
 }
+
 
 .variant-price span {
+  color: rgba(255, 255, 255, 0.34);
+
   font-size: 9px;
-  letter-spacing: 0.15em;
-  opacity: 0.5;
+
+  font-weight: 500;
+
+  letter-spacing: 0.16em;
 }
 
+
 .variant-price strong {
-  font-size: 25px;
-  line-height: 1.2;
+  display: block;
+
+  color: rgba(255, 255, 255, 0.92);
+
+  font-size: 22px;
+
+  font-weight: 400;
+
+  line-height: 1.35;
+
+  letter-spacing: -0.025em;
 }
+
+
+/* ---------------------------------------------------------
+   SPECIFICATIONS
+   --------------------------------------------------------- */
 
 .variant-specs {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 14px;
+
   padding: 22px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
 }
+
 
 .variant-specs div {
   min-width: 0;
 }
 
+
 .variant-specs span {
   display: block;
-  margin-bottom: 7px;
+
+  margin-bottom: 8px;
+
+  color: rgba(255, 255, 255, 0.32);
+
   font-size: 8px;
-  letter-spacing: 0.13em;
-  opacity: 0.5;
+
+  font-weight: 500;
+
+  letter-spacing: 0.15em;
 }
+
 
 .variant-specs strong {
   display: block;
-  font-size: 12px;
-  line-height: 1.4;
-  word-break: break-word;
+
+  overflow-wrap: anywhere;
+
+  color: rgba(255, 255, 255, 0.78);
+
+  font-size: 11px;
+
+  font-weight: 400;
+
+  line-height: 1.5;
 }
+
+
+/* ---------------------------------------------------------
+   FEATURES
+   --------------------------------------------------------- */
 
 .variant-features {
   padding-top: 22px;
 }
 
+
 .variant-feature-title {
   display: block;
-  margin-bottom: 13px;
+
+  margin-bottom: 15px;
+
+  color: rgba(255, 255, 255, 0.32);
+
   font-size: 9px;
-  letter-spacing: 0.15em;
-  opacity: 0.55;
+
+  font-weight: 500;
+
+  letter-spacing: 0.16em;
 }
+
 
 .variant-features ul {
   display: flex;
+
   flex-direction: column;
-  gap: 9px;
+
+  gap: 10px;
+
   margin: 0;
+
   padding: 0;
+
   list-style: none;
 }
 
+
 .variant-features li {
   display: flex;
-  gap: 9px;
-  font-size: 12px;
-  line-height: 1.5;
+
+  align-items: flex-start;
+
+  gap: 10px;
+
+  color: rgba(255, 255, 255, 0.65);
+
+  font-size: 11px;
+
+  font-weight: 400;
+
+  line-height: 1.55;
 }
+
 
 .variant-features li span {
   flex-shrink: 0;
-  font-weight: 700;
+
+  color: rgba(220, 190, 110, 0.85);
+
+  font-size: 11px;
+
+  font-weight: 500;
 }
 
+
+/* ---------------------------------------------------------
+   EMPTY STATE
+   --------------------------------------------------------- */
+
 .variant-features.empty {
-  font-size: 12px;
-  opacity: 0.55;
+  color: rgba(255, 255, 255, 0.35);
+
+  font-size: 11px;
+
+  line-height: 1.6;
 }
+
 
 .variants-empty {
   grid-column: 1 / -1;
-  padding: 45px;
-  border: 1px dashed rgba(0, 0, 0, 0.2);
+
+  padding: 50px 30px;
+
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+
+  background: rgba(255, 255, 255, 0.02);
+
   text-align: center;
 }
 
+
 .variants-empty > span {
   display: block;
+
   margin-bottom: 15px;
-  font-size: 25px;
-  opacity: 0.4;
+
+  color: rgba(255, 255, 255, 0.35);
+
+  font-size: 24px;
 }
+
 
 .variants-empty h3 {
   margin: 0 0 10px;
+
+  color: rgba(255, 255, 255, 0.85);
+
+  font-size: 18px;
+
+  font-weight: 400;
 }
+
 
 .variants-empty p {
   margin: 0;
-  opacity: 0.6;
+
+  color: rgba(255, 255, 255, 0.45);
+
+  font-size: 12px;
 }
 
 
 /* =========================================================
-   VARIANTS — RESPONSIVE
-========================================================= */
+   RESPONSIVE
+   ========================================================= */
 
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
 
   .variants-layout {
     grid-template-columns: 1fr;
+
     gap: 45px;
   }
 
   .variants-intro {
     max-width: 650px;
   }
-
 }
 
 
-@media (max-width: 700px) {
+@media (max-width: 760px) {
 
   .variants-grid {
     grid-template-columns: 1fr;
   }
 
   .variant-card {
-    padding: 24px;
+    padding: 25px;
   }
 
   .variant-card-top {
     flex-direction: column;
-    gap: 12px;
+
+    gap: 14px;
   }
 
   .best-value-badge {
@@ -1230,20 +1450,25 @@ em {
 
   .variant-specs {
     grid-template-columns: 1fr;
+
     gap: 17px;
   }
 
   .variant-price strong {
-    font-size: 22px;
+    font-size: 20px;
   }
-
 }
 
 
 @media (max-width: 480px) {
 
   .variant-card {
-    padding: 20px;
+    padding: 21px;
+  }
+
+  .variant-card::before {
+    left: 21px;
+    right: 21px;
   }
 
   .variant-card h3 {
@@ -1251,7 +1476,10 @@ em {
   }
 
   .variant-price strong {
-    font-size: 20px;
+    font-size: 19px;
   }
 
+  .variants-intro {
+    font-size: 13px;
+  }
 }
