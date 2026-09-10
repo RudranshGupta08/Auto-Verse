@@ -528,6 +528,178 @@
              </div>`;
     }
 
+        // =======================================================
+    // VARIANTS
+    // =======================================================
+
+    const variantsGrid = $("variantsGrid");
+
+    const variants = Array.isArray(car.variants)
+      ? car.variants
+      : [];
+
+    if (variantsGrid) {
+
+      if (!variants.length) {
+
+        variantsGrid.innerHTML = `
+          <div class="variants-empty">
+            <span>—</span>
+            <h3>Variant information unavailable.</h3>
+            <p>
+              AutoVerse does not have variant-level
+              information for this vehicle yet.
+            </p>
+          </div>
+        `;
+
+      } else {
+
+        variantsGrid.innerHTML =
+          variants
+            .map((variant, index) => {
+
+              const variantFeatures =
+                arr(variant.features)
+                  .filter(Boolean);
+
+              const bestValue =
+                variant.isBestValue === true;
+
+              return `
+                <article
+                  class="variant-card ${
+                    bestValue
+                      ? "is-best-value"
+                      : ""
+                  } reveal"
+                >
+
+                  <div class="variant-card-top">
+
+                    <div>
+                      <span class="variant-number">
+                        ${String(index + 1).padStart(2, "0")}
+                      </span>
+
+                      <h3>
+                        ${esc(
+                          variant.name ||
+                          `Variant ${index + 1}`
+                        )}
+                      </h3>
+                    </div>
+
+                    ${
+                      bestValue
+                        ? `
+                          <span class="best-value-badge">
+                            ★ BEST VALUE
+                          </span>
+                        `
+                        : ""
+                    }
+
+                  </div>
+
+
+                  <div class="variant-price">
+                    <span>EX-SHOWROOM</span>
+
+                    <strong>
+                      ${esc(
+                        variant.price ||
+                        "Price on request"
+                      )}
+                    </strong>
+                  </div>
+
+
+                  <div class="variant-specs">
+
+                    <div>
+                      <span>FUEL</span>
+                      <strong>
+                        ${esc(
+                          variant.fuelType ||
+                          "—"
+                        )}
+                      </strong>
+                    </div>
+
+                    <div>
+                      <span>TRANSMISSION</span>
+                      <strong>
+                        ${esc(
+                          variant.transmission ||
+                          "—"
+                        )}
+                      </strong>
+                    </div>
+
+                    <div>
+                      <span>MILEAGE</span>
+                      <strong>
+                        ${esc(
+                          variant.mileage ||
+                          "—"
+                        )}
+                      </strong>
+                    </div>
+
+                  </div>
+
+
+                  ${
+                    variantFeatures.length
+                      ? `
+                        <div class="variant-features">
+
+                          <span class="variant-feature-title">
+                            KEY FEATURES
+                          </span>
+
+                          <ul>
+                            ${variantFeatures
+                              .map(
+                                feature => `
+                                  <li>
+                                    <span>✓</span>
+                                    ${esc(feature)}
+                                  </li>
+                                `
+                              )
+                              .join("")}
+                          </ul>
+
+                        </div>
+                      `
+                      : `
+                        <div class="variant-features empty">
+                          <span>
+                            Variant features not listed.
+                          </span>
+                        </div>
+                      `
+                  }
+
+                </article>
+              `;
+
+            })
+            .join("");
+
+        /*
+         * Because these cards are created dynamically,
+         * register them with the existing reveal observer.
+         */
+
+        variantsGrid
+          .querySelectorAll(".reveal")
+          .forEach(el => observer.observe(el));
+      }
+    }
+
     // =======================================================
     // PROS / CONS
     // =======================================================

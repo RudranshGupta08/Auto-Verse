@@ -1001,3 +1001,257 @@ em {
         transform: none
     }
 }
+
+/* =========================================================
+   VARIANTS & PRICING
+========================================================= */
+
+.variants-section {
+  position: relative;
+}
+
+.variants-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.75fr) minmax(0, 1.5fr);
+  gap: 70px;
+  align-items: start;
+}
+
+.variants-intro {
+  max-width: 430px;
+  margin-top: 22px;
+  line-height: 1.8;
+  opacity: 0.7;
+}
+
+.variants-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.variant-card {
+  position: relative;
+  padding: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.65);
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.variant-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(0, 0, 0, 0.28);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+}
+
+.variant-card.is-best-value {
+  border-color: rgba(0, 0, 0, 0.35);
+}
+
+.variant-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 28px;
+}
+
+.variant-number {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  opacity: 0.5;
+}
+
+.variant-card h3 {
+  margin: 0;
+  font-size: 21px;
+  line-height: 1.2;
+}
+
+.best-value-badge {
+  flex-shrink: 0;
+  padding: 7px 10px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  border: 1px solid currentColor;
+  white-space: nowrap;
+}
+
+.variant-price {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.variant-price span {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  opacity: 0.5;
+}
+
+.variant-price strong {
+  font-size: 25px;
+  line-height: 1.2;
+}
+
+.variant-specs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 22px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.variant-specs div {
+  min-width: 0;
+}
+
+.variant-specs span {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 8px;
+  letter-spacing: 0.13em;
+  opacity: 0.5;
+}
+
+.variant-specs strong {
+  display: block;
+  font-size: 12px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.variant-features {
+  padding-top: 22px;
+}
+
+.variant-feature-title {
+  display: block;
+  margin-bottom: 13px;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  opacity: 0.55;
+}
+
+.variant-features ul {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.variant-features li {
+  display: flex;
+  gap: 9px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.variant-features li span {
+  flex-shrink: 0;
+  font-weight: 700;
+}
+
+.variant-features.empty {
+  font-size: 12px;
+  opacity: 0.55;
+}
+
+.variants-empty {
+  grid-column: 1 / -1;
+  padding: 45px;
+  border: 1px dashed rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.variants-empty > span {
+  display: block;
+  margin-bottom: 15px;
+  font-size: 25px;
+  opacity: 0.4;
+}
+
+.variants-empty h3 {
+  margin: 0 0 10px;
+}
+
+.variants-empty p {
+  margin: 0;
+  opacity: 0.6;
+}
+
+
+/* =========================================================
+   VARIANTS — RESPONSIVE
+========================================================= */
+
+@media (max-width: 1000px) {
+
+  .variants-layout {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+
+  .variants-intro {
+    max-width: 650px;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .variants-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .variant-card {
+    padding: 24px;
+  }
+
+  .variant-card-top {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .best-value-badge {
+    align-self: flex-start;
+  }
+
+  .variant-specs {
+    grid-template-columns: 1fr;
+    gap: 17px;
+  }
+
+  .variant-price strong {
+    font-size: 22px;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .variant-card {
+    padding: 20px;
+  }
+
+  .variant-card h3 {
+    font-size: 18px;
+  }
+
+  .variant-price strong {
+    font-size: 20px;
+  }
+
+}
