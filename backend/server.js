@@ -39,8 +39,7 @@ const IS_PRODUCTION =
  * FRONTEND_URL can contain multiple comma-separated origins.
  *
  * Example:
- *
- * FRONTEND_URL=https://auto-verse-one.vercel.app,http://localhost:5500,http://127.0.0.1:5500
+ * FRONTEND_URL=https://auto-verse-one.vercel.app,http://localhost:5500
  */
 
 const FRONTEND_URL =
@@ -141,10 +140,10 @@ if (IS_PRODUCTION) {
   /*
    * Render sits behind a reverse proxy.
    *
-   * This is required for:
+   * Required for:
    * - secure cookies
-   * - rate limiting
    * - correct HTTPS detection
+   * - rate limiting based on client IP
    */
 
   app.set("trust proxy", 1);
@@ -162,10 +161,10 @@ app.use(
 
     strictTransportSecurity: IS_PRODUCTION
       ? {
-        maxAge: 31536000,
-        includeSubDomains: true,
-        preload: true
-      }
+          maxAge: 31536000,
+          includeSubDomains: true,
+          preload: true
+        }
       : false
   })
 );
@@ -315,6 +314,10 @@ const globalLimiter =
   rateLimit({
     windowMs: 15 * 60 * 1000,
 
+    /*
+     * General API protection.
+     */
+
     limit: 300,
 
     standardHeaders: "draft-8",
@@ -334,13 +337,31 @@ app.use(globalLimiter);
 // AUTH RATE LIMIT
 // =========================================================
 
+/*
+ * Authentication/session endpoints share this limiter.
+ *
+ * Increased from 30 → 100 requests per 15 minutes
+ * because the frontend can legitimately make multiple
+ * requests for:
+ *
+ * - CSRF token
+ * - login
+ * - current user
+ * - logout
+ * - signup
+ *
+ * Successful requests are skipped so normal successful
+ * authentication flows do not unnecessarily consume
+ * the rate-limit budget.
+ */
+
 const authLimiter =
   rateLimit({
     windowMs: 15 * 60 * 1000,
 
-    limit: 30,
+    limit: 100,
 
-    skipSuccessfulRequests: false,
+    skipSuccessfulRequests: true,
 
     standardHeaders: "draft-8",
 
@@ -349,7 +370,7 @@ const authLimiter =
     message: {
       success: false,
       message:
-        "Too many authentication attempts. Please try again later."
+        "Too many authentication requests. Please try again later."
     }
   });
 
@@ -515,6 +536,7 @@ app.use(
     ),
     {
       fallthrough: true,
+
       maxAge: IS_PRODUCTION
         ? "7d"
         : 0
@@ -584,9 +606,9 @@ app.use(
       IS_PRODUCTION
         ? "Internal server error."
         : (
-          error.message ||
-          "Internal server error."
-        );
+            error.message ||
+            "Internal server error."
+          );
 
     let status =
       Number.isInteger(error.status)
